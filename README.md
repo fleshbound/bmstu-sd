@@ -117,3 +117,12 @@
 Диаграмма процесса входа в систему и выполнения начальных действий
 
 ![bpmn_enter.png](./img/bpmn_enter.png)
+
+Диаграмма процесса запуска выставки
+![bpmn_start_show.png](./img/bpmn_start_show.png)
+
+Диаграмма процесса завершения выставки
+![bpmn_end_show.png](./img/bpmn_end_show.png)
+
+Диаграмма процесса оценки выставки
+![bpmn_show.png](./img/bpmn_show.png)
