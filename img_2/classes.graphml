@@ -20,14 +20,14 @@
         <y:ProxyAutoBoundsNode>
           <y:Realizers active="0">
             <y:GroupNode>
-              <y:Geometry height="1078.0463662126817" width="2032.4954315828763" x="148.92928808954048" y="454.9331171221545"/>
+              <y:Geometry height="1078.0463662126817" width="2136.9396322829143" x="44.48508738950267" y="454.9331171221545"/>
               <y:Fill color="#F5F5F5" transparent="false"/>
               <y:BorderStyle color="#000000" type="dashed" width="1.0"/>
-              <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="21.4609375" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="2032.4954315828763" x="0.0" xml:space="preserve" y="0.0">Animal Show Layer</y:NodeLabel>
+              <y:NodeLabel alignment="right" autoSizePolicy="node_width" backgroundColor="#EBEBEB" borderDistance="0.0" fontFamily="Dialog" fontSize="15" fontStyle="plain" hasLineColor="false" height="21.4609375" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="2136.9396322829143" x="0.0" xml:space="preserve" y="0.0">Animal Show Layer</y:NodeLabel>
               <y:Shape type="roundrectangle"/>
               <y:State closed="false" closedHeight="50.0" closedWidth="50.0" innerGraphDisplayEnabled="false"/>
               <y:Insets bottom="5" bottomF="5.0" left="5" leftF="5.0" right="5" rightF="5.0" top="5" topF="5.0"/>
-              <y:BorderInsets bottom="47" bottomF="46.970692216415046" left="34" leftF="33.818898395818735" right="53" rightF="53.106360297413175" top="56" topF="55.880987765836835"/>
+              <y:BorderInsets bottom="47" bottomF="46.970692216415046" left="0" leftF="0.0" right="53" rightF="53.106360297413175" top="56" topF="55.880987765836835"/>
             </y:GroupNode>
             <y:GroupNode>
               <y:Geometry height="1333.4853515625" width="1863.4492187499993" x="320.9843749999999" y="128.1601562500001"/>
@@ -53,11 +53,8 @@
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.1328125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="127.68408203125" x="57.657958984375" xml:space="preserve" y="25.96875">IShowRepository<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="Interface" use3DEffect="false">
                 <y:AttributeLabel xml:space="preserve"/>
-                <y:MethodLabel xml:space="preserve">+ add()
-+ getAll()
-+ getById()
-+ delete()
-+ update()</y:MethodLabel>
+                <y:MethodLabel xml:space="preserve">+ getBy...
+</y:MethodLabel>
               </y:UML>
             </y:UMLClassNode>
           </data>
@@ -72,11 +69,10 @@
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.1328125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="121.6474609375" x="60.67626953125" xml:space="preserve" y="25.96875">IUserRepository<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="Interface" use3DEffect="false">
                 <y:AttributeLabel xml:space="preserve"/>
-                <y:MethodLabel xml:space="preserve">+ add()
-+ getAll()
-+ getById()
-+ delete()
-+ update()</y:MethodLabel>
+                <y:MethodLabel xml:space="preserve">+ getBy...
++ connectUser()
++ getUserRole()
++ </y:MethodLabel>
               </y:UML>
             </y:UMLClassNode>
           </data>
@@ -85,7 +81,7 @@
           <data key="d4" xml:space="preserve"/>
           <data key="d6">
             <y:UMLClassNode>
-              <y:Geometry height="166.0" width="243.0" x="187.7481864853592" y="839.8548001959234"/>
+              <y:Geometry height="166.0" width="243.0" x="187.7481864853592" y="835.2938995094246"/>
               <y:Fill color="#FFFFFF" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.1328125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="88.12548828125" x="77.437255859375" xml:space="preserve" y="25.96875">IRepository<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
@@ -94,7 +90,8 @@
                 <y:MethodLabel xml:space="preserve">+ add()
 + getAll()
 + delete()
-+ update()</y:MethodLabel>
++ update()
++ getById()</y:MethodLabel>
               </y:UML>
             </y:UMLClassNode>
           </data>
@@ -109,11 +106,8 @@
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.1328125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="138.671875" x="52.1640625" xml:space="preserve" y="25.96875">IAnimalRepository<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="Interface" use3DEffect="false">
                 <y:AttributeLabel xml:space="preserve"/>
-                <y:MethodLabel xml:space="preserve">+ add()
-+ getAll()
-+ getById()
-+ delete()
-+ update()</y:MethodLabel>
+                <y:MethodLabel xml:space="preserve">+ getBy...
+</y:MethodLabel>
               </y:UML>
             </y:UMLClassNode>
           </data>
@@ -128,11 +122,8 @@
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.1328125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="165.18603515625" x="38.906982421875" xml:space="preserve" y="25.96875">ICertificateRepository<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="Interface" use3DEffect="false">
                 <y:AttributeLabel xml:space="preserve"/>
-                <y:MethodLabel xml:space="preserve">+ add()
-+ getAll()
-+ getById()
-+ delete()
-+ update()</y:MethodLabel>
+                <y:MethodLabel xml:space="preserve">+ getBy...
+</y:MethodLabel>
               </y:UML>
             </y:UMLClassNode>
           </data>
@@ -147,11 +138,8 @@
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.1328125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="131.384765625" x="55.8076171875" xml:space="preserve" y="25.96875">IBreedRepository<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="Interface" use3DEffect="false">
                 <y:AttributeLabel xml:space="preserve"/>
-                <y:MethodLabel xml:space="preserve">+ add()
-+ getAll()
-+ getById()
-+ delete()
-+ update()</y:MethodLabel>
+                <y:MethodLabel xml:space="preserve">+ getBy...
+</y:MethodLabel>
               </y:UML>
             </y:UMLClassNode>
           </data>
@@ -166,11 +154,8 @@
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.1328125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="169.2041015625" x="36.89794921875" xml:space="preserve" y="25.96875">IJudgeShowRepository<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="Interface" use3DEffect="false">
                 <y:AttributeLabel xml:space="preserve"/>
-                <y:MethodLabel xml:space="preserve">+ add()
-+ getAll()
-+ getById()
-+ delete()
-+ update()</y:MethodLabel>
+                <y:MethodLabel xml:space="preserve">+ getBy...
+</y:MethodLabel>
               </y:UML>
             </y:UMLClassNode>
           </data>
@@ -185,11 +170,8 @@
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.1328125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="178.23046875" x="32.384765625" xml:space="preserve" y="25.96875">IAnimalShowRepository<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="Interface" use3DEffect="false">
                 <y:AttributeLabel xml:space="preserve"/>
-                <y:MethodLabel xml:space="preserve">+ add()
-+ getAll()
-+ getById()
-+ delete()
-+ update()</y:MethodLabel>
+                <y:MethodLabel xml:space="preserve">+ getBy...
+</y:MethodLabel>
               </y:UML>
             </y:UMLClassNode>
           </data>
@@ -204,11 +186,8 @@
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.1328125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="155.52490234375" x="43.737548828125" xml:space="preserve" y="25.96875">IStandardRepository<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="Interface" use3DEffect="false">
                 <y:AttributeLabel xml:space="preserve"/>
-                <y:MethodLabel xml:space="preserve">+ add()
-+ getAll()
-+ getById()
-+ delete()
-+ update()</y:MethodLabel>
+                <y:MethodLabel xml:space="preserve">+ getBy...
+</y:MethodLabel>
               </y:UML>
             </y:UMLClassNode>
           </data>
@@ -223,11 +202,8 @@
               <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.1328125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="144.32763671875" x="49.336181640625" xml:space="preserve" y="25.96875">ISpeciesRepository<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
               <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="Interface" use3DEffect="false">
                 <y:AttributeLabel xml:space="preserve"/>
-                <y:MethodLabel xml:space="preserve">+ add()
-+ getAll()
-+ getById()
-+ delete()
-+ update()</y:MethodLabel>
+                <y:MethodLabel xml:space="preserve">+ getBy...
+</y:MethodLabel>
               </y:UML>
             </y:UMLClassNode>
           </data>
@@ -399,6 +375,22 @@
 + getById()
 + delete()
 + update()</y:MethodLabel>
+              </y:UML>
+            </y:UMLClassNode>
+          </data>
+        </node>
+        <node id="n0::n19">
+          <data key="d4" xml:space="preserve"/>
+          <data key="d6">
+            <y:UMLClassNode>
+              <y:Geometry height="166.0" width="243.0" x="49.48508738950267" y="600.6636763082553"/>
+              <y:Fill color="#FFFFFF" transparent="false"/>
+              <y:BorderStyle color="#000000" type="line" width="1.0"/>
+              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.1328125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="157.994140625" x="42.5029296875" xml:space="preserve" y="3.0">AuthorisationService<y:LabelModel><y:SmartNodeLabelModel distance="4.0"/></y:LabelModel><y:ModelParameter><y:SmartNodeLabelModelParameter labelRatioX="0.0" labelRatioY="0.0" nodeRatioX="0.0" nodeRatioY="0.0" offsetX="0.0" offsetY="0.0" upX="0.0" upY="-1.0"/></y:ModelParameter></y:NodeLabel>
+              <y:UML clipContent="true" constraint="" hasDetailsColor="false" omitDetails="false" stereotype="" use3DEffect="false">
+                <y:AttributeLabel xml:space="preserve"/>
+                <y:MethodLabel xml:space="preserve">+ validatePassword()
++ hashPassword()</y:MethodLabel>
               </y:UML>
             </y:UMLClassNode>
           </data>
@@ -941,6 +933,19 @@
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="dashed" width="1.0"/>
           <y:Arrows source="none" target="white_delta"/>
+          <y:BendStyle smoothed="false"/>
+        </y:PolyLineEdge>
+      </data>
+    </edge>
+    <edge id="n0::e18" source="n0::n11" target="n0::n19">
+      <data key="d8" xml:space="preserve"/>
+      <data key="d10">
+        <y:PolyLineEdge>
+          <y:Path sx="0.0" sy="-31.26628983273281" tx="0.0" ty="0.0">
+            <y:Point x="170.98508738950267" y="800.9787879088399"/>
+          </y:Path>
+          <y:LineStyle color="#000000" type="line" width="1.0"/>
+          <y:Arrows source="none" target="plain"/>
           <y:BendStyle smoothed="false"/>
         </y:PolyLineEdge>
       </data>
