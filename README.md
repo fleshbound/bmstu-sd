@@ -1,92 +1,201 @@
-# PPO
+### 1. Название проекта
 
+Выставочное агенство "Выставлятор" (организация выставок различных видов животных)
 
+### 2. Краткое описание идеи проекта
 
-## Getting started
+Приложение, имитирующее работу выставочного агенства. Приложение должно предоставлять функционал для заводчиков, судьей, организаторов.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+### 3. Краткое описание предметной области
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+| <b>Понятие</b> |<b>Определение</b> |
+|---|---|
+| Животное | Живое существо, обладающее характеристиками: рост, вес, окрас, наличие дефектов |
+|Вид|Основная структурная единица биологической систематики животных (Собака, Кошка, Волк, Домашняя лошадь и так далее)|
+|Порода|Группа животных одного вида, обладающая определенными  характеристиками, передающимися по наследству (Вид: кошка, порода: сфинкс, корниш-рекс и т.д.) |
+|Стандарт породы (вида)|Документ, описывающий значения характеристик животного,  принадлежащего породе (виду), и допустимые диапазоны  их изменений|
+|Заводчик| Человек, занимающийся разведением животных и являющийся их хозяином |
+| Выставка животных | Публичное мероприятие по оценке степени соответствия участников стандарту вида или породы |
+|Участник выставки|Животное, записанное на выставку своим заводчиком|
+|Судья|Человек, который после получения специального образования имеет право в зависимости от полученного образования судить животных той или иной породы|
+|Приглашенный (на выставку) судья|Судья, имеющий право оценивать участников отдельной выставки|
+|Титул|Наименование, присуждаемое животному после завершения выставки|
+|Диплом|Документ, вручаемый участнику выставки после ее завершения, содержащий информацию о полученном на выставке титуле|
+|Организатор|Человек, который имеет право создавать, редактировать, запускать и завершать выставки|
 
-## Add your files
+### 4. Краткий анализ аналогичных решений
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+Критерии:
 
-```
-cd existing_repo
-git remote add origin https://git.iu7.bmstu.ru/avp21u792/ppo.git
-git branch -M main
-git push -uf origin main
-```
+1. Наличие возможности регистрации животных разных видов.
+2. Наличие возможности проведения всех этапов выставки в онлайн-формате.
+3. Наличие возможности автоматической обработки результатов оценки участников.
 
-## Integrate with your tools
+|   | 1 | 2 | 3 |
+|---|---|---|---|
+| cats-show.org | - | + | - |
+| brd-show.online | - | + | + |
+| www.show-dogs.ru | - | - | - |
+| dog-planeta.ru | - | - | - |
+| Онлайн-выставка "Мой питомец" с использованием ВКонтакте | + | + | - |
+| Предлагаемое решение | + | + | + |
 
-- [ ] [Set up project integrations](https://git.iu7.bmstu.ru/avp21u792/ppo/-/settings/integrations)
+### 5. Краткое обоснование целесообразности и актуальности проекта
 
-## Collaborate with your team
+В 21 веке вследствие увеличения доступности информации появляется все больше людей, увлекающихся разведением домашних животных, относящихся к видам, которые распространены меньше, чем кошки и собаки, а также разводящих несколько видов одновременно, поэтому целесообразно создание проекта, который объединяет организацию выставок для различных видов животных.
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+Работа над данным проектом является актуальной, так как перевод выставок в онлайн-формат с автоматической обработкой результатов
+- упрощает работу судей,
+- уменьшает трудозатраты на обработку результатов и распределение наград,
+- снижает риск возникновения ошибок обработки.
 
-## Test and Deploy
+Все рассмотренные возможности реализуются в данном проекте.
 
-Use the built-in continuous integration in GitLab.
+### 6. Краткое описание акторов (ролей)
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+1. Заводчик: зарегистрированный пользователь, который владеет 0 или более животными различных видов, может управлять записями своих животных, записывать их на выставки.
+2. Судья: зарегистрированный пользователь, который может оценивать участников выставки, если является приглашенным судьей этой выставки.
+3. Организатор: зарегистрированный пользователь, который управляет всеми выставками (создание, удаление, редактирование общей информации, управление списком приглашенных судей).
+4. Гость: может посмотреть список выставок, результаты выставки.
 
-***
+### 7. Use-Case - диаграмма
 
-# Editing this README
+На рисунке ниже представлена Use-Case диаграмма.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+![usecase.png](./img/usecase.png)
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+На рисунке ниже представлен общий вид результатов завершенной выставки.
 
-## Name
-Choose a self-explaining name for your project.
+![results_example.png](./img/results_example.png)
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+### 8. ER-диаграмма сущностей
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+На рисунке ниже представлена ER-диаграмма сущностей.
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+![erdiagram.png](./img/erdiagram.png)
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+#### Диаграмма состояний
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+На рисунке ниже представлена диаграмма переходов состояний выставки.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+![states_show.png](./img/states_show.png)
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+### 9. Пользовательские сценарии
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+1. ПРОСМОТР ВЫСТАВОК
+	1. Пользователь входит как Гость/Заводчик/Судья/Организатор
+	2. Гость/Заводчик/Судья/Организатор смотрит список выставок
+2. ДОБАВЛЕНИЕ ЖИВОТНОГО
+	1. Пользователь входит как Заводчик
+	2. Заводчик добавляет животное
+3. СОЗДАНИЕ ВЫСТАВКИ
+	1. Пользователь входит как Организатор
+	2. Организатор создает выставку
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+#### Сложные сценарии
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+4. УДАЛЕНИЕ СУДЬИ
+	1. Пользователь входит как Организатор
+	2. Организатор выбирает выставку
+	3. Организатор хочет удалить судья
+	4. Прервать действие, если выставка в состоянии "Запущена" или "Завершена"
+	5. Прервать действие, если на выставке нет приглашенных судьей
+	6. Организатор выбрал судью
+	7. Удалить судью с выставки
+5. ПРИГЛАШЕНИЕ СУДЬИ
+	1. Пользователь входит как Организатор
+	2. Организатор выбирает выставку
+	3. Организатор хочет добавить судью на выставку
+	4. Прервать действие, если выставка в состоянии "Запущена" или "Завершена"
+	5. Прервать действие, если судья приглашен на выбранную выставку
+	6. Добавить судью на выставку (пометить его как приглашенного)
+6. РЕДАКТИРОВАНИЕ ВЫСТАВКИ
+	1. Пользователь входит в систему как Организатор
+	2. Организатор выбирает выставку
+	3. Организатор хочет редактировать информацию о выставке
+	4. Прервать действие, если выставка в состоянии "Запущена" или "Завершена"
+	5. Редактировать информацию о выставке
+6. ЗАПУСК ВЫСТАВКИ
+	1. Пользователь входит в систему как Организатор
+	2. Пользователь выбирает выставку
+	3. Организатор хочет запустить выставку
+	4. Прервать действие, если выставка в состоянии "Завершена"
+	5. Прервать действие, если на выставку записано менее 3 участников
+	6. Прервать действие, если нет приглашенных судей
+	7. Отметить выставку запущенной
+7. ЗАВЕРШЕНИЕ ВЫСТАВКИ
+	1. Пользователь входит в систему как Организатор
+	2. Организатор выбирает выставку
+	3. Организатор хочет завершить выставку
+	4. Прервать действие, если выставка не в состоянии "Запущена"
+	5. Прервать действие, если есть хотя бы один судья, не оценивший всех участников
+	6. Перевести выставку в состояние "Завершена"
+	7. Вычислить результаты выставки
+8. УДАЛЕНИЕ ЖИВОТНОГО
+	1. Пользователь входит в систему как Заводчик
+	2. Заводчик хочет удалить животное
+	3. Прервать действие, если заводчик не имеет животных
+	4. Заводчик выбирает животное
+	5. Прервать действие, если животное является участником хотя бы одной выставки в состоянии "Запущена"
+	6. Отметить данные о результатах выставок в состоянии "Завершена", в которых участвовало животное, как архивные
+	7. Удалить животное из системы
+9. ЗАПИСЬ ЖИВОТНОГО НА ВЫСТАВКУ
+	1. Пользователь входит в в систему как Заводчик
+	2. Заводчик хочет записать животных на выставку
+	3. Прервать действие, если заводчик не имеет животных
+	4. Прервать действие, если заводчик не имеет животных, подходящих по виду и/или породе
+	5. Заводчик выбирает животное
+	6. Прервать действие, если выбранное животное уже записано на выставку
+	7. Прервать действие, если выбранное животное не соответствует стандарту выставки
+	8. Записать животное на выставку
+10. ПРОСМОТР РЕЗУЛЬТАТОВ ВЫСТАВКИ
+	1. Пользователь входит как Гость/Заводчик/Судья/Организатор
+	2. Пользователь выбирает выставку
+	3. Пользователь хочет посмотреть результаты выставки
+	4. Прервать действие, если выставка не в состоянии "Завершена"
+	5. Сформировать отчет о результатах выставки
+	6. Предоставить отчет пользователю
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+### 10. Формализация ключевых бизнес-процессов
 
-## License
-For open source projects, say how it is licensed.
+На рисунке ниже представлена диаграмма процесса входа в систему и выполнения начальных действий.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+![bpmn_enter.png](./img/bpmn_enter.png)
+
+#### Необходимые проверки
+
+1. Посмотреть результаты выставки
+	- прервать действие, если выставка не в состоянии "Завершена"
+2. Удалить животное
+	- прервать действие, если животное является участником хотя бы одной запущенной выставки
+3. Управлять записями животного
+	1. Записать животное на выставку
+		- прервать действие, если выставка не в состоянии "Открыта"
+		- прервать действие, если вид или порода животного не подходят
+		- определить стандарт породы, соответствующий стране выставки
+		- прервать действие, если животное не соответствует стандарту
+	2. Отписать животное от выставки
+		- прервать действие, если животное не записано на выставку
+		- прервать действие, если выставка не в состоянии "Открыта"
+8. Проверка соответствия животного стандарту:
+	- прервать действие, если дефекты недопустимы и имеются дефекты
+	- прервать действие, если животное многоцветное и многоцветность не допускается
+	- прервать действие, если рост животного не входит в допустимый интервал
+	- прервать действие, если вес животного не входит в допустимый интервал
+	- прервать действие, если индекс растянутости животного не входит в допустимый интервал
+5. Редактировать выставку
+	- прервать действие, если выставка в состоянии "Запущена" или "Завершена"
+6. Изменить состояние выставки
+	1. Запустить выставку
+		- прервать действие, если выставка в состоянии "Запущена" или "Завершена"
+		- прервать действие, если на выставку записано менее 3 животных
+		- прервать действие, если на выставке нет хотя бы одного приглашенного судьи
+	2. Завершить выставку
+		- прервать действие, если выставка в состоянии "Открыта" или "Завершена"
+		- прервать действие, если хотя бы один приглашенный судья не оценил каждого участника
+7. Управлять списком приглашенных судей
+	1. Добавить судью на выставку
+		- прервать действие, если выставка в состоянии "Запущена" или "Завершена"
+		- прервать действие, если судья приглашен на эту выставку
+	2. Удалить судью с выставки
+		- прервать действие, если выставка в состоянии "Запущена" или "Завершена"
