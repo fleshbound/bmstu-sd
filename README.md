@@ -208,22 +208,22 @@
 
 ### 12. Верхнеуровневое разбиение на компоненты
 
-![components.png](./img_2/components.png)
+![components.png](./img_1/components.png)
 
 ### 13. UML диаграммы классов
 
 #### Диаграмма классов сущностей БД
 
-![db_entities.png](./img_2/db_entities.png)
+![db_entities.png](./img/db_entities.png)
 
 #### Диаграмма классов сущностей системы
 
-![entities.png](./img_2/entities.png)
+![entities.png](./img/entities.png)
 
 #### Диаграмма транспортных сущностей
 
-![trans_entities.png](./img_2/trans_entities.png)
+![trans_entities.png](./img/trans_entities.png)
 
 #### Диаграмма классов компонентов бизнес-логики и доступа к данным
 
-![classes.png](./img_2/classes.png)
+![classes.png](./img/classes.png)
