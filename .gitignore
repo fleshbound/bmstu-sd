@@ -31,3 +31,4 @@ project/metals.sbt
 project/.bloop/
 .vscode
 .vscode/*
+**/__pycache__/**
