@@ -1,3 +1,5 @@
+import enum
+
 from pydantic import BaseModel
 
 from utils.types import ID, AnimalName, Sex, Datetime, ProlixityIndex, Length, Height, Weight
@@ -6,6 +8,7 @@ from utils.types import ID, AnimalName, Sex, Datetime, ProlixityIndex, Length, H
 class AnimalSchema(BaseModel):
     id: ID
     user_id: ID
+    breed_id: ID
     name: AnimalName
     birth_dt: Datetime
     sex: Sex
@@ -20,6 +23,7 @@ class AnimalSchema(BaseModel):
 
 class AnimalSchemaCreate(BaseModel):
     user_id: ID
+    breed_id: ID
     name: AnimalName
     birth_dt: Datetime
     sex: Sex
@@ -55,8 +59,3 @@ class AnimalSchemaUpdateBody(BaseModel):
     length: Length
     has_defects: bool
     is_multicolor: bool
-
-
-class AnimalSchemaDelete(BaseModel):
-    id: ID
-    status: str

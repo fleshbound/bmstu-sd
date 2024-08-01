@@ -35,6 +35,48 @@ class UserName:
 
 
 @dataclass
+class BreedName:
+    value: str
+
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, BreedName):
+            return False
+        return other.value == self.value
+
+    @property
+    def val(self):
+        return self.value
+
+
+@dataclass
+class SpeciesName:
+    value: str
+
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, SpeciesName):
+            return False
+        return other.value == self.value
+
+    @property
+    def val(self):
+        return self.value
+
+
+@dataclass
+class GroupName:
+    value: str
+
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, GroupName):
+            return False
+        return other.value == self.value
+
+    @property
+    def val(self):
+        return self.value
+
+
+@dataclass
 class Email:
     value: EmailStr
 

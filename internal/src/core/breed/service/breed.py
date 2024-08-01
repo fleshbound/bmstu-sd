@@ -3,37 +3,37 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from core.animal.schema.animal import AnimalSchema, AnimalSchemaUpdate, AnimalSchemaCreate
+from core.breed.schema.breed import BreedSchema, BreedSchemaUpdate, BreedSchemaCreate
 from utils.types import ID
 
 
-class IAnimalService(ABC):
+class IBreedService(ABC):
     @abstractmethod
-    def archive(self,
-                animal_id: ID) -> AnimalSchema:
+    def delete(self,
+                breed_id: ID) -> BreedSchema:
         raise NotImplementedError
 
     @abstractmethod
     def create(self,
-               create_animal: AnimalSchemaCreate) -> AnimalSchema:
+               create_breed: BreedSchemaCreate) -> BreedSchema:
         raise NotImplementedError
 
     @abstractmethod
     def update(self,
-               update_animal: AnimalSchemaUpdate) -> AnimalSchema:
+               update_breed: BreedSchemaUpdate) -> BreedSchema:
         raise NotImplementedError
 
     @abstractmethod
     def get_all(self,
                 skip: NonNegativeInt = 0,
-                limit: PositiveInt = 100) -> List[AnimalSchema]:
+                limit: PositiveInt = 100) -> List[BreedSchema]:
         raise NotImplementedError
 
     @abstractmethod
-    def get_by_user_id(self,
-                       user_id: ID) -> List[AnimalSchema]:
+    def get_by_species_id(self,
+                          species_id: ID) -> List[BreedSchema]:
         raise NotImplementedError
 
     @abstractmethod
-    def get_by_id(self, animal_id: ID) -> AnimalSchema:
+    def get_by_id(self, breed_id: ID) -> BreedSchema:
         raise NotImplementedError
