@@ -62,9 +62,8 @@ class SqlAlchemyBaseRepository(IBaseRepository):
                 if type(field_value).__name__ in tuple(x[0] for x in inspect.getmembers(types,inspect.isclass)):
                     # if getattr(field_value, '__module__', None) == types.__name__:
                     #     f = fields(field_value)[0]
-                        val = getattr(field_value, 'value')
-                        dct[field] = val
-
+                    val = getattr(field_value, 'value')
+                    dct[field] = val
                 else:
                     dct[field] = field_value
         return dct

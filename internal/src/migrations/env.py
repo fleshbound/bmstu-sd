@@ -4,10 +4,13 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
-from database.model.animal import AnimalORM
-from database.model.user import UserORM
 from config import configs
 import database.database
+from database.model.breed import BreedORM
+from database.model.user import UserORM
+from database.model.species import SpeciesORM
+from database.model.group import GroupORM
+from database.model.animal import AnimalORM
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
