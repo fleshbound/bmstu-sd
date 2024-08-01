@@ -13,6 +13,7 @@ class AnimalORM(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey(column="user.id"))
+    breed_id: Mapped[int] = mapped_column(ForeignKey(column="breed.id"))
     name: Mapped[str] = mapped_column(String, nullable=False)
     birth_dt: Mapped[datetime] = mapped_column(DateTime, nullable=False)
     sex: Mapped[str] = mapped_column(String, nullable=False)
@@ -28,6 +29,7 @@ class AnimalORM(Base):
         return AnimalSchema(
             id=ID(value=self.id),
             user_id=ID(value=self.user_id),
+            breed_id=ID(value=self.breed_id),
             name=AnimalName(value=self.name),
             birth_dt=Datetime(value=self.birth_dt),
             sex=Sex(value=self.sex),
