@@ -4,9 +4,9 @@ from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends, status
 from pydantic import NonNegativeInt, PositiveInt
 
-from core.breed.schema.breed import BreedSchemaCreate, BreedSchema, BreedSchemaUpdate, BreedSchemaUpdateBody
-from core.breed.service.breed import IBreedService
 from container import Container
+from core.breed.schema.breed import BreedSchemaCreate, BreedSchema, BreedSchemaUpdate
+from core.breed.service.breed import IBreedService
 from utils.types import ID
 
 router = APIRouter(
@@ -67,10 +67,7 @@ async def delete_breed(
 @router.post("/{breed_id}")
 @inject
 async def update_breed(
-        breed_id: NonNegativeInt,
-        breed_update_body: BreedSchemaUpdateBody,
+        breed_update: BreedSchemaUpdate,
         breed_service: IBreedService = dep_breed
 ) -> BreedSchema:
-    breed_update = BreedSchemaUpdate(**breed_update_body.dict())
-    breed_update.id = ID(breed_id)
     return breed_service.update(breed_update)

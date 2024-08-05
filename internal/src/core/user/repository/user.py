@@ -1,7 +1,28 @@
-from abc import ABC
+from abc import ABC, abstractmethod
+from typing import List
 
-from utils.repository.base import IBaseRepository
+from pydantic import NonNegativeInt
+
+from core.user.schema.user import UserSchema, UserSchemaUpdate, UserSchemaCreate
 
 
-class IUserRepository(IBaseRepository, ABC):
-    pass
+class IUserRepository(ABC):
+    @abstractmethod
+    def get_all(self, skip: int = 0, limit: int = 100) -> List[UserSchema]:
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_by_id(self, id: NonNegativeInt) -> UserSchema:
+        raise NotImplementedError
+
+    @abstractmethod
+    def create(self, object: UserSchemaCreate) -> UserSchema:
+        raise NotImplementedError
+
+    @abstractmethod
+    def update(self, object: UserSchemaUpdate) -> UserSchema:
+        raise NotImplementedError
+
+    @abstractmethod
+    def delete(self, id: NonNegativeInt) -> None:
+        raise NotImplementedError

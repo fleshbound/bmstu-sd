@@ -16,11 +16,6 @@ class BreedSchemaUpdate(BaseModel):
     name: BreedName
 
 
-class BreedSchemaUpdateBody(BaseModel):
-    name: BreedName
-
-
-# TODO: add name delete id
 class BreedSchemaCreate(BaseModel):
     species_id: ID
     name: BreedName

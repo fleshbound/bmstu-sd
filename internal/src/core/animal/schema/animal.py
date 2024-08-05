@@ -1,5 +1,3 @@
-import enum
-
 from pydantic import BaseModel
 
 from utils.types import ID, AnimalName, Sex, Datetime, ProlixityIndex, Length, Height, Weight

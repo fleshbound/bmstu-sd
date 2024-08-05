@@ -5,7 +5,7 @@ from fastapi import Depends, status, APIRouter
 from pydantic import NonNegativeInt, PositiveInt
 
 from container import Container
-from core.user.schema.user import UserSchemaCreate, UserSchema, UserSchemaUpdateBody, UserSchemaUpdate
+from core.user.schema.user import UserSchemaCreate, UserSchema, UserSchemaUpdate
 from core.user.service.user import IUserService
 from utils.types import ID
 
@@ -58,10 +58,7 @@ async def delete_user(
 @router.post("/{user_id}")
 @inject
 async def update_user(
-        user_id: NonNegativeInt,
-        user_update_body: UserSchemaUpdateBody,
+        user_update: UserSchemaUpdate,
         user_service: IUserService = dep_user
 ) -> UserSchema:
-    user_update = UserSchemaUpdate(**user_update_body.dict())
-    user_update.id = ID(value=user_id)
     return user_service.update(user_update)

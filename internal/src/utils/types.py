@@ -77,6 +77,33 @@ class GroupName:
 
 
 @dataclass
+class Country:
+    value: str
+
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, Country):
+            return False
+        return other.value == self.value
+
+    @property
+    def val(self):
+        return self.value
+
+
+@dataclass
+class ShowName:
+    value: str
+
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, ShowName):
+            return False
+        return other.value == self.value
+
+    @property
+    def val(self):
+        return self.value
+
+@dataclass
 class Email:
     value: EmailStr
 

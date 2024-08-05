@@ -4,9 +4,9 @@ from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends, status
 from pydantic import NonNegativeInt, PositiveInt
 
-from core.animal.schema.animal import AnimalSchemaCreate, AnimalSchema, AnimalSchemaUpdate, AnimalSchemaUpdateBody
-from core.animal.service.animal import IAnimalService
 from container import Container
+from core.animal.schema.animal import AnimalSchemaCreate, AnimalSchema, AnimalSchemaUpdate
+from core.animal.service.animal import IAnimalService
 from utils.types import ID
 
 router = APIRouter(
@@ -48,7 +48,7 @@ async def get_animal_by_id(
 
 @router.get("/user/{user_id}")
 @inject
-async def get_animal_by_id(
+async def get_animal_by_user(
         user_id: NonNegativeInt,
         animal_service: IAnimalService = dep_animal
 ) -> List[AnimalSchema]:
@@ -67,10 +67,7 @@ async def delete_animal(
 @router.post("/{animal_id}")
 @inject
 async def update_animal(
-        animal_id: NonNegativeInt,
-        animal_update_body: AnimalSchemaUpdateBody,
+        animal_update: AnimalSchemaUpdate,
         animal_service: IAnimalService = dep_animal
 ) -> AnimalSchema:
-    animal_update = AnimalSchemaUpdate(**animal_update_body.dict())
-    animal_update.id = ID(animal_id)
     return animal_service.update(animal_update)

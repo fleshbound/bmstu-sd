@@ -22,11 +22,16 @@ class BreedService(IBreedService):
 
     def create(self,
                create_breed: BreedSchemaCreate) -> BreedSchema:
-        return self.breed_repo.create(create_breed)
+        param_dict = create_breed.dict()
+        param_dict['id'] = ID(value=0)
+        new_breed = BreedSchema(**param_dict)
+        return self.breed_repo.create(new_breed)
 
     def update(self,
                update_breed: BreedSchemaUpdate) -> BreedSchema:
-        return self.breed_repo.update(update_breed)
+        cur_breed = self.breed_repo.get_by_id(update_breed.id.value)
+        cur_breed.name = update_breed.name
+        return self.breed_repo.update(cur_breed)
 
     def get_all(self,
                 skip: NonNegativeInt = 0,

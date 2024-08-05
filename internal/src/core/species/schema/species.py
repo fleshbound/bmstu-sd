@@ -16,10 +16,6 @@ class SpeciesSchemaUpdate(BaseModel):
     name: SpeciesName
 
 
-class SpeciesSchemaUpdateBody(BaseModel):
-    name: SpeciesName
-
-
 class SpeciesSchemaCreate(BaseModel):
     group_id: ID
     name: SpeciesName

@@ -3,14 +3,14 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from core.group.schema.group import GroupSchema, GroupSchemaUpdate, GroupSchemaCreate
+from core.group.schema.group import GroupSchema, GroupSchemaUpdate, GroupSchemaCreate, GroupSchemaDelete
 from utils.types import ID
 
 
 class IGroupService(ABC):
     @abstractmethod
     def delete(self,
-                group_id: ID) -> GroupSchema:
+                group_id: ID) -> GroupSchemaDelete:
         raise NotImplementedError
 
     @abstractmethod
