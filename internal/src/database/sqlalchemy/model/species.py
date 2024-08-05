@@ -2,7 +2,7 @@ from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
 from core.species.schema.species import SpeciesSchema
-from database.database import Base
+from database.sqlalchemy.database import Base
 from utils.types import ID, SpeciesName
 
 

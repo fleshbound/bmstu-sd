@@ -1,8 +1,8 @@
-from sqlalchemy import String, ForeignKey
+from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from core.group.schema.group import GroupSchema
-from database.database import Base
+from database.sqlalchemy.database import Base
 from utils.types import ID, GroupName
 
 

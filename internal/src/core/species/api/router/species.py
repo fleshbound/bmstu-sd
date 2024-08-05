@@ -4,9 +4,9 @@ from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends, status
 from pydantic import NonNegativeInt, PositiveInt
 
-from core.species.schema.species import SpeciesSchemaCreate, SpeciesSchema, SpeciesSchemaUpdate, SpeciesSchemaUpdateBody
-from core.species.service.species import ISpeciesService
 from container import Container
+from core.species.schema.species import SpeciesSchemaCreate, SpeciesSchema, SpeciesSchemaUpdate
+from core.species.service.species import ISpeciesService
 from utils.types import ID
 
 router = APIRouter(
@@ -67,10 +67,7 @@ async def delete_species(
 @router.post("/{species_id}")
 @inject
 async def update_species(
-        species_id: NonNegativeInt,
-        species_update_body: SpeciesSchemaUpdateBody,
+        species_update: SpeciesSchemaUpdate,
         species_service: ISpeciesService = dep_species
 ) -> SpeciesSchema:
-    species_update = SpeciesSchemaUpdate(**species_update_body.dict())
-    species_update.id = ID(species_id)
     return species_service.update(species_update)

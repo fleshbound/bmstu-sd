@@ -2,7 +2,7 @@ from sqlalchemy import Boolean, String
 from sqlalchemy.orm import mapped_column, Mapped
 
 from core.user.schema.user import UserSchema
-from database.database import Base
+from database.sqlalchemy.database import Base
 from utils.types import Email, HashedPassword, Role, UserName, ID
 
 

@@ -1,45 +1,41 @@
 import inspect
 from contextlib import AbstractContextManager
-from dataclasses import fields
-from typing import TypeVar, Callable, Type, List
-from pydantic import BaseModel
+from typing import List, Callable, Type, cast
+
+from psycopg2.errors import UniqueViolation
+from pydantic import NonNegativeInt, BaseModel
 from sqlalchemy import insert, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
-from psycopg2.errors import UniqueViolation
 
-from database.database import Base
+from core.show.repository.show import IShowRepository
+from core.show.schema.show import ShowSchema, ShowSchemaCreate, ShowSchemaUpdate
+from database.sqlalchemy.model.show import ShowORM
 from utils import types
 from utils.exceptions import NotFoundError, DuplicatedError, ValidationError
-from utils.repository.base import IBaseRepository
-from utils.types import NonNegativeInt
-
-TS = TypeVar("TS", bound=BaseModel)
-TM = TypeVar("TM", bound=Base)
 
 
-class SqlAlchemyBaseRepository(IBaseRepository):
-    def __init__(self,
-                 session_factory: Callable[..., AbstractContextManager[Session]],
-                 model: Type[TM],
-                 schema: Type[TS]):
+class SqlAlchemyShowRepository(IShowRepository):
+    session_factory: Callable[..., AbstractContextManager[Session]]
+    model = Type[ShowORM]
+    schema = Type[ShowSchema]
+
+    def __init__(self, session_factory: Callable[..., AbstractContextManager[Session]]):
         self.session_factory = session_factory
-        self.model = model
-        self.schema = schema
 
-    def get_all(self, skip: int = 0, limit: int = 100) -> List[TS]:
+    def get_all(self, skip: int = 0, limit: int = 100) -> List[ShowSchema]:
         with self.session_factory() as session:
             rows = session.query(self.model).offset(skip).limit(limit).all()
             return [self.model.to_schema(row) for row in rows]
 
-    def get_by_id(self, id: NonNegativeInt) -> TS:
+    def get_by_id(self, id: NonNegativeInt) -> ShowSchema:
         with self.session_factory() as session:
             row = session.query(self.model).filter_by(id=id).first()
             if row is None:
                 raise NotFoundError(detail=f"not found id : {id}")
             return self.model.to_schema(row)
 
-    def create(self, other: TS) -> TS:
+    def create(self, other: ShowSchemaCreate) -> ShowSchema:
         with self.session_factory() as session:
             other_dict = self.get_dict(other)
             stmt = insert(self.model).values(other_dict).returning(self.model.id)
@@ -54,24 +50,25 @@ class SqlAlchemyBaseRepository(IBaseRepository):
             return self.get_by_id(row[0])
 
     @staticmethod
-    def get_dict(other: TS, exclude: List[str] | None = None):
+    def get_dict(other: BaseModel, exclude: List[str] | None = None) -> dict:
         dct = dict()
         for field in other.__fields__.keys():
             field_value = getattr(other, field)
             if exclude is None or field not in exclude:
-                if type(field_value).__name__ in tuple(x[0] for x in inspect.getmembers(types,inspect.isclass)):
-                    # if getattr(field_value, '__module__', None) == types.__name__:
-                    #     f = fields(field_value)[0]
+                if type(field_value).__name__ in tuple(x[0] for x in inspect.getmembers(types, inspect.isclass)):
                     val = getattr(field_value, 'value')
                     dct[field] = val
                 else:
                     dct[field] = field_value
         return dct
 
-    def update(self, other: TS) -> TS:
+    def update(self, other: ShowSchemaUpdate) -> ShowSchema:
         with self.session_factory() as session:
             other_dict = self.get_dict(other, exclude=['id'])
-            stmt = update(self.model).where(self.model.id==other.id.value).values(other_dict).returning(self.model.id)
+            stmt = update(self.model
+                          ).where(cast("ColumnElement[bool]", self.model.id==other.id.value)
+                                  ).values(other_dict
+                                           ).returning(self.model.id)
             try:
                 result = session.execute(stmt)
                 session.commit()

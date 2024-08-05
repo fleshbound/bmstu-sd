@@ -2,7 +2,7 @@ from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
 from core.breed.schema.breed import BreedSchema
-from database.database import Base
+from database.sqlalchemy.database import Base
 from utils.types import ID, BreedName
 
 
