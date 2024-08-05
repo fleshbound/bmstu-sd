@@ -4,9 +4,9 @@ from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends, status
 from pydantic import NonNegativeInt, PositiveInt
 
-from core.group.schema.group import GroupSchemaCreate, GroupSchema, GroupSchemaUpdate, GroupSchemaUpdateBody
-from core.group.service.group import IGroupService
 from container import Container
+from core.group.schema.group import GroupSchemaCreate, GroupSchema, GroupSchemaUpdate
+from core.group.service.group import IGroupService
 from utils.types import ID
 
 router = APIRouter(
@@ -67,10 +67,7 @@ async def delete_group(
 @router.post("/{group_id}")
 @inject
 async def update_group(
-        group_id: NonNegativeInt,
-        group_update_body: GroupSchemaUpdateBody,
+        group_update: GroupSchemaUpdate,
         group_service: IGroupService = dep_group
 ) -> GroupSchema:
-    group_update = GroupSchemaUpdate(**group_update_body.dict())
-    group_update.id = ID(group_id)
     return group_service.update(group_update)

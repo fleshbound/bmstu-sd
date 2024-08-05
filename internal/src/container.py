@@ -10,7 +10,7 @@ from core.species.repository.sqlalchemy.species import SqlAlchemySpeciesReposito
 from core.species.service.impl.species import SpeciesService
 from core.user.repository.sqlalchemy.user import SqlAlchemyUserRepository
 from core.user.service.impl.user import UserService
-from database.database import Database
+from database.sqlalchemy.database import SqlAlchemyDatabase
 from config import configs
 
 
@@ -25,7 +25,7 @@ class Container(containers.DeclarativeContainer):
         ]
     )
 
-    db = providers.Singleton(Database, db_url=configs.DATABASE_URL)
+    db = providers.Singleton(SqlAlchemyDatabase, db_url=configs.DATABASE_URL)
 
     animal_repo = providers.Factory(SqlAlchemyAnimalRepository, session_factory=db.provided.session)
     animal_service = providers.Factory(AnimalService, animal_repo=animal_repo)

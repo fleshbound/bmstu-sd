@@ -27,11 +27,3 @@ class UserSchemaUpdate(BaseModel):
     role: Role
     name: UserName
     is_archived: bool = False
-
-
-class UserSchemaUpdateBody(BaseModel):
-    login: Email
-    hashed_password: HashedPassword
-    role: Role
-    name: UserName
-    is_archived: bool = False

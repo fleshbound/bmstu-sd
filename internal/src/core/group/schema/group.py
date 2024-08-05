@@ -17,10 +17,6 @@ class GroupSchemaCreate(BaseModel):
 class GroupSchemaUpdate(BaseModel):
     id: ID
     name: GroupName
-
-
-class GroupSchemaUpdateBody(BaseModel):
-    name: GroupName
     
 
 class GroupDeleteStatus(str, enum.Enum):

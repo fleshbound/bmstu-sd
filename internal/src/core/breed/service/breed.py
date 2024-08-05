@@ -3,14 +3,14 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from core.breed.schema.breed import BreedSchema, BreedSchemaUpdate, BreedSchemaCreate
+from core.breed.schema.breed import BreedSchema, BreedSchemaUpdate, BreedSchemaCreate, BreedSchemaDelete
 from utils.types import ID
 
 
 class IBreedService(ABC):
     @abstractmethod
     def delete(self,
-                breed_id: ID) -> BreedSchema:
+               breed_id: ID) -> BreedSchemaDelete:
         raise NotImplementedError
 
     @abstractmethod
@@ -31,7 +31,7 @@ class IBreedService(ABC):
 
     @abstractmethod
     def get_by_species_id(self,
-                          species_id: ID) -> List[BreedSchema]:
+                       species_id: ID) -> List[BreedSchema]:
         raise NotImplementedError
 
     @abstractmethod
