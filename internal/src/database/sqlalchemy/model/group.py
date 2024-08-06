@@ -14,6 +14,6 @@ class GroupORM(Base):
 
     def to_schema(self) -> GroupSchema:
         return GroupSchema(
-            id=ID(value=self.id),
-            name=GroupName(value=self.name)
+            id=ID(self.id),
+            name=GroupName(self.name)
         )

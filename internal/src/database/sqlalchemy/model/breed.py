@@ -15,7 +15,7 @@ class BreedORM(Base):
 
     def to_schema(self) -> BreedSchema:
         return BreedSchema(
-            id=ID(value=self.id),
-            species_id=ID(value=self.species_id),
-            name=BreedName(value=self.name)
+            id=ID(self.id),
+            species_id=ID(self.species_id),
+            name=BreedName(self.name)
         )

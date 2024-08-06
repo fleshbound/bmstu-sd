@@ -15,7 +15,7 @@ class SpeciesORM(Base):
 
     def to_schema(self) -> SpeciesSchema:
         return SpeciesSchema(
-            id=ID(value=self.id),
-            group_id=ID(value=self.group_id),
-            name=SpeciesName(value=self.name)
+            id=ID(self.id),
+            group_id=ID(self.group_id),
+            name=SpeciesName(self.name)
         )
