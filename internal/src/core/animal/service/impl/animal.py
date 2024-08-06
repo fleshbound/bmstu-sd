@@ -27,6 +27,7 @@ class AnimalService(IAnimalService):
 
     def update(self,
                update_animal: AnimalSchemaUpdate) -> AnimalSchema:
+        
         return self.animal_repo.update(update_animal)
 
     def get_all(self,

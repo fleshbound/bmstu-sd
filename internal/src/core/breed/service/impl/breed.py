@@ -23,7 +23,7 @@ class BreedService(IBreedService):
     def create(self,
                create_breed: BreedSchemaCreate) -> BreedSchema:
         param_dict = create_breed.dict()
-        param_dict['id'] = ID(value=0)
+        param_dict['id'] = ID(0)
         new_breed = BreedSchema(**param_dict)
         return self.breed_repo.create(new_breed)
 

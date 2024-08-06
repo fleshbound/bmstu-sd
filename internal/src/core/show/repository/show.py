@@ -3,7 +3,7 @@ from typing import List
 
 from pydantic import NonNegativeInt
 
-from core.show.schema.show import ShowSchema, ShowSchemaCreate, ShowSchemaUpdate
+from core.show.schema.show import ShowSchema
 
 
 class IShowRepository(ABC):
@@ -16,11 +16,11 @@ class IShowRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def create(self, object: ShowSchemaCreate) -> ShowSchema:
+    def create(self, object: ShowSchema) -> ShowSchema:
         raise NotImplementedError
 
     @abstractmethod
-    def update(self, object: ShowSchemaUpdate) -> ShowSchema:
+    def update(self, object: ShowSchema) -> ShowSchema:
         raise NotImplementedError
 
     @abstractmethod

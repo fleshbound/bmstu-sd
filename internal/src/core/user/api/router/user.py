@@ -52,7 +52,7 @@ async def delete_user(
         user_id: NonNegativeInt,
         user_service: IUserService = dep_user
 ) -> UserSchema:
-    return user_service.archive(ID(value=user_id))
+    return user_service.archive(ID(user_id))
 
 
 @router.post("/{user_id}")

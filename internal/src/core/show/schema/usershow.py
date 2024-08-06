@@ -3,23 +3,23 @@ from pydantic import BaseModel
 from utils.types import ID
 
 
-class JudgeShowSchema(BaseModel):
+class UserShowSchema(BaseModel):
     id: ID
     user_id: ID
     show_id: ID
     is_archived: bool
 
 
-class JudgeShowSchemaCreate(BaseModel):
+class UserShowSchemaCreate(BaseModel):
     user_id: ID
     show_id: ID
     is_archived: bool
 
 
-class JudgeShowSchemaUpdate(BaseModel):
+class UserShowSchemaUpdate(BaseModel):
     id: ID
     is_archived: bool
 
 
-class JudgeShowSchemaUpdateBody(BaseModel):
+class UserShowSchemaUpdateBody(BaseModel):
     is_archived: bool

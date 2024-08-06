@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 import datetime
 import enum
-from typing import Type
 
 from pydantic import NonNegativeFloat, NonNegativeInt, EmailStr
 
@@ -17,10 +16,10 @@ class Role(str, enum.Enum):
     admin = "admin"
     guest = "guest"
     breeder = "breeder"
-    judge = "judge"
+    user = "user"
 
 
-@dataclass
+@dataclass(frozen=True)
 class UserName:
     value: str
 
@@ -29,12 +28,8 @@ class UserName:
             return False
         return other.value == self.value
 
-    @property
-    def val(self):
-        return self.value
 
-
-@dataclass
+@dataclass(frozen=True)
 class BreedName:
     value: str
 
@@ -43,12 +38,8 @@ class BreedName:
             return False
         return other.value == self.value
 
-    @property
-    def val(self):
-        return self.value
 
-
-@dataclass
+@dataclass(frozen=True)
 class SpeciesName:
     value: str
 
@@ -57,12 +48,8 @@ class SpeciesName:
             return False
         return other.value == self.value
 
-    @property
-    def val(self):
-        return self.value
 
-
-@dataclass
+@dataclass(frozen=True)
 class GroupName:
     value: str
 
@@ -71,12 +58,8 @@ class GroupName:
             return False
         return other.value == self.value
 
-    @property
-    def val(self):
-        return self.value
 
-
-@dataclass
+@dataclass(frozen=True)
 class Country:
     value: str
 
@@ -85,12 +68,8 @@ class Country:
             return False
         return other.value == self.value
 
-    @property
-    def val(self):
-        return self.value
 
-
-@dataclass
+@dataclass(frozen=True)
 class ShowName:
     value: str
 
@@ -99,11 +78,8 @@ class ShowName:
             return False
         return other.value == self.value
 
-    @property
-    def val(self):
-        return self.value
 
-@dataclass
+@dataclass(frozen=True)
 class Email:
     value: EmailStr
 
@@ -112,12 +88,8 @@ class Email:
             return False
         return other.value == self.value
 
-    @property
-    def val(self):
-        return self.value
 
-
-@dataclass
+@dataclass(frozen=True)
 class HashedPassword:
     value: str
 
@@ -126,12 +98,8 @@ class HashedPassword:
             return False
         return other.value == self.value
 
-    @property
-    def val(self):
-        return self.value
 
-
-@dataclass
+@dataclass(frozen=True)
 class AnimalName:
     value: str
 
@@ -139,10 +107,6 @@ class AnimalName:
         if not isinstance(other, AnimalName):
             return False
         return other.value == self.value
-
-    @property
-    def val(self):
-        return self.value
 
 
 @dataclass(frozen=True)
@@ -157,10 +121,6 @@ class ID:
     def __gt__(self, other) -> bool:
         return self.value > other.value
 
-    @property
-    def val(self):
-        return self.value
-
 
 @dataclass(frozen=True)
 class Datetime:
@@ -173,10 +133,6 @@ class Datetime:
 
     def __gt__(self, other) -> bool:
         return self.value > other.value
-
-    @property
-    def val(self):
-        return self.value
 
 
 @dataclass
@@ -191,10 +147,6 @@ class Weight:
     def __gt__(self, other) -> bool:
         return self.value > other.value
 
-    @property
-    def val(self):
-        return self.value
-
 
 @dataclass
 class Height:
@@ -207,10 +159,6 @@ class Height:
 
     def __gt__(self, other) -> bool:
         return self.value > other.value
-
-    @property
-    def val(self):
-        return self.value
 
 
 @dataclass
@@ -225,10 +173,6 @@ class Length:
     def __gt__(self, other) -> bool:
         return self.value > other.value
 
-    @property
-    def val(self):
-        return self.value
-
 
 @dataclass
 class ProlixityIndex:
@@ -241,7 +185,3 @@ class ProlixityIndex:
 
     def __gt__(self, other) -> bool:
         return self.value > other.value
-
-    @property
-    def val(self):
-        return self.value

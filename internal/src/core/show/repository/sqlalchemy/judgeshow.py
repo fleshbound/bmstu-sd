@@ -8,34 +8,34 @@ from sqlalchemy import insert, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from core.show.repository.judgeshow import IJudgeShowRepository
-from core.show.schema.judgeshow import JudgeShowSchema, JudgeShowSchemaCreate, JudgeShowSchemaUpdate
-from database.sqlalchemy.model.judgeshow import JudgeShowORM
+from core.show.repository.usershow import IUserShowRepository
+from core.show.schema.usershow import UserShowSchema, UserShowSchemaCreate, UserShowSchemaUpdate
+from database.sqlalchemy.model.usershow import UserShowORM
 from utils import types
 from utils.exceptions import NotFoundError, DuplicatedError, ValidationError
 
 
-class SqlAlchemyJudgeShowRepository(IJudgeShowRepository):
+class SqlAlchemyUserShowRepository(IUserShowRepository):
     session_factory: Callable[..., AbstractContextManager[Session]]
-    model = Type[JudgeShowORM]
-    schema = Type[JudgeShowSchema]
+    model = Type[UserShowORM]
+    schema = Type[UserShowSchema]
 
     def __init__(self, session_factory: Callable[..., AbstractContextManager[Session]]):
         self.session_factory = session_factory
 
-    def get_all(self, skip: int = 0, limit: int = 100) -> List[JudgeShowSchema]:
+    def get_all(self, skip: int = 0, limit: int = 100) -> List[UserShowSchema]:
         with self.session_factory() as session:
             rows = session.query(self.model).offset(skip).limit(limit).all()
             return [self.model.to_schema(row) for row in rows]
 
-    def get_by_id(self, id: NonNegativeInt) -> JudgeShowSchema:
+    def get_by_id(self, id: NonNegativeInt) -> UserShowSchema:
         with self.session_factory() as session:
             row = session.query(self.model).filter_by(id=id).first()
             if row is None:
                 raise NotFoundError(detail=f"not found id : {id}")
             return self.model.to_schema(row)
 
-    def create(self, other: JudgeShowSchemaCreate) -> JudgeShowSchema:
+    def create(self, other: UserShowSchemaCreate) -> UserShowSchema:
         with self.session_factory() as session:
             other_dict = self.get_dict(other)
             stmt = insert(self.model).values(other_dict).returning(self.model.id)
@@ -62,7 +62,7 @@ class SqlAlchemyJudgeShowRepository(IJudgeShowRepository):
                     dct[field] = field_value
         return dct
 
-    def update(self, other: JudgeShowSchemaUpdate) -> JudgeShowSchema:
+    def update(self, other: UserShowSchemaUpdate) -> UserShowSchema:
         with self.session_factory() as session:
             other_dict = self.get_dict(other, exclude=['id'])
             stmt = update(self.model
@@ -90,14 +90,14 @@ class SqlAlchemyJudgeShowRepository(IJudgeShowRepository):
             session.delete(row)
             session.commit()
 
-    def get_by_user_id(self, user_id: NonNegativeInt) -> List[JudgeShowSchema]:
+    def get_by_user_id(self, user_id: NonNegativeInt) -> List[UserShowSchema]:
         with self.session_factory() as session:
             res = session.query(self.model).filter_by(user_id=user_id).all()
             if res is None:
                 raise NotFoundError(detail=f"not found user_id : {user_id}")
             return [self.model.to_schema(row) for row in res]
 
-    def get_by_show_id(self, show_id: NonNegativeInt) -> List[JudgeShowSchema]:
+    def get_by_show_id(self, show_id: NonNegativeInt) -> List[UserShowSchema]:
         with self.session_factory() as session:
             res = session.query(self.model).filter_by(show_id=show_id).all()
             if res is None:

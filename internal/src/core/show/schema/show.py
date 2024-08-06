@@ -8,6 +8,7 @@ from core.user.schema.user import UserSchema
 from utils.types import Country, ShowName, ID
 
 
+@enum.unique
 class ShowState(str, enum.Enum):
     open = "open"
     started = "started"
@@ -15,6 +16,7 @@ class ShowState(str, enum.Enum):
     aborted = "aborted"
 
 
+@enum.unique
 class ShowClass(str, enum.Enum):
     one = "one"
     two = "two"
@@ -42,7 +44,7 @@ class ShowSchemaDetailed(BaseModel):
     name: ShowName
     is_multi_breed: bool
     animals: List[AnimalSchema]
-    judges: List[UserSchema]
+    users: List[UserSchema]
 
 
 class ShowSchemaCreate(BaseModel):
