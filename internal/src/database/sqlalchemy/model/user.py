@@ -18,10 +18,10 @@ class UserORM(Base):
 
     def to_schema(self) -> UserSchema:
         return UserSchema(
-            id=ID(value=self.id),
-            login=Email(value=self.login),
-            hashed_password=HashedPassword(value=self.hashed_password),
-            role=Role(value=self.role),
-            name=UserName(value=self.name),
+            id=ID(self.id),
+            login=Email(self.login),
+            hashed_password=HashedPassword(self.hashed_password),
+            role=Role(self.role),
+            name=UserName(self.name),
             is_archived=self.is_archived
         )

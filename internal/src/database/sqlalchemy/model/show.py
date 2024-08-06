@@ -21,11 +21,11 @@ class ShowORM(Base):
 
     def to_schema(self) -> ShowSchema:
         return ShowSchema(
-            id=ID(value=self.id),
-            species_id=ID(value=self.species_id),
-            breed_id=ID(value=self.breed_id),
-            state=ShowState(value=self.state),
-            show_class=ShowClass(value=self.show_class),
-            name=ShowName(value=self.name),
+            id=ID(self.id),
+            species_id=ID(self.species_id),
+            breed_id=ID(self.breed_id),
+            state=ShowState(self.state),
+            show_class=ShowClass(self.show_class),
+            name=ShowName(self.name),
             is_multi_breed=self.is_multi_breed
         )

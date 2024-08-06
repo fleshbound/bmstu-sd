@@ -17,8 +17,8 @@ class AnimalShowORM(Base):
 
     def to_schema(self) -> AnimalShowSchema:
         return AnimalShowSchema(
-            id=ID(value=self.id),
-            animal_id=ID(value=self.animal_id),
-            show_id=ID(value=self.show_id),
+            id=ID(self.id),
+            animal_id=ID(self.animal_id),
+            show_id=ID(self.show_id),
             is_archived=self.is_archived
         )

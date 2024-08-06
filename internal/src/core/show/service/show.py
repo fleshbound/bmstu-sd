@@ -48,7 +48,7 @@ class IShowService(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def get_by_id_detailed_judges(self) -> ShowSchemaDetailed:
+    def get_by_id_detailed_users(self) -> ShowSchemaDetailed:
         raise NotImplementedError
 
     @abstractmethod

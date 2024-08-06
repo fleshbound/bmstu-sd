@@ -3,7 +3,7 @@ from typing import List
 
 from pydantic import NonNegativeInt
 
-from core.show.schema.animalshow import AnimalShowSchema, AnimalShowSchemaCreate, AnimalShowSchemaUpdate
+from core.show.schema.animalshow import AnimalShowSchema
 
 
 class IAnimalShowRepository(ABC):
@@ -16,11 +16,11 @@ class IAnimalShowRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def create(self, object: AnimalShowSchemaCreate) -> AnimalShowSchema:
+    def create(self, object: AnimalShowSchema) -> AnimalShowSchema:
         raise NotImplementedError
 
     @abstractmethod
-    def update(self, object: AnimalShowSchemaUpdate) -> AnimalShowSchema:
+    def update(self, object: AnimalShowSchema) -> AnimalShowSchema:
         raise NotImplementedError
 
     @abstractmethod

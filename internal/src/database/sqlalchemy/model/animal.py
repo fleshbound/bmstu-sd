@@ -27,16 +27,16 @@ class AnimalORM(Base):
 
     def to_schema(self) -> AnimalSchema:
         return AnimalSchema(
-            id=ID(value=self.id),
-            user_id=ID(value=self.user_id),
-            breed_id=ID(value=self.breed_id),
-            name=AnimalName(value=self.name),
-            birth_dt=Datetime(value=self.birth_dt),
-            sex=Sex(value=self.sex),
-            prolixity_index=ProlixityIndex(value=self.prolixity_index),
-            weight=Weight(value=self.weight),
-            height=Height(value=self.height),
-            length=Length(value=self.length),
+            id=ID(self.id),
+            user_id=ID(self.user_id),
+            breed_id=ID(self.breed_id),
+            name=AnimalName(self.name),
+            birth_dt=Datetime(self.birth_dt),
+            sex=Sex(self.sex),
+            prolixity_index=ProlixityIndex(self.prolixity_index),
+            weight=Weight(self.weight),
+            height=Height(self.height),
+            length=Length(self.length),
             has_defects=self.has_defects,
             is_multicolor=self.is_multicolor,
             is_archived=self.is_archived
