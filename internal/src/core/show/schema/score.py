@@ -63,6 +63,11 @@ class AnimalShowRankingInfo(BaseModel):
     rank: NonNegativeInt
 
 
+class AniShowRankingInfo(BaseModel):
+    total_info: TotalScoreInfo
+    rank: NonNegativeInt
+
+
 class ScoreSchemaCreate(BaseModel):
     usershow_id: ID
     animalshow_id: ID

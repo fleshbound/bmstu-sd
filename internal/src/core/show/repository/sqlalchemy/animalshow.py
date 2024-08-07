@@ -9,10 +9,10 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from core.show.repository.animalshow import IAnimalShowRepository
-from core.show.schema.animalshow import AnimalShowSchema, AnimalShowSchemaCreate, AnimalShowSchemaUpdate
+from core.show.schema.animalshow import AnimalShowSchema
 from database.sqlalchemy.model.animalshow import AnimalShowORM
 from utils import types
-from utils.exceptions import NotFoundError, DuplicatedError, ValidationError
+from utils.exceptions import NotFoundRepoError, DuplicatedRepoError, ValidationRepoError
 
 
 class SqlAlchemyAnimalShowRepository(IAnimalShowRepository):
@@ -26,16 +26,16 @@ class SqlAlchemyAnimalShowRepository(IAnimalShowRepository):
     def get_all(self, skip: int = 0, limit: int = 100) -> List[AnimalShowSchema]:
         with self.session_factory() as session:
             rows = session.query(self.model).offset(skip).limit(limit).all()
-            return [self.model.to_schema(row) for row in rows]
+            return [self.model.to_schema() for row in rows]
 
     def get_by_id(self, id: NonNegativeInt) -> AnimalShowSchema:
         with self.session_factory() as session:
             row = session.query(self.model).filter_by(id=id).first()
             if row is None:
-                raise NotFoundError(detail=f"not found id : {id}")
-            return self.model.to_schema(row)
+                raise NotFoundRepoError(detail=f"not found id : {id}")
+            return self.model.to_schema()
 
-    def create(self, other: AnimalShowSchemaCreate) -> AnimalShowSchema:
+    def create(self, other: AnimalShowSchema) -> AnimalShowSchema:
         with self.session_factory() as session:
             other_dict = self.get_dict(other)
             stmt = insert(self.model).values(other_dict).returning(self.model.id)
@@ -44,8 +44,8 @@ class SqlAlchemyAnimalShowRepository(IAnimalShowRepository):
                 session.commit()
             except IntegrityError as e:
                 if isinstance(e.orig, UniqueViolation):
-                    raise DuplicatedError(detail=str(e.orig))
-                raise ValidationError(detail=str(e.orig))
+                    raise DuplicatedRepoError(detail=str(e.orig))
+                raise ValidationRepoError(detail=str(e.orig))
             row = result.fetchone()
             return self.get_by_id(row[0])
 
@@ -62,11 +62,11 @@ class SqlAlchemyAnimalShowRepository(IAnimalShowRepository):
                     dct[field] = field_value
         return dct
 
-    def update(self, other: AnimalShowSchemaUpdate) -> AnimalShowSchema:
+    def update(self, other: AnimalShowSchema) -> AnimalShowSchema:
         with self.session_factory() as session:
             other_dict = self.get_dict(other, exclude=['id'])
             stmt = update(self.model
-                          ).where(cast("ColumnElement[bool]", self.model.id==other.id.value)
+                          ).where(cast("ColumnElement[bool]", other.id.eq_int(self.model.id))
                                   ).values(other_dict
                                            ).returning(self.model.id)
             try:
@@ -74,11 +74,11 @@ class SqlAlchemyAnimalShowRepository(IAnimalShowRepository):
                 session.commit()
             except IntegrityError as e:
                 if isinstance(e.orig, UniqueViolation):
-                    raise DuplicatedError(detail=str(e.orig))
-                raise ValidationError(detail=str(e.orig))
+                    raise DuplicatedRepoError(detail=str(e.orig))
+                raise ValidationRepoError(detail=str(e.orig))
             row = result.fetchone()
             if row is None:
-                raise NotFoundError(detail=f"not found id : {id}")
+                raise NotFoundRepoError(detail=f"not found id : {id}")
 
             return self.get_by_id(row[0])
 
@@ -86,7 +86,7 @@ class SqlAlchemyAnimalShowRepository(IAnimalShowRepository):
         with self.session_factory() as session:
             row = session.query(self.model).filter_by(id=id).first()
             if row is None:
-                raise NotFoundError(detail=f"not found id : {id}")
+                raise NotFoundRepoError(detail=f"not found id : {id}")
             session.delete(row)
             session.commit()
 
@@ -94,12 +94,19 @@ class SqlAlchemyAnimalShowRepository(IAnimalShowRepository):
         with self.session_factory() as session:
             res = session.query(self.model).filter_by(animal_id=animal_id).all()
             if res is None:
-                raise NotFoundError(detail=f"not found animal_id : {animal_id}")
-            return [self.model.to_schema(row) for row in res]
+                raise NotFoundRepoError(detail=f"not found animal_id : {animal_id}")
+            return [self.model.to_schema() for row in res]
 
     def get_by_show_id(self, show_id: NonNegativeInt) -> List[AnimalShowSchema]:
         with self.session_factory() as session:
             res = session.query(self.model).filter_by(show_id=show_id).all()
             if res is None:
-                raise NotFoundError(detail=f"not found show_id : {show_id}")
-            return [self.model.to_schema(row) for row in res]
+                raise NotFoundRepoError(detail=f"not found show_id : {show_id}")
+            return [self.model.to_schema() for row in res]
+
+    def get_by_animal_show_id(self, animal_id: NonNegativeInt, show_id: NonNegativeInt) -> List[AnimalShowSchema]:
+        with self.session_factory() as session:
+            res = session.query(self.model).filter_by(show_id=show_id,animal_id=animal_id).all()
+            if res is None:
+                raise NotFoundRepoError(detail=f"not found show_id: {show_id}, animal_id: {animal_id}")
+            return [self.model.to_schema() for row in res]
