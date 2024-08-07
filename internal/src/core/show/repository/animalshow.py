@@ -34,3 +34,7 @@ class IAnimalShowRepository(ABC):
     @abstractmethod
     def get_by_show_id(self, show_id: NonNegativeInt) -> List[AnimalShowSchema]:
         raise NotImplementedError
+
+    @abstractmethod
+    def get_by_animal_show_id(self, animal_id: NonNegativeInt, show_id: NonNegativeInt) -> List[AnimalShowSchema]:
+        raise NotImplementedError

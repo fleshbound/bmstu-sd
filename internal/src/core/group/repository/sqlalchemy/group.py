@@ -12,7 +12,7 @@ from core.group.repository.group import IGroupRepository
 from core.group.schema.group import GroupSchema, GroupSchemaCreate, GroupSchemaUpdate
 from database.sqlalchemy.model.group import GroupORM
 from utils import types
-from utils.exceptions import NotFoundError, DuplicatedError, ValidationError
+from utils.exceptions import NotFoundRepoError, DuplicatedRepoError, ValidationRepoError
 
 
 class SqlAlchemyGroupRepository(IGroupRepository):
@@ -26,14 +26,14 @@ class SqlAlchemyGroupRepository(IGroupRepository):
     def get_all(self, skip: int = 0, limit: int = 100) -> List[GroupSchema]:
         with self.session_factory() as session:
             rows = session.query(self.model).offset(skip).limit(limit).all()
-            return [self.model.to_schema(row) for row in rows]
+            return [self.model.to_schema() for row in rows]
 
     def get_by_id(self, id: NonNegativeInt) -> GroupSchema:
         with self.session_factory() as session:
             row = session.query(self.model).filter_by(id=id).first()
             if row is None:
-                raise NotFoundError(detail=f"not found id : {id}")
-            return self.model.to_schema(row)
+                raise NotFoundRepoError(detail=f"not found id : {id}")
+            return self.model.to_schema()
 
     def create(self, other: GroupSchemaCreate) -> GroupSchema:
         with self.session_factory() as session:
@@ -44,8 +44,8 @@ class SqlAlchemyGroupRepository(IGroupRepository):
                 session.commit()
             except IntegrityError as e:
                 if isinstance(e.orig, UniqueViolation):
-                    raise DuplicatedError(detail=str(e.orig))
-                raise ValidationError(detail=str(e.orig))
+                    raise DuplicatedRepoError(detail=str(e.orig))
+                raise ValidationRepoError(detail=str(e.orig))
             row = result.fetchone()
             return self.get_by_id(row[0])
 
@@ -66,7 +66,7 @@ class SqlAlchemyGroupRepository(IGroupRepository):
         with self.session_factory() as session:
             other_dict = self.get_dict(other, exclude=['id'])
             stmt = update(self.model
-                          ).where(cast("ColumnElement[bool]", self.model.id==other.id.value)
+                          ).where(cast("ColumnElement[bool]", other.id.eq_int(self.model.id))
                                   ).values(other_dict
                                            ).returning(self.model.id)
             try:
@@ -74,11 +74,11 @@ class SqlAlchemyGroupRepository(IGroupRepository):
                 session.commit()
             except IntegrityError as e:
                 if isinstance(e.orig, UniqueViolation):
-                    raise DuplicatedError(detail=str(e.orig))
-                raise ValidationError(detail=str(e.orig))
+                    raise DuplicatedRepoError(detail=str(e.orig))
+                raise ValidationRepoError(detail=str(e.orig))
             row = result.fetchone()
             if row is None:
-                raise NotFoundError(detail=f"not found id : {id}")
+                raise NotFoundRepoError(detail=f"not found id : {id}")
 
             return self.get_by_id(row[0])
 
@@ -86,6 +86,6 @@ class SqlAlchemyGroupRepository(IGroupRepository):
         with self.session_factory() as session:
             row = session.query(self.model).filter_by(id=id).first()
             if row is None:
-                raise NotFoundError(detail=f"not found id : {id}")
+                raise NotFoundRepoError(detail=f"not found id : {id}")
             session.delete(row)
             session.commit()
