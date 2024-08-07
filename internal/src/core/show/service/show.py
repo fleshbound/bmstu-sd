@@ -1,8 +1,10 @@
 from abc import ABC, abstractmethod
 from typing import List
 
+from pydantic import NonNegativeInt, PositiveInt
+
 from core.show.schema.show import ShowSchemaCreate, ShowSchema, ShowSchemaUpdate, ShowSchemaDetailed, \
-    ShowRegisterAnimalResult
+    ShowRegisterAnimalResult, ShowRegisterUserResult
 from utils.types import ID
 
 
@@ -28,7 +30,7 @@ class IShowService(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def get_all(self) -> List[ShowSchema]:
+    def get_all(self, skip: NonNegativeInt = 0, limit: PositiveInt = 100) -> List[ShowSchema]:
         raise NotImplementedError
 
     @abstractmethod
@@ -36,11 +38,11 @@ class IShowService(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def get_by_user_id(self, user_id: ID) -> ShowSchema:
+    def get_by_user_id(self, user_id: ID) -> List[ShowSchema]:
         raise NotImplementedError
 
     @abstractmethod
-    def get_by_animal_id(self, animal_id: ID) -> ShowSchema:
+    def get_by_animal_id(self, animal_id: ID) -> List[ShowSchema]:
         raise NotImplementedError
 
     @abstractmethod
@@ -53,4 +55,8 @@ class IShowService(ABC):
 
     @abstractmethod
     def register_animal(self, animal_id: ID, show_id: ID) -> ShowRegisterAnimalResult:
+        raise NotImplementedError
+
+    @abstractmethod
+    def register_user(self, user_id: ID, show_id: ID) -> ShowRegisterUserResult:
         raise NotImplementedError

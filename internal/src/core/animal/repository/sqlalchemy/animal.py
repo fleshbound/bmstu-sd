@@ -12,7 +12,7 @@ from core.animal.repository.animal import IAnimalRepository
 from core.animal.schema.animal import AnimalSchema, AnimalSchemaUpdate, AnimalSchemaCreate
 from database.sqlalchemy.model.animal import AnimalORM
 from utils import types
-from utils.exceptions import NotFoundError, DuplicatedError, ValidationError
+from utils.exceptions import NotFoundRepoError, DuplicatedRepoError, ValidationRepoError
 
 
 class SqlAlchemyAnimalRepository(IAnimalRepository):
@@ -27,20 +27,20 @@ class SqlAlchemyAnimalRepository(IAnimalRepository):
         with self.session_factory() as session:
             res = session.query(self.model).filter_by(user_id=user_id).all()
             if res is None:
-                raise NotFoundError(detail=f"not found by user_id : {user_id}")
-            return [self.model.to_schema(row) for row in res]
+                raise NotFoundRepoError(detail=f"not found by user_id : {user_id}")
+            return [self.model.to_schema() for row in res]
 
     def get_all(self, skip: int = 0, limit: int = 100) -> List[AnimalSchema]:
         with self.session_factory() as session:
             rows = session.query(self.model).offset(skip).limit(limit).all()
-            return [self.model.to_schema(row) for row in rows]
+            return [self.model.to_schema() for row in rows]
 
     def get_by_id(self, id: NonNegativeInt) -> AnimalSchema:
         with self.session_factory() as session:
             row = session.query(self.model).filter_by(id=id).first()
             if row is None:
-                raise NotFoundError(detail=f"not found id : {id}")
-            return self.model.to_schema(row)
+                raise NotFoundRepoError(detail=f"not found id : {id}")
+            return self.model.to_schema()
 
     def create(self, other: AnimalSchemaCreate) -> AnimalSchema:
         with self.session_factory() as session:
@@ -51,8 +51,8 @@ class SqlAlchemyAnimalRepository(IAnimalRepository):
                 session.commit()
             except IntegrityError as e:
                 if isinstance(e.orig, UniqueViolation):
-                    raise DuplicatedError(detail=str(e.orig))
-                raise ValidationError(detail=str(e.orig))
+                    raise DuplicatedRepoError(detail=str(e.orig))
+                raise ValidationRepoError(detail=str(e.orig))
             row = result.fetchone()
             return self.get_by_id(row[0])
 
@@ -74,17 +74,17 @@ class SqlAlchemyAnimalRepository(IAnimalRepository):
     def update(self, other: AnimalSchemaUpdate) -> AnimalSchema:
         with self.session_factory() as session:
             other_dict = self.get_dict(other, exclude=['id'])
-            stmt = update(self.model).where(cast("ColumnElement[bool]", self.model.id==other.id.value)).values(other_dict).returning(self.model.id)
+            stmt = update(self.model).where(cast("ColumnElement[bool]", other.id.eq_int(self.model.id))).values(other_dict).returning(self.model.id)
             try:
                 result = session.execute(stmt)
                 session.commit()
             except IntegrityError as e:
                 if isinstance(e.orig, UniqueViolation):
-                    raise DuplicatedError(detail=str(e.orig))
-                raise ValidationError(detail=str(e.orig))
+                    raise DuplicatedRepoError(detail=str(e.orig))
+                raise ValidationRepoError(detail=str(e.orig))
             row = result.fetchone()
             if row is None:
-                raise NotFoundError(detail=f"not found id : {id}")
+                raise NotFoundRepoError(detail=f"not found id : {id}")
 
             return self.get_by_id(row[0])
 
@@ -92,6 +92,6 @@ class SqlAlchemyAnimalRepository(IAnimalRepository):
         with self.session_factory() as session:
             row = session.query(self.model).filter_by(id=id).first()
             if row is None:
-                raise NotFoundError(detail=f"not found id : {id}")
+                raise NotFoundRepoError(detail=f"not found id : {id}")
             session.delete(row)
             session.commit()

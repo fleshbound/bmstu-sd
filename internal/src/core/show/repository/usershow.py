@@ -34,3 +34,7 @@ class IUserShowRepository(ABC):
     @abstractmethod
     def get_by_show_id(self, show_id: NonNegativeInt) -> List[UserShowSchema]:
         raise NotImplementedError
+
+    @abstractmethod
+    def get_by_user_show_id(self, user_id: NonNegativeInt, show_id: NonNegativeInt) -> List[UserShowSchema]:
+        raise NotImplementedError

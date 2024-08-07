@@ -11,14 +11,6 @@ class Sex(str, enum.Enum):
     male = "M"
 
 
-@enum.unique
-class Role(str, enum.Enum):
-    admin = "admin"
-    guest = "guest"
-    breeder = "breeder"
-    user = "user"
-
-
 @dataclass(frozen=True)
 class UserName:
     value: str
@@ -120,6 +112,9 @@ class ID:
 
     def __gt__(self, other) -> bool:
         return self.value > other.value
+
+    def eq_int(self, n: int) -> bool:
+        return n == self.value
 
 
 @dataclass(frozen=True)

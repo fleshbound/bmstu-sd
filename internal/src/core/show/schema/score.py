@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
 from typing import Optional
 
-from pydantic import BaseModel, NonNegativeInt, PositiveInt, NonNegativeFloat
+from pydantic import BaseModel, NonNegativeInt, NonNegativeFloat
 
 from utils.types import ID, Datetime
 
@@ -53,11 +53,17 @@ class Score:
 
 
 class TotalScoreInfo(BaseModel):
+    record_id: ID
     total: Score
     count: NonNegativeInt
     average: Optional[NonNegativeFloat]
     max_score: Optional[ScoreValue]
     min_score: Optional[ScoreValue]
+
+
+class AniShowRankingInfo(BaseModel):
+    total_info: TotalScoreInfo
+    rank: NonNegativeInt
 
 
 class ScoreSchemaCreate(BaseModel):
@@ -91,15 +97,12 @@ class ScoreSchema(BaseModel):
             is_archived=False
         )
 
-    @classmethod
-    def from_update(cls, cur, other: ScoreSchemaUpdate):
-        if not isinstance(cur, ScoreSchema):
-            raise ValueError("Sum parameter must be the instance of " + object.__class__.__name__ + " class")
-        return cls(
-            id=cur.id,
-            value=cur.value,
-            dt_created=cur.dt_created,
-            usershow_id=cur.usershow_id,
-            animalshow_id=cur.animalshow_id,
+    def from_update(self, other: ScoreSchemaUpdate):
+        return ScoreSchema(
+            id=self.id,
+            value=self.value,
+            dt_created=self.dt_created,
+            usershow_id=self.usershow_id,
+            animalshow_id=self.animalshow_id,
             is_archived=other.is_archived
         )

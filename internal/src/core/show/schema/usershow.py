@@ -3,13 +3,6 @@ from pydantic import BaseModel
 from utils.types import ID
 
 
-class UserShowSchema(BaseModel):
-    id: ID
-    user_id: ID
-    show_id: ID
-    is_archived: bool
-
-
 class UserShowSchemaCreate(BaseModel):
     user_id: ID
     show_id: ID
@@ -19,6 +12,30 @@ class UserShowSchemaCreate(BaseModel):
 class UserShowSchemaUpdate(BaseModel):
     id: ID
     is_archived: bool
+
+
+class UserShowSchema(BaseModel):
+    id: ID
+    user_id: ID
+    show_id: ID
+    is_archived: bool
+    
+    @classmethod
+    def from_create(cls, other: UserShowSchemaCreate):
+        return cls(
+            id=ID(0),
+            user_id=other.user_id,
+            show_id=other.show_id,
+            is_archived=other.is_archived
+        )
+
+    def from_update(self, other: UserShowSchemaUpdate):
+        return UserShowSchema(
+            id=self.id,
+            user_id=self.user_id,
+            show_id=self.show_id,
+            is_archived=other.is_archived
+        )
 
 
 class UserShowSchemaUpdateBody(BaseModel):
