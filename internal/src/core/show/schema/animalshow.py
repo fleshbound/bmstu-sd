@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from utils.types import ID
+from core.utils.types import ID
 
 
 class AnimalShowSchemaCreate(BaseModel):
@@ -40,3 +40,8 @@ class AnimalShowSchema(BaseModel):
 
 class AnimalShowSchemaUpdateBody(BaseModel):
     is_archived: bool
+
+
+class AnimalShowSchemaDeleted(BaseModel):
+    status: str = "deleted"
+    id: ID

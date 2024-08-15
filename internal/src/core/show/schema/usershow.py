@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from utils.types import ID
+from core.utils.types import ID
 
 
 class UserShowSchemaCreate(BaseModel):
@@ -40,3 +40,7 @@ class UserShowSchema(BaseModel):
 
 class UserShowSchemaUpdateBody(BaseModel):
     is_archived: bool
+
+class UserShowSchemaDelete(BaseModel):
+    id: ID
+    status: str = "deleted"

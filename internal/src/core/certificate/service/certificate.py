@@ -4,7 +4,7 @@ from typing import List
 from pydantic import NonNegativeInt, PositiveInt
 
 from core.certificate.schema.certificate import CertificateSchemaCreate, CertificateSchema
-from utils.types import ID
+from core.utils.types import ID
 
 
 class ICertificateService(ABC):

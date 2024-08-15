@@ -6,7 +6,7 @@ from pydantic import BaseModel, NonNegativeInt
 from core.animal.schema.animal import AnimalSchema
 from core.show.schema.score import AniShowRankingInfo
 from core.user.schema.user import UserSchema
-from utils.types import Country, ShowName, ID
+from core.utils.types import Country, ShowName, ID
 
 
 @enum.unique
@@ -136,6 +136,8 @@ class ShowSchemaAbort(BaseModel):
 class ShowRegisterAnimalStatus(str, enum.Enum):
     register_ok = "ok"
     register_error = "error"
+    unregister_ok = "unregok"
+    unregister_error = "unregerror"
 
 
 class ShowRegisterAnimalResult(BaseModel):
@@ -145,8 +147,10 @@ class ShowRegisterAnimalResult(BaseModel):
 
 @enum.unique
 class ShowRegisterUserStatus(str, enum.Enum):
-    register_ok = "ok"
-    register_error = "error"
+    register_ok = "regok"
+    register_error = "regerror"
+    unregister_ok = "unregok"
+    unregister_error = "unregerror"
 
 
 class ShowRegisterUserResult(BaseModel):

@@ -3,14 +3,19 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from core.animal.schema.animal import AnimalSchema, AnimalSchemaUpdate, AnimalSchemaCreate
-from utils.types import ID
+from core.animal.schema.animal import AnimalSchema, AnimalSchemaUpdate, AnimalSchemaCreate, AnimalSchemaDelete
+from core.utils.types import ID
 
 
 class IAnimalService(ABC):
     @abstractmethod
     def archive(self,
                 animal_id: ID) -> AnimalSchema:
+        raise NotImplementedError
+
+    @abstractmethod
+    def delete(self,
+                animal_id: ID) -> AnimalSchemaDelete:
         raise NotImplementedError
 
     @abstractmethod

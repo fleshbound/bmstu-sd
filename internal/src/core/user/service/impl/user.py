@@ -5,7 +5,7 @@ from pydantic import NonNegativeInt, PositiveInt
 from core.user.repository.user import IUserRepository
 from core.user.schema.user import UserSchema, UserSchemaCreate, UserSchemaUpdate
 from core.user.service.user import IUserService
-from utils.types import ID
+from core.utils.types import ID, Email
 
 
 class UserService(IUserService):
@@ -23,11 +23,14 @@ class UserService(IUserService):
 
     def create(self,
                create_user: UserSchemaCreate) -> UserSchema:
-        return self.user_repo.create(create_user)
+        cur_user = UserSchema.from_create(create_user)
+        return self.user_repo.create(cur_user)
 
     def update(self,
                update_user: UserSchemaUpdate) -> UserSchema:
-        return self.user_repo.update(update_user)
+        cur_user = self.user_repo.get_by_id(update_user.id)
+        cur_user = cur_user.from_update(update_user)
+        return self.user_repo.update(cur_user)
 
     def get_all(self,
                 skip: NonNegativeInt = 0,
@@ -36,4 +39,7 @@ class UserService(IUserService):
 
     def get_by_id(self, user_id: ID) -> UserSchema:
         return self.user_repo.get_by_id(user_id.value)
+
+    def get_by_email(self, email: Email) -> UserSchema:
+        return self.user_repo.get_by_email(email.value)
     

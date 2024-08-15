@@ -4,7 +4,7 @@ from typing import List
 from pydantic import NonNegativeInt, PositiveInt
 
 from core.user.schema.user import UserSchema, UserSchemaCreate, UserSchemaUpdate
-from utils.types import ID
+from core.utils.types import ID, Email
 
 
 class IUserService(ABC):
@@ -32,4 +32,7 @@ class IUserService(ABC):
     @abstractmethod
     def get_by_id(self, user_id: ID) -> UserSchema:
         raise NotImplementedError
-    
+
+    @abstractmethod
+    def get_by_email(self, email: Email) -> UserSchema:
+        raise NotImplementedError

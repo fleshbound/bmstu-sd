@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from core.show.schema.usershow import UserShowSchemaCreate, UserShowSchema
-from utils.types import ID
+from core.show.schema.usershow import UserShowSchemaCreate, UserShowSchema, UserShowSchemaDelete
+from core.utils.types import ID
 
 
 class IUserShowService(ABC):
@@ -12,6 +12,10 @@ class IUserShowService(ABC):
 
     @abstractmethod
     def archive(self, usershow_id: ID) -> UserShowSchema:
+        raise NotImplementedError
+
+    @abstractmethod
+    def delete(self, usershow_id: ID) -> UserShowSchemaDelete:
         raise NotImplementedError
 
     @abstractmethod

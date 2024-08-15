@@ -5,7 +5,7 @@ from pydantic import PositiveInt, NonNegativeInt
 
 from core.animal.schema.animal import AnimalSchema
 from core.standard.schema.standard import StandardSchema, StandardSchemaCreate, StandardSchemaDeleteResponse
-from utils.types import ID
+from core.utils.types import ID
 
 
 class IStandardService(ABC):

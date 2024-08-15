@@ -19,8 +19,8 @@ from core.show.service.usershow import IUserShowService
 from core.standard.service.standard import IStandardService
 from core.user.schema.user import UserRole
 from core.user.service.user import IUserService
-from utils.exceptions import ShowServiceError, NotFoundRepoError
-from utils.types import ID
+from core.utils.exceptions import ShowServiceError, NotFoundRepoError
+from core.utils.types import ID
 
 
 class ShowService(IShowService):
@@ -152,7 +152,10 @@ class ShowService(IShowService):
         )
 
     def update(self, show_update: ShowSchemaUpdate) -> ShowSchema:
-        cur_show = self.show_repo.get_by_id(show_update.id)
+        show_id = show_update.id
+        cur_show = self.show_repo.get_by_id(show_id)
+        if cur_show.status != ShowStatus.started:
+            raise ShowServiceError(detail=f"show cannot be updated: id={show_id}, status={cur_show.status}")
         new_show = cur_show.from_update(show_update)
         return self.show_repo.update(new_show)
 
@@ -194,12 +197,12 @@ class ShowService(IShowService):
         detailed.users = users
         return detailed
 
-    def register_animal(self, user_id: ID, show_id: ID) -> ShowRegisterAnimalResult:
+    def register_animal(self, animal_id: ID, show_id: ID) -> ShowRegisterAnimalResult:
         cur_show = self.show_repo.get_by_id(show_id)
         if cur_show.status != ShowStatus.created:
-            raise ShowServiceError(detail=f"animal cannot be registered: user_id={user_id}, "
+            raise ShowServiceError(detail=f"animal cannot be registered: animal_id={animal_id}, "
                                           f"show_id={show_id}, show_status={cur_show.status}")
-        cur_animal = self.animal_service.get_by_id(user_id)
+        cur_animal = self.animal_service.get_by_id(animal_id)
 
         if cur_show.is_multi_breed:
             if self.breed_service.get_by_id(cur_animal.breed_id).species_id != cur_show.species_id:
@@ -211,13 +214,13 @@ class ShowService(IShowService):
                 raise ShowServiceError(detail=f'invalid animal standard check: animal_id={cur_animal.id},'
                                               f' show_id={show_id}')
         try:
-            self.animalshow_service.get_by_animal_show_id(user_id, show_id)
+            self.animalshow_service.get_by_animal_show_id(animal_id, show_id)
         except NotFoundRepoError:
-            animalshow_record_create = AnimalShowSchemaCreate(user_id=user_id, show_id=show_id, is_archived=False)
+            animalshow_record_create = AnimalShowSchemaCreate(animal_id=animal_id, show_id=show_id, is_archived=False)
             animalshow_record = self.animalshow_service.create(animalshow_record_create)
         else:
             raise ShowServiceError(detail=f"animal is already registered: "
-                                          f"user_id={user_id}, show_id={show_id}")
+                                          f"animal_id={animal_id}, show_id={show_id}")
         return ShowRegisterAnimalResult(
             record_id=animalshow_record.id,
             status=ShowRegisterAnimalStatus.register_ok
@@ -244,3 +247,21 @@ class ShowService(IShowService):
             record_id=usershow_record.id,
             status=ShowRegisterUserStatus.register_ok
         )
+
+    def unregister_animal(self, animal_id: ID, show_id: ID) -> ShowRegisterAnimalResult:
+        try:
+            record = self.animalshow_service.get_by_animal_show_id(animal_id, show_id)
+        except NotFoundRepoError:
+            raise ShowServiceError(detail=f"animal's not registered: "
+                                          f"animal_id={animal_id}, show_id={show_id}")
+        self.animalshow_service.delete(record[0].id)
+        return ShowRegisterAnimalResult(record_id=record[0].id, status=ShowRegisterAnimalStatus.unregister_ok)
+
+    def unregister_user(self, user_id: ID, show_id: ID) -> ShowRegisterUserResult:
+        try:
+            record = self.usershow_service.get_by_user_show_id(user_id, show_id)
+        except NotFoundRepoError:
+            raise ShowServiceError(detail=f"user's not registered: "
+                                          f"user_id={user_id}, show_id={show_id}")
+        self.usershow_service.delete(record[0].id)
+        return ShowRegisterUserResult(record_id=record[0].id, status=ShowRegisterUserStatus.unregister_ok)

@@ -5,7 +5,7 @@ from pydantic import NonNegativeInt, PositiveInt
 
 from core.show.schema.show import ShowSchemaCreate, ShowSchema, ShowSchemaUpdate, ShowSchemaDetailed, \
     ShowRegisterAnimalResult, ShowRegisterUserResult
-from utils.types import ID
+from core.utils.types import ID
 
 
 class IShowService(ABC):
@@ -59,4 +59,12 @@ class IShowService(ABC):
 
     @abstractmethod
     def register_user(self, user_id: ID, show_id: ID) -> ShowRegisterUserResult:
+        raise NotImplementedError
+
+    @abstractmethod
+    def unregister_animal(self, animal_id: ID, show_id: ID) -> ShowRegisterAnimalResult:
+        raise NotImplementedError
+
+    @abstractmethod
+    def unregister_user(self, user_id: ID, show_id: ID) -> ShowRegisterUserResult:
         raise NotImplementedError

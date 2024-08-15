@@ -4,7 +4,7 @@ from typing import List
 from pydantic import NonNegativeInt, PositiveInt
 
 from core.species.schema.species import SpeciesSchema, SpeciesSchemaUpdate, SpeciesSchemaCreate
-from utils.types import ID
+from core.utils.types import ID
 
 
 class ISpeciesService(ABC):

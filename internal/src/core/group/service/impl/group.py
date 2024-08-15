@@ -5,7 +5,7 @@ from pydantic import NonNegativeInt, PositiveInt
 from core.group.repository.group import IGroupRepository
 from core.group.schema.group import GroupSchema, GroupSchemaCreate, GroupSchemaUpdate, GroupSchemaDelete
 from core.group.service.group import IGroupService
-from utils.types import ID
+from core.utils.types import ID
 
 
 class GroupService(IGroupService):
@@ -22,11 +22,14 @@ class GroupService(IGroupService):
 
     def create(self,
                create_group: GroupSchemaCreate) -> GroupSchema:
-        return self.group_repo.create(create_group)
+        cur_group = GroupSchema.from_create(create_group)
+        return self.group_repo.create(cur_group)
 
     def update(self,
                update_group: GroupSchemaUpdate) -> GroupSchema:
-        return self.group_repo.update(update_group)
+        cur_group = self.group_repo.get_by_id(update_group.id.value)
+        cur_group = cur_group.from_update(update_group)
+        return self.group_repo.update(cur_group)
 
     def get_all(self,
                 skip: NonNegativeInt = 0,

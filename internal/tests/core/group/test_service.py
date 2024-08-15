@@ -3,7 +3,7 @@ import pytest
 from core.group.schema.group import GroupSchema, GroupDeleteStatus, GroupSchemaCreate, GroupSchemaUpdate
 from core.group.service.impl.group import GroupService
 from internal.tests.core.group.mock.repository import MockedGroupRepository
-from utils.types import ID, GroupName
+from core.utils.types import ID, GroupName
 
 
 @pytest.fixture

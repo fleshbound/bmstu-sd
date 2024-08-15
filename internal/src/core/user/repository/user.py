@@ -16,11 +16,15 @@ class IUserRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def create(self, object: UserSchemaCreate) -> UserSchema:
+    def get_by_email(self, email: str) -> UserSchema:
         raise NotImplementedError
 
     @abstractmethod
-    def update(self, object: UserSchemaUpdate) -> UserSchema:
+    def create(self, object: UserSchema) -> UserSchema:
+        raise NotImplementedError
+
+    @abstractmethod
+    def update(self, object: UserSchema) -> UserSchema:
         raise NotImplementedError
 
     @abstractmethod
