@@ -142,6 +142,12 @@ class Weight:
     def __gt__(self, other) -> bool:
         return self.value > other.value
 
+    def __mul__(self, other: float):
+        return Weight(self.value * other)
+
+    def __sub__(self, other):
+        return Weight(self.value - other.value)
+
 
 @dataclass
 class Height:
@@ -154,6 +160,12 @@ class Height:
 
     def __gt__(self, other) -> bool:
         return self.value > other.value
+
+    def __mul__(self, other: float):
+        return Weight(self.value * other)
+
+    def __sub__(self, other):
+        return Height(self.value - other.value)
 
 
 @dataclass
@@ -168,6 +180,12 @@ class Length:
     def __gt__(self, other) -> bool:
         return self.value > other.value
 
+    def __mul__(self, other: float):
+        return Weight(self.value * other)
+
+    def __sub__(self, other):
+        return Length(self.value - other.value)
+
 
 @dataclass
 class ProlixityIndex:
@@ -180,3 +198,9 @@ class ProlixityIndex:
 
     def __gt__(self, other) -> bool:
         return self.value > other.value
+
+    def __mul__(self, other: float):
+        return Weight(self.value * other)
+
+    def __sub__(self, other):
+        return ProlixityIndex(self.value - other.value)

@@ -16,6 +16,18 @@ class IShowRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def get_by_standard_id(self, standard_id: NonNegativeInt) -> List[ShowSchema]:
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_by_breed_id(self, breed_id: NonNegativeInt) -> List[ShowSchema]:
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_by_species_id(self, species_id: NonNegativeInt) -> List[ShowSchema]:
+        raise NotImplementedError
+
+    @abstractmethod
     def create(self, object: ShowSchema) -> ShowSchema:
         raise NotImplementedError
 
