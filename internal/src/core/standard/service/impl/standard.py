@@ -7,8 +7,8 @@ from core.show.service.show import IShowService
 from core.standard.repository.standard import IStandardRepository
 from core.standard.schema.standard import StandardSchema, StandardSchemaCreate, StandardSchemaDeleteResponse
 from core.standard.service.standard import IStandardService
-from utils.exceptions import StandardServiceError
-from utils.types import ID
+from core.utils.exceptions import StandardServiceError
+from core.utils.types import ID
 
 
 class StandardService(IStandardService):
@@ -55,9 +55,9 @@ class StandardService(IStandardService):
         if animal.height < lo_height or animal.height > hi_height:
             return False
 
-        lo_prolixity_index = cur_standard.prolixity_index * (1 - cur_standard.prolixity_index_delta_percent)
-        hi_prolixity_index = cur_standard.prolixity_index * (1 + cur_standard.prolixity_index_delta_percent)
-        if animal.prolixity_index < lo_prolixity_index or animal.prolixity_index > hi_prolixity_index:
+        lo_length = cur_standard.length * (1 - cur_standard.length_delta_percent)
+        hi_length = cur_standard.length * (1 + cur_standard.length_delta_percent)
+        if animal.length < lo_length or animal.length > hi_length:
             return False
 
         if animal.has_defects != cur_standard.has_defects:

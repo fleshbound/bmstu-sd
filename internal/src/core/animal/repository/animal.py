@@ -20,11 +20,11 @@ class IAnimalRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def create(self, other: AnimalSchemaCreate) -> AnimalSchema:
+    def create(self, other: AnimalSchema) -> AnimalSchema:
         raise NotImplementedError
 
     @abstractmethod
-    def update(self, other: AnimalSchemaUpdate) -> AnimalSchema:
+    def update(self, other: AnimalSchema) -> AnimalSchema:
         raise NotImplementedError
 
     @abstractmethod

@@ -4,7 +4,7 @@ from typing import List, Tuple
 from pydantic import NonNegativeInt
 
 from core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, AniShowRankingInfo
-from utils.types import ID
+from core.utils.types import ID
 
 
 class IScoreService(ABC):

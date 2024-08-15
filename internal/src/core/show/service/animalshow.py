@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import List
 
 from core.show.schema.animalshow import AnimalShowSchemaCreate, AnimalShowSchema
-from utils.types import ID
+from core.utils.types import ID
 
 
 class IAnimalShowService(ABC):
@@ -12,6 +12,10 @@ class IAnimalShowService(ABC):
 
     @abstractmethod
     def archive(self, animalshow_id: ID) -> AnimalShowSchema:
+        raise NotImplementedError
+
+    @abstractmethod
+    def delete(self, animalshow_id: ID) -> AnimalShowSchema:
         raise NotImplementedError
 
     @abstractmethod

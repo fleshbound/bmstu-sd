@@ -5,7 +5,7 @@ from pydantic import NonNegativeInt, PositiveInt
 from core.certificate.repository.certificate import ICertificateRepository
 from core.certificate.schema.certificate import CertificateSchemaCreate, CertificateSchema
 from core.certificate.service.certificate import ICertificateService
-from utils.types import ID
+from core.utils.types import ID
 
 
 class CertificateService(ICertificateService):

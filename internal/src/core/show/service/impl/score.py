@@ -10,8 +10,8 @@ from core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreat
     AniShowRankingInfo
 from core.show.service.score import IScoreService
 from core.show.service.show import IShowService
-from utils.dict.impl.float import FloatKeyDictionary
-from utils.types import ID
+from repository.utils.dict.impl.float import FloatKeyDictionary
+from core.utils.types import ID
 
 
 class ScoreService(IScoreService):

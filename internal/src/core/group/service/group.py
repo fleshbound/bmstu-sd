@@ -4,7 +4,7 @@ from typing import List
 from pydantic import NonNegativeInt, PositiveInt
 
 from core.group.schema.group import GroupSchema, GroupSchemaUpdate, GroupSchemaCreate, GroupSchemaDelete
-from utils.types import ID
+from core.utils.types import ID
 
 
 class IGroupService(ABC):

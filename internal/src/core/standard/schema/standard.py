@@ -1,6 +1,6 @@
 from pydantic import BaseModel, PositiveFloat
 
-from utils.types import ID, Weight, Height, ProlixityIndex, Country
+from core.utils.types import ID, Weight, Height, Length, Country, Length
 
 
 class StandardSchemaCreate(BaseModel):
@@ -10,10 +10,10 @@ class StandardSchemaCreate(BaseModel):
     height: Height
     has_defects: bool
     is_multi_color: bool
-    prolixity_index: ProlixityIndex
+    length: Length
     weight_delta_percent: PositiveFloat
     height_delta_percent: PositiveFloat
-    prolixity_index_delta_percent: PositiveFloat
+    length_delta_percent: PositiveFloat
 
 
 class StandardSchema(BaseModel):
@@ -24,10 +24,10 @@ class StandardSchema(BaseModel):
     height: Height
     has_defects: bool
     is_multi_color: bool
-    prolixity_index: ProlixityIndex
+    length: Length
     weight_delta_percent: PositiveFloat
     height_delta_percent: PositiveFloat
-    prolixity_index_delta_percent: PositiveFloat
+    length_delta_percent: PositiveFloat
 
     @classmethod
     def from_create(cls, other: StandardSchemaCreate):
@@ -39,10 +39,10 @@ class StandardSchema(BaseModel):
             height=other.height,
             has_defects=other.bool,
             is_multi_color=other.bool,
-            prolixity_index=other.prolixity_index,
+            length=other.length,
             weight_delta_percent=other.weight_delta_percent,
             height_delta_percent=other.height_delta_percent,
-            prolixity_index_delta_percent=other.prolixity_index_delta_percent
+            length_delta_percent=other.length_delta_percent
         )
 
 

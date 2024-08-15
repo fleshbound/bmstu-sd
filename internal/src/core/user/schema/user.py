@@ -2,7 +2,7 @@ import enum
 
 from pydantic import BaseModel
 
-from utils.types import ID, UserName, HashedPassword, Email
+from core.utils.types import ID, UserName, HashedPassword, Email
 
 
 @enum.unique
@@ -13,17 +13,8 @@ class UserRole(str, enum.Enum):
     judge = "judge"
 
 
-class UserSchema(BaseModel):
-    id: ID
-    login: Email
-    hashed_password: HashedPassword
-    role: UserRole
-    name: UserName
-    is_archived: bool
-
-
 class UserSchemaCreate(BaseModel):
-    login: Email
+    email: Email
     hashed_password: HashedPassword
     role: UserRole
     name: UserName
@@ -32,8 +23,38 @@ class UserSchemaCreate(BaseModel):
 
 class UserSchemaUpdate(BaseModel):
     id: ID
-    login: Email
+    email: Email
     hashed_password: HashedPassword
     role: UserRole
     name: UserName
     is_archived: bool = False
+
+
+class UserSchema(BaseModel):
+    id: ID
+    email: Email
+    hashed_password: HashedPassword
+    role: UserRole
+    name: UserName
+    is_archived: bool
+
+    @classmethod
+    def from_create(cls, other: UserSchemaCreate):
+        return cls(
+            id=ID(0),
+            email=other.email,
+            hashed_password=other.hashed_password,
+            role=other.role,
+            name=other.name,
+            is_archived=other.is_archived
+        )
+
+    def from_update(self, other: UserSchemaUpdate):
+        return UserSchema(
+            id=self.id,
+            email=other.email,
+            hashed_password=other.hashed_password,
+            role=other.role,
+            name=other.name,
+            is_archived=other.is_archived
+        )

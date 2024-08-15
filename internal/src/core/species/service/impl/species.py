@@ -5,7 +5,7 @@ from pydantic import NonNegativeInt, PositiveInt
 from core.species.repository.species import ISpeciesRepository
 from core.species.schema.species import SpeciesSchema, SpeciesSchemaCreate, SpeciesSchemaUpdate, SpeciesSchemaDelete
 from core.species.service.species import ISpeciesService
-from utils.types import ID
+from core.utils.types import ID
 
 
 class SpeciesService(ISpeciesService):
@@ -22,11 +22,14 @@ class SpeciesService(ISpeciesService):
 
     def create(self,
                create_species: SpeciesSchemaCreate) -> SpeciesSchema:
-        return self.species_repo.create(create_species)
+        cur_species = SpeciesSchema.from_create(create_species)
+        return self.species_repo.create(cur_species)
 
     def update(self,
                update_species: SpeciesSchemaUpdate) -> SpeciesSchema:
-        return self.species_repo.update(update_species)
+        cur_species = self.species_repo.get_by_id(update_species.id.value)
+        cur_species = cur_species.from_update(update_species)
+        return self.species_repo.update(cur_species)
 
     def get_all(self,
                 skip: NonNegativeInt = 0,

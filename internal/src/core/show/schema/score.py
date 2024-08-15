@@ -3,7 +3,7 @@ from typing import Optional
 
 from pydantic import BaseModel, NonNegativeInt, NonNegativeFloat
 
-from utils.types import ID, Datetime
+from core.utils.types import ID, Datetime
 
 
 @dataclass(frozen=True)

@@ -5,7 +5,7 @@ from pydantic import NonNegativeInt, PositiveInt
 from core.breed.repository.breed import IBreedRepository
 from core.breed.schema.breed import BreedSchema, BreedSchemaCreate, BreedSchemaUpdate, BreedSchemaDelete
 from core.breed.service.breed import IBreedService
-from utils.types import ID
+from core.utils.types import ID
 
 
 class BreedService(IBreedService):

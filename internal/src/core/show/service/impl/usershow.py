@@ -1,9 +1,9 @@
 from typing import List
 
 from core.show.repository.usershow import IUserShowRepository
-from core.show.schema.usershow import UserShowSchemaCreate, UserShowSchema
+from core.show.schema.usershow import UserShowSchemaCreate, UserShowSchema, UserShowSchemaDelete
 from core.show.service.usershow import IUserShowService
-from utils.types import ID
+from core.utils.types import ID
 
 
 class UserShowService(IUserShowService):
@@ -21,6 +21,10 @@ class UserShowService(IUserShowService):
         cur_usershow.is_archived = True
         return self.usershow_repo.update(cur_usershow)
 
+    def delete(self, usershow_id: ID) -> UserShowSchemaDelete:
+        self.usershow_repo.delete(usershow_id)
+        return UserShowSchemaDelete(id=usershow_id)
+
     def get_by_id(self, id: ID) -> UserShowSchema:
         return self.usershow_repo.get_by_id(id.value)
 
@@ -32,4 +36,3 @@ class UserShowService(IUserShowService):
 
     def get_by_user_show_id(self, user_id: ID, show_id: ID) -> List[UserShowSchema]:
         return self.usershow_repo.get_by_user_show_id(user_id.value, show_id.value)
-

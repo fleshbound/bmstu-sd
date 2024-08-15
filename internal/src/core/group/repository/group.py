@@ -3,7 +3,7 @@ from typing import List
 
 from pydantic import NonNegativeInt
 
-from core.group.schema.group import GroupSchema, GroupSchemaCreate, GroupSchemaUpdate
+from core.group.schema.group import GroupSchema
 
 
 class IGroupRepository(ABC):
@@ -16,11 +16,11 @@ class IGroupRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def create(self, object: GroupSchemaCreate) -> GroupSchema:
+    def create(self, object: GroupSchema) -> GroupSchema:
         raise NotImplementedError
 
     @abstractmethod
-    def update(self, object: GroupSchemaUpdate) -> GroupSchema:
+    def update(self, object: GroupSchema) -> GroupSchema:
         raise NotImplementedError
 
     @abstractmethod

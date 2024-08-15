@@ -20,7 +20,7 @@ class IStandardRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def create(self, object: StandardSchemaCreate) -> StandardSchema:
+    def create(self, object: StandardSchema) -> StandardSchema:
         raise NotImplementedError
 
     @abstractmethod
@@ -28,5 +28,5 @@ class IStandardRepository(ABC):
         raise NotImplementedError
 
     # @abstractmethod
-    # def update(self, object: StandardSchemaUpdate) -> StandardSchema:
+    # def update(self, object: StandardSchema) -> StandardSchema:
     #     raise NotImplementedError

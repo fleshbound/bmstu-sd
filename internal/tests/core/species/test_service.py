@@ -3,7 +3,7 @@ import pytest
 from core.species.schema.species import SpeciesSchema, SpeciesDeleteStatus, SpeciesSchemaCreate, SpeciesSchemaUpdate
 from core.species.service.impl.species import SpeciesService
 from internal.tests.core.species.mock.repository import MockedSpeciesRepository
-from utils.types import ID, SpeciesName
+from core.utils.types import ID, SpeciesName
 
 
 @pytest.fixture

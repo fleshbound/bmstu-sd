@@ -2,12 +2,7 @@ import enum
 
 from pydantic import BaseModel
 
-from utils.types import GroupName, ID
-
-
-class GroupSchema(BaseModel):
-    id: ID
-    name: GroupName
+from core.utils.types import GroupName, ID
 
 
 class GroupSchemaCreate(BaseModel):
@@ -17,6 +12,24 @@ class GroupSchemaCreate(BaseModel):
 class GroupSchemaUpdate(BaseModel):
     id: ID
     name: GroupName
+
+
+class GroupSchema(BaseModel):
+    id: ID
+    name: GroupName
+
+    @classmethod
+    def from_create(cls, other: GroupSchemaCreate):
+        return cls(
+            id=ID(0),
+            name=other.name
+        )
+
+    def from_update(self, other: GroupSchemaUpdate):
+        return GroupSchema(
+            id=other.id,
+            name=other.name
+        )
     
 
 class GroupDeleteStatus(str, enum.Enum):

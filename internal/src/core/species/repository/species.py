@@ -20,11 +20,11 @@ class ISpeciesRepository(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def create(self, object: SpeciesSchemaCreate) -> SpeciesSchema:
+    def create(self, object: SpeciesSchema) -> SpeciesSchema:
         raise NotImplementedError
 
     @abstractmethod
-    def update(self, object: SpeciesSchemaUpdate) -> SpeciesSchema:
+    def update(self, object: SpeciesSchema) -> SpeciesSchema:
         raise NotImplementedError
 
     @abstractmethod
