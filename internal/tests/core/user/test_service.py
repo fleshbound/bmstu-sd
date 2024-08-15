@@ -3,7 +3,7 @@ import pytest
 from core.breed.schema.breed import BreedSchema, BreedDeleteStatus, BreedSchemaCreate, BreedSchemaUpdate
 from core.breed.service.impl.breed import BreedService
 from internal.tests.core.breed.mock.repository import MockedBreedRepository
-from utils.types import ID, BreedName
+from core.utils.types import ID, BreedName
 
 
 @pytest.fixture
