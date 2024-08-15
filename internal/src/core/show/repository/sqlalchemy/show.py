@@ -35,6 +35,27 @@ class SqlAlchemyShowRepository(IShowRepository):
                 raise NotFoundRepoError(detail=f"not found id : {id}")
             return self.model.to_schema()
 
+    def get_by_standard_id(self, standard_id: NonNegativeInt) -> List[ShowSchema]:
+        with self.session_factory() as session:
+            res = session.query(self.model).filter_by(standard_id=standard_id).all()
+            if res is None:
+                raise NotFoundRepoError(detail=f"not found by standard_id : {standard_id}")
+            return [self.model.to_schema() for row in res]
+
+    def get_by_breed_id(self, breed_id: NonNegativeInt) -> List[ShowSchema]:
+        with self.session_factory() as session:
+            res = session.query(self.model).filter_by(breed_id=breed_id).all()
+            if res is None:
+                raise NotFoundRepoError(detail=f"not found by breed_id : {breed_id}")
+            return [self.model.to_schema() for row in res]
+
+    def get_by_species_id(self, species_id: NonNegativeInt) -> List[ShowSchema]:
+        with self.session_factory() as session:
+            res = session.query(self.model).filter_by(species_id=species_id).all()
+            if res is None:
+                raise NotFoundRepoError(detail=f"not found by species_id : {species_id}")
+            return [self.model.to_schema() for row in res]
+
     def create(self, other: ShowSchemaCreate) -> ShowSchema:
         with self.session_factory() as session:
             other_dict = self.get_dict(other)
