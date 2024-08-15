@@ -12,6 +12,7 @@ from utils.types import ID, ShowName
 class ShowORM(Base):
     id: Mapped[NonNegativeInt] = mapped_column(primary_key=True)
     species_id: Mapped[Optional[NonNegativeInt]] = mapped_column(ForeignKey(column="species.id"), nullable=True)
+    standard_id: Mapped[Optional[NonNegativeInt]] = mapped_column(ForeignKey(column="standard.id"), nullable=True)
     breed_id: Mapped[Optional[NonNegativeInt]] = mapped_column(ForeignKey(column="breed.id"), nullable=True)
     state: Mapped[str] = mapped_column(String, nullable=False)
     country: Mapped[str] = mapped_column(String, nullable=False)
@@ -26,6 +27,7 @@ class ShowORM(Base):
             breed_id=ID(self.breed_id),
             state=ShowState(self.state),
             show_class=ShowClass(self.show_class),
+            standard_id=ID(self.standard_id),
             name=ShowName(self.name),
             is_multi_breed=self.is_multi_breed
         )

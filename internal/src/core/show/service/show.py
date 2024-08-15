@@ -38,6 +38,10 @@ class IShowService(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    def get_by_standard_id(self, standard_id: ID) -> List[ShowSchema]:
+        raise NotImplementedError
+
+    @abstractmethod
     def get_by_user_id(self, user_id: ID) -> List[ShowSchema]:
         raise NotImplementedError
 
@@ -46,11 +50,7 @@ class IShowService(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def get_by_id_detailed_animals(self) -> ShowSchemaDetailed:
-        raise NotImplementedError
-
-    @abstractmethod
-    def get_by_id_detailed_users(self) -> ShowSchemaDetailed:
+    def get_by_id_detailed(self, show_id: ID) -> ShowSchemaDetailed:
         raise NotImplementedError
 
     @abstractmethod

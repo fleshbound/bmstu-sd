@@ -3,6 +3,7 @@ from typing import List
 from pydantic import NonNegativeInt, PositiveInt
 
 from core.animal.service.animal import IAnimalService
+from core.breed.service.breed import IBreedService
 from core.certificate.schema.certificate import CertificateSchemaCreate
 from core.certificate.service.certificate import ICertificateService
 from core.show.repository.show import IShowRepository
@@ -15,6 +16,7 @@ from core.show.service.animalshow import IAnimalShowService
 from core.show.service.score import IScoreService
 from core.show.service.show import IShowService
 from core.show.service.usershow import IUserShowService
+from core.standard.service.standard import IStandardService
 from core.user.schema.user import UserRole
 from core.user.service.user import IUserService
 from utils.exceptions import ShowServiceError, NotFoundRepoError
@@ -29,6 +31,8 @@ class ShowService(IShowService):
     certificate_service: ICertificateService
     animal_service: IAnimalService
     user_service: IUserService
+    breed_service: IBreedService
+    standard_service: IStandardService
 
     def __init__(self,
                  show_repo: IShowRepository,
@@ -37,16 +41,41 @@ class ShowService(IShowService):
                  usershow_service: IUserShowService,
                  certificate_service: ICertificateService,
                  animal_service: IAnimalService,
-                 user_service: IUserService):
+                 user_service: IUserService,
+                 breed_service: IBreedService,
+                 standard_service: IStandardService):
         self.show_repo = show_repo
         self.score_service = score_service
         self.animalshow_service = animalshow_service
         self.usershow_service = usershow_service
         self.certificate_service = certificate_service
         self.animal_service = animal_service
+        self.user_service = user_service
+        self.breed_service = breed_service
+        self.standard_service = standard_service
 
     def create(self, show_create: ShowSchemaCreate) -> ShowSchema:
-        raise NotImplementedError
+        new_show = ShowSchema.from_create(show_create)
+        if new_show.is_multi_breed:
+            if not new_show.breed_id is None:
+                raise ShowServiceError(detail=f"multi_breed breed_id not None (create): id={new_show.id},"
+                                              f" breed_id={new_show.breed_id}")
+            if new_show.species_id is None:
+                raise ShowServiceError(detail=f"multi_breed species_id None (create): id={new_show.id}")
+            if not new_show.standard_id is None:
+                raise ShowServiceError(detail=f"multi_breed standard_id not None (create): id={new_show.id},"
+                                              f" standard_id={new_show.standard_id}")
+        else:
+            if not new_show.species_id is None:
+                raise ShowServiceError(detail=f"not multi_breed species_id not None (create): id={new_show.id},"
+                                              f" breed_id={new_show.species_id}")
+            if new_show.breed_id is None:
+                raise ShowServiceError(detail=f"not multi_breed breed_id None (create): id={new_show.id}")
+            if new_show.standard_id is None:
+                raise ShowServiceError(detail=f"not multi_breed standard_id None (create): id={new_show.id}")
+
+        return self.show_repo.create(new_show)
+
     
     def get_usershow_count(self, show_id: ID) -> NonNegativeInt:
         try:
@@ -73,7 +102,7 @@ class ShowService(IShowService):
             raise ShowServiceError(detail=f"show cannot be started: id={show_id}, user_count={user_count}")
 
         animal_count = self.get_animalshow_count(show_id)
-        if user_count == 0:
+        if animal_count == 0:
             raise ShowServiceError(detail=f"show cannot be started: id={show_id}, user_count={user_count}")
 
         cur_show.status = ShowStatus.started
@@ -131,7 +160,10 @@ class ShowService(IShowService):
         return self.show_repo.get_all(skip, limit)
 
     def get_by_id(self, show_id: ID) -> ShowSchema:
-        return self.show_repo.get_by_id(show_id)
+        return self.show_repo.get_by_id(show_id.value)
+
+    def get_by_standard_id(self, standard_id: ID) -> List[ShowSchema]:
+        return self.show_repo.get_by_standard_id(standard_id.value)
 
     def get_by_user_id(self, user_id: ID) -> List[ShowSchema]:
         usershow_records = self.usershow_service.get_by_user_id(user_id)
@@ -140,18 +172,27 @@ class ShowService(IShowService):
             res.append(self.show_repo.get_by_id(record.show_id))
         return res
 
-    def get_by_user_id(self, user_id: ID) -> List[ShowSchema]:
-        animalshow_records = self.animalshow_service.get_by_user_id(user_id)
+    def get_by_animal_id(self, animal_id: ID) -> List[ShowSchema]:
+        animalshow_records = self.animalshow_service.get_by_animal_id(animal_id)
         res = []
         for record in animalshow_records:
             res.append(self.show_repo.get_by_id(record.show_id))
         return res
 
-    def get_by_id_detailed_animals(self) -> ShowSchemaDetailed:
-        pass
-
-    def get_by_id_detailed_users(self) -> ShowSchemaDetailed:
-        pass
+    def get_by_id_detailed(self, show_id: ID) -> ShowSchemaDetailed:
+        cur_show = self.show_repo.get_by_id(show_id.value)
+        animalshow_records = self.animalshow_service.get_by_show_id(show_id)
+        animals = []
+        for record in animalshow_records:
+            animals.append(self.animal_service.get_by_id(record.animal_id))
+        usershow_records = self.usershow_service.get_by_show_id(show_id)
+        users = []
+        for record in usershow_records:
+            users.append(self.user_service.get_by_id(record.user_id))
+        detailed = ShowSchemaDetailed.from_schema(cur_show)
+        detailed.animals = animals
+        detailed.users = users
+        return detailed
 
     def register_animal(self, user_id: ID, show_id: ID) -> ShowRegisterAnimalResult:
         cur_show = self.show_repo.get_by_id(show_id)
@@ -159,9 +200,16 @@ class ShowService(IShowService):
             raise ShowServiceError(detail=f"animal cannot be registered: user_id={user_id}, "
                                           f"show_id={show_id}, show_status={cur_show.status}")
         cur_animal = self.animal_service.get_by_id(user_id)
-        # todo: check animal species
-        # todo: check animal breed
-        # todo: check animal by standard if show isn't multi-breed
+
+        if cur_show.is_multi_breed:
+            if self.breed_service.get_by_id(cur_animal.breed_id).species_id != cur_show.species_id:
+                raise ShowServiceError(detail=f'invalid animal species: animal_id={cur_animal.id}, show_id={show_id}')
+        else:
+            if cur_animal.breed_id != cur_show.breed_id:
+                raise ShowServiceError(detail=f'invalid animal breed: animal_id={cur_animal.id}, show_id={show_id}')
+            if not self.standard_service.check_animal_by_standard(cur_show.standard_id, cur_animal):
+                raise ShowServiceError(detail=f'invalid animal standard check: animal_id={cur_animal.id},'
+                                              f' show_id={show_id}')
         try:
             self.animalshow_service.get_by_animal_show_id(user_id, show_id)
         except NotFoundRepoError:
@@ -170,7 +218,6 @@ class ShowService(IShowService):
         else:
             raise ShowServiceError(detail=f"animal is already registered: "
                                           f"user_id={user_id}, show_id={show_id}")
-
         return ShowRegisterAnimalResult(
             record_id=animalshow_record.id,
             status=ShowRegisterAnimalStatus.register_ok
@@ -193,7 +240,6 @@ class ShowService(IShowService):
         else:
             raise ShowServiceError(detail=f"user is already registered: "
                                           f"user_id={user_id}, show_id={show_id}")
-
         return ShowRegisterUserResult(
             record_id=usershow_record.id,
             status=ShowRegisterUserStatus.register_ok

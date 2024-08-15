@@ -31,7 +31,7 @@ class ShowSchemaCreate(BaseModel):
     country: Country
     s_class: ShowClass
     name: ShowName
-    standard_id: ID
+    standard_id: Optional[ID]
     is_multi_breed: bool
 
 
@@ -49,7 +49,7 @@ class ShowSchema(BaseModel):
     country: Country
     show_class: ShowClass
     name: ShowName
-    standard_id: ID
+    standard_id: Optional[ID]
     is_multi_breed: bool
 
     @classmethod
@@ -62,6 +62,7 @@ class ShowSchema(BaseModel):
             breed_id=create.breed_id,
             country=create.country,
             show_class=create.show_class,
+            standard_id=create.standard_id,
             is_multi_breed=create.is_multi_breed
         )
 
@@ -74,6 +75,7 @@ class ShowSchema(BaseModel):
             breed_id=self.breed_id,
             country=self.country,
             show_class=self.show_class,
+            standard_id=self.standard_id,
             is_multi_breed=self.is_multibreed
         )
 
@@ -86,10 +88,26 @@ class ShowSchemaDetailed(BaseModel):
     country: Country
     show_class: ShowClass
     name: ShowName
-    standard_id: ID
+    standard_id: Optional[ID]
     is_multi_breed: bool
     animals: List[AnimalSchema]
     users: List[UserSchema]
+
+    @classmethod
+    def from_schema(cls, other: ShowSchema):
+        return cls(
+            id=other.id,
+            status=other.status,
+            name=other.name,
+            species_id=other.species_id,
+            breed_id=other.breed_id,
+            country=other.country,
+            show_class=other.show_class,
+            is_multi_breed=other.is_multi_breed,
+            standard_id=other.standard_id,
+            animals=[],
+            users=[]
+        )
 
 
 class ShowSchemaReport(BaseModel):
@@ -108,10 +126,11 @@ class ShowSchemaAbort(BaseModel):
     breed_id: Optional[ID]
     status: ShowStatus
     country: Country
-    standard_id: ID
+    standard_id: Optional[ID]
     show_class: ShowClass
     name: ShowName
     is_multi_breed: bool
+
 
 @enum.unique
 class ShowRegisterAnimalStatus(str, enum.Enum):
