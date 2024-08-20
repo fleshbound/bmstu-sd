@@ -17,8 +17,8 @@ class ScoreValue:
         object.__setattr__(self, "max", 5)
 
         if self.value > self.max or self.value < self.min:
-            raise ValueError("Value of ScoreValue must be greater than " + self.min.__str__()
-                             + " and less than " + self.max.__str__())
+            raise ValueError("Value of ScoreValue must be greater than " + str(self.min)
+                             + " and less than " + str(self.max))
 
     @classmethod
     def from_other(cls, other):

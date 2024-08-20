@@ -9,7 +9,7 @@ from sqlalchemy import insert
 from sqlalchemy.orm import Session
 
 from core.standard.repository.standard import IStandardRepository
-from core.standard.schema.standard import StandardSchema, StandardSchemaCreate
+from core.standard.schema.standard import StandardSchema
 
 from repository.sqlalchemy.model.standard import StandardORM
 from core.utils import types
@@ -43,7 +43,7 @@ class SqlAlchemyStandardRepository(IStandardRepository):
                 raise NotFoundRepoError(detail=f"not found id : {id}")
             return self.model.to_schema()
 
-    def create(self, other: StandardSchemaCreate) -> StandardSchema:
+    def create(self, other: StandardSchema) -> StandardSchema:
         with self.session_factory() as session:
             other_dict = self.get_dict(other)
             stmt = insert(self.model).values(other_dict).returning(self.model.id)

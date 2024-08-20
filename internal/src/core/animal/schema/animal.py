@@ -14,7 +14,6 @@ class AnimalSchemaCreate(BaseModel):
     length: Length
     has_defects: bool
     is_multicolor: bool
-    is_archived: bool = False
 
 
 class AnimalSchemaUpdate(BaseModel):
@@ -40,7 +39,6 @@ class AnimalSchema(BaseModel):
     length: Length
     has_defects: bool
     is_multicolor: bool
-    is_archived: bool
 
     @classmethod
     def from_create(cls, other: AnimalSchemaCreate):
@@ -55,8 +53,7 @@ class AnimalSchema(BaseModel):
             height=other.height,
             length=other.length,
             has_defects=other.has_defects,
-            is_multicolor=other.is_multicolor,
-            is_archived=False
+            is_multicolor=other.is_multicolor
         )
 
     def from_update(self, other: AnimalSchemaUpdate):
@@ -71,8 +68,7 @@ class AnimalSchema(BaseModel):
             height=other.height,
             length=other.length,
             has_defects=other.has_defects,
-            is_multicolor=other.is_multicolor,
-            is_archived=self.is_archived
+            is_multicolor=other.is_multicolor
         )
 
 class AnimalSchemaDelete(BaseModel):

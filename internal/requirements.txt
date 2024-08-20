@@ -17,3 +17,5 @@ alembic==1.13.2
 python-dotenv==1.0.1
 pydantic-settings==2.3.4
 redis==4.3.4
+
+pyjwt[crypto]
