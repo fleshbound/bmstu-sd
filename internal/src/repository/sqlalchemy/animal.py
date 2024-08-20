@@ -9,7 +9,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from core.animal.repository.animal import IAnimalRepository
-from core.animal.schema.animal import AnimalSchema, AnimalSchemaUpdate, AnimalSchemaCreate
+from core.animal.schema.animal import AnimalSchema
 from repository.sqlalchemy.model.animal import AnimalORM
 from core.utils import types
 from core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
@@ -42,7 +42,7 @@ class SqlAlchemyAnimalRepository(IAnimalRepository):
                 raise NotFoundRepoError(detail=f"not found id : {id}")
             return self.model.to_schema()
 
-    def create(self, other: AnimalSchemaCreate) -> AnimalSchema:
+    def create(self, other: AnimalSchema) -> AnimalSchema:
         with self.session_factory() as session:
             other_dict = self.get_dict(other)
             stmt = insert(self.model).values(other_dict).returning(self.model.id)
@@ -71,7 +71,7 @@ class SqlAlchemyAnimalRepository(IAnimalRepository):
                     dct[field] = field_value
         return dct
 
-    def update(self, other: AnimalSchemaUpdate) -> AnimalSchema:
+    def update(self, other: AnimalSchema) -> AnimalSchema:
         with self.session_factory() as session:
             other_dict = self.get_dict(other, exclude=['id'])
             stmt = update(self.model).where(cast("ColumnElement[bool]", other.id.eq_int(self.model.id))).values(other_dict).returning(self.model.id)

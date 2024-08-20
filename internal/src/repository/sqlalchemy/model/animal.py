@@ -22,7 +22,6 @@ class AnimalORM(Base):
     length: Mapped[float] = mapped_column(Float, nullable=False)
     has_defects: Mapped[bool] = mapped_column(Boolean, nullable=False)
     is_multicolor: Mapped[bool] = mapped_column(Boolean, nullable=False)
-    is_archived: Mapped[bool] = mapped_column(Boolean, nullable=False)
 
     def to_schema(self) -> AnimalSchema:
         return AnimalSchema(

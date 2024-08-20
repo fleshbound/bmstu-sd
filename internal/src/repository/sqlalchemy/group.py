@@ -9,7 +9,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from core.group.repository.group import IGroupRepository
-from core.group.schema.group import GroupSchema, GroupSchemaCreate, GroupSchemaUpdate
+from core.group.schema.group import GroupSchema
 from repository.sqlalchemy.model.group import GroupORM
 from core.utils import types
 from core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
@@ -35,7 +35,7 @@ class SqlAlchemyGroupRepository(IGroupRepository):
                 raise NotFoundRepoError(detail=f"not found id : {id}")
             return self.model.to_schema()
 
-    def create(self, other: GroupSchemaCreate) -> GroupSchema:
+    def create(self, other: GroupSchema) -> GroupSchema:
         with self.session_factory() as session:
             other_dict = self.get_dict(other)
             stmt = insert(self.model).values(other_dict).returning(self.model.id)
@@ -62,7 +62,7 @@ class SqlAlchemyGroupRepository(IGroupRepository):
                     dct[field] = field_value
         return dct
 
-    def update(self, other: GroupSchemaUpdate) -> GroupSchema:
+    def update(self, other: GroupSchema) -> GroupSchema:
         with self.session_factory() as session:
             other_dict = self.get_dict(other, exclude=['id'])
             stmt = update(self.model

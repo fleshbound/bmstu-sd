@@ -9,7 +9,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from core.species.repository.species import ISpeciesRepository
-from core.species.schema.species import SpeciesSchema, SpeciesSchemaCreate, SpeciesSchemaUpdate
+from core.species.schema.species import SpeciesSchema
 from repository.sqlalchemy.model.species import SpeciesORM
 from core.utils import types
 from core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
@@ -35,7 +35,7 @@ class SqlAlchemySpeciesRepository(ISpeciesRepository):
                 raise NotFoundRepoError(detail=f"not found id : {id}")
             return self.model.to_schema()
 
-    def create(self, other: SpeciesSchemaCreate) -> SpeciesSchema:
+    def create(self, other: SpeciesSchema) -> SpeciesSchema:
         with self.session_factory() as session:
             other_dict = self.get_dict(other)
             stmt = insert(self.model).values(other_dict).returning(self.model.id)
@@ -62,7 +62,7 @@ class SqlAlchemySpeciesRepository(ISpeciesRepository):
                     dct[field] = field_value
         return dct
 
-    def update(self, other: SpeciesSchemaUpdate) -> SpeciesSchema:
+    def update(self, other: SpeciesSchema) -> SpeciesSchema:
         with self.session_factory() as session:
             other_dict = self.get_dict(other, exclude=['id'])
             stmt = update(self.model

@@ -18,7 +18,6 @@ class UserSchemaCreate(BaseModel):
     hashed_password: HashedPassword
     role: UserRole
     name: UserName
-    is_archived: bool = False
 
 
 class UserSchemaUpdate(BaseModel):
@@ -27,7 +26,6 @@ class UserSchemaUpdate(BaseModel):
     hashed_password: HashedPassword
     role: UserRole
     name: UserName
-    is_archived: bool = False
 
 
 class UserSchema(BaseModel):
@@ -36,7 +34,6 @@ class UserSchema(BaseModel):
     hashed_password: HashedPassword
     role: UserRole
     name: UserName
-    is_archived: bool
 
     @classmethod
     def from_create(cls, other: UserSchemaCreate):
@@ -45,8 +42,7 @@ class UserSchema(BaseModel):
             email=other.email,
             hashed_password=other.hashed_password,
             role=other.role,
-            name=other.name,
-            is_archived=other.is_archived
+            name=other.name
         )
 
     def from_update(self, other: UserSchemaUpdate):
@@ -55,6 +51,5 @@ class UserSchema(BaseModel):
             email=other.email,
             hashed_password=other.hashed_password,
             role=other.role,
-            name=other.name,
-            is_archived=other.is_archived
+            name=other.name
         )

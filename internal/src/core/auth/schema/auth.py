@@ -6,8 +6,7 @@ from core.user.schema.user import UserRole
 from core.utils.types import ID, UserName, Email, HashedPassword
 
 
-@dataclass(frozen=True)
-class Token:
+class Token(BaseModel):
     value: str
 
     def __eq__(self, other) -> bool:
@@ -19,8 +18,7 @@ class Token:
         return self.value > other.value
 
 
-@dataclass(frozen=True)
-class Fingerprint:
+class Fingerprint(BaseModel):
     value: str
 
     def __eq__(self, other) -> bool:
@@ -32,14 +30,12 @@ class Fingerprint:
         return self.value > other.value
 
 
-@dataclass(frozen=True)
-class AuthDetails:
+class AuthDetails(BaseModel):
     access_token: Token
     refresh_token: Token
 
 
-@dataclass(frozen=True)
-class AuthPayload:
+class AuthPayload(BaseModel):
     user_id: ID
 
 

@@ -14,7 +14,6 @@ class UserORM(Base):
     hashed_password: Mapped[str] = mapped_column(String, nullable=False)
     role: Mapped[str] = mapped_column(String, nullable=False)
     name: Mapped[str] = mapped_column(String, nullable=False)
-    is_archived: Mapped[bool] = mapped_column(Boolean, nullable=False)
 
     def to_schema(self) -> UserSchema:
         return UserSchema(
