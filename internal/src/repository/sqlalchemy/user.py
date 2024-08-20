@@ -9,7 +9,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from core.user.repository.user import IUserRepository
-from core.user.schema.user import UserSchema, UserSchemaCreate, UserSchemaUpdate
+from core.user.schema.user import UserSchema
 from repository.sqlalchemy.model.user import UserORM
 from core.utils import types
 from core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
@@ -35,7 +35,7 @@ class SqlAlchemyUserRepository(IUserRepository):
                 raise NotFoundRepoError(detail=f"not found id : {id}")
             return self.model.to_schema()
 
-    def create(self, other: UserSchemaCreate) -> UserSchema:
+    def create(self, other: UserSchema) -> UserSchema:
         with self.session_factory() as session:
             other_dict = self.get_dict(other)
             stmt = insert(self.model).values(other_dict).returning(self.model.id)
@@ -62,7 +62,7 @@ class SqlAlchemyUserRepository(IUserRepository):
                     dct[field] = field_value
         return dct
 
-    def update(self, other: UserSchemaUpdate) -> UserSchema:
+    def update(self, other: UserSchema) -> UserSchema:
         with self.session_factory() as session:
             other_dict = self.get_dict(other, exclude=['id'])
             stmt = update(self.model
@@ -89,3 +89,10 @@ class SqlAlchemyUserRepository(IUserRepository):
                 raise NotFoundRepoError(detail=f"not found id : {id}")
             session.delete(row)
             session.commit()
+
+    def get_by_email(self, email: str) -> UserSchema:
+        with self.session_factory() as session:
+            row = session.query(self.model).filter_by(email=email).first()
+            if row is None:
+                raise NotFoundRepoError(detail=f"not found email : {email}")
+            return self.model.to_schema()

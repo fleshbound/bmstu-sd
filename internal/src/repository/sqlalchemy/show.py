@@ -9,7 +9,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from core.show.repository.show import IShowRepository
-from core.show.schema.show import ShowSchema, ShowSchemaCreate, ShowSchemaUpdate
+from core.show.schema.show import ShowSchema
 from repository.sqlalchemy.model.show import ShowORM
 from core.utils import types
 from core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
@@ -56,7 +56,7 @@ class SqlAlchemyShowRepository(IShowRepository):
                 raise NotFoundRepoError(detail=f"not found by species_id : {species_id}")
             return [self.model.to_schema() for row in res]
 
-    def create(self, other: ShowSchemaCreate) -> ShowSchema:
+    def create(self, other: ShowSchema) -> ShowSchema:
         with self.session_factory() as session:
             other_dict = self.get_dict(other)
             stmt = insert(self.model).values(other_dict).returning(self.model.id)
@@ -83,7 +83,7 @@ class SqlAlchemyShowRepository(IShowRepository):
                     dct[field] = field_value
         return dct
 
-    def update(self, other: ShowSchemaUpdate) -> ShowSchema:
+    def update(self, other: ShowSchema) -> ShowSchema:
         with self.session_factory() as session:
             other_dict = self.get_dict(other, exclude=['id'])
             stmt = update(self.model
