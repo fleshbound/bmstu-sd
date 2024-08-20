@@ -1,10 +1,7 @@
-from sqlalchemy.ext.declarative import declarative_base
 from contextlib import AbstractContextManager, contextmanager
 from typing import Any, Generator
 from sqlalchemy import create_engine, orm
 from sqlalchemy.orm import Session
-
-Base = declarative_base()
 
 
 class SqlAlchemyDatabase:
