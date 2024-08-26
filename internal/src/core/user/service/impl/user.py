@@ -3,7 +3,7 @@ from typing import List
 from pydantic import NonNegativeInt, PositiveInt
 
 from core.user.repository.user import IUserRepository
-from core.user.schema.user import UserSchema, UserSchemaCreate, UserSchemaUpdate
+from core.user.schema.user import UserSchema, UserSchemaCreate, UserSchemaUpdate, UserSchemaDeleted
 from core.user.service.user import IUserService
 from core.utils.types import ID, Email
 
@@ -15,11 +15,10 @@ class UserService(IUserService):
                  user_repo: IUserRepository):
         self.user_repo = user_repo
 
-    def archive(self,
-                user_id: ID) -> UserSchema:
-        user: UserSchema = self.user_repo.get_by_id(user_id)
-        user.is_archived = True
-        return self.user_repo.update(user)
+    def delete(self,
+               user_id: ID) -> UserSchemaDeleted:
+        self.user_repo.delete(user_id.value)
+        return UserSchemaDeleted(id=user_id)
 
     def create(self,
                create_user: UserSchemaCreate) -> UserSchema:

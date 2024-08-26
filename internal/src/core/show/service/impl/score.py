@@ -3,11 +3,11 @@ from typing import List, Optional, Tuple
 
 from pydantic import NonNegativeInt, NonNegativeFloat
 
-from core.show.repository.animalshow import IAnimalShowRepository
 from core.show.repository.score import IScoreRepository
-from core.show.repository.usershow import IUserShowRepository
+from core.show.service.usershow import IUserShowService
 from core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, ScoreSchemaUpdate, Score, ScoreValue, \
     AniShowRankingInfo
+from core.show.service.animalshow import IAnimalShowService
 from core.show.service.score import IScoreService
 from core.show.service.show import IShowService
 from repository.utils.dict.impl.float import FloatKeyDictionary
@@ -17,25 +17,25 @@ from core.utils.types import ID
 class ScoreService(IScoreService):
     show_service: IShowService
     score_repo: IScoreRepository
-    animalshow_repo: IAnimalShowRepository
-    usershow_repo: IUserShowRepository
+    animalshow_service: IAnimalShowService
+    usershow_service: IUserShowService
 
     def __init__(self,
                  show_service: IShowService,
                  score_repo: IScoreRepository,
-                 animalshow_repo: IAnimalShowRepository,
-                 usershow_repo: IUserShowRepository):
+                 animalshow_service: IAnimalShowService,
+                 usershow_service: IUserShowService):
         self.show_service = show_service
         self.score_repo = score_repo
-        self.animalshow_repo = animalshow_repo
-        self.usershow_repo = usershow_repo
+        self.animalshow_service = animalshow_service
+        self.usershow_service = usershow_service
 
     @staticmethod
     def dict_to_asc_ranked_ids(dict: FloatKeyDictionary) -> List[NonNegativeInt]:
         return list(OrderedDict(sorted(dict.items())).values())
 
     def get_show_ranking_info(self, show_id: ID) -> Tuple[NonNegativeInt, List[AniShowRankingInfo]]:
-        anishow_records = self.animalshow_repo.get_by_show_id(show_id)
+        anishow_records = self.animalshow_service.get_by_show_id(show_id)
         total = []
         for record in anishow_records:
             score_info = self.get_total_by_animalshow_id(record.id)
@@ -58,15 +58,15 @@ class ScoreService(IScoreService):
         return len(ranked_total_ids), res
 
     def get_total_by_animalshow_id(self, animalshow_id: ID) -> TotalScoreInfo:
-        scores = self.score_repo.get_by_animalshow_id(animalshow_id)
+        scores = self.score_repo.get_by_animalshow_id(animalshow_id.value)
         return self.calc_total(animalshow_id, scores)
 
     def get_total_by_usershow_id(self, usershow_id: ID) -> TotalScoreInfo:
-        scores = self.score_repo.get_by_usershow_id(usershow_id)
+        scores = self.score_repo.get_by_usershow_id(usershow_id.value)
         return self.calc_total(usershow_id, scores)
 
     def get_count_by_usershow_id(self, usershow_id: ID) -> NonNegativeInt:
-        scores = self.score_repo.get_by_usershow_id(usershow_id)
+        scores = self.score_repo.get_by_usershow_id(usershow_id.value)
         return len(scores)
 
     @staticmethod
@@ -99,16 +99,16 @@ class ScoreService(IScoreService):
         )
 
     def all_users_scored(self, show_id: ID) -> bool:
-        usershows = self.usershow_repo.get_by_show_id(show_id)
-        show_animal_count = len(self.show_service.get_by_id_detailed_animals().animals)
+        usershows = self.usershow_service.get_by_show_id(show_id)
+        show_animal_count = len(self.show_service.get_by_id_detailed(show_id).animals)
         for us in usershows:
             if self.get_count_by_usershow_id(us.id) != show_animal_count:
                 return False
         return True
 
     def get_users_scored_count(self, show_id: ID) -> NonNegativeInt:
-        usershows = self.usershow_repo.get_by_show_id(show_id)
-        show_animal_count = len(self.show_service.get_by_id_detailed_animals().animals)
+        usershows = self.usershow_service.get_by_show_id(show_id)
+        show_animal_count = len(self.show_service.get_by_id_detailed(show_id).animals)
         count = 0
         for us in usershows:
             if self.get_count_by_usershow_id(us.id) == show_animal_count:
@@ -119,7 +119,7 @@ class ScoreService(IScoreService):
         new_score = ScoreSchema.from_create(score_create)
         new_score = self.score_repo.create(new_score)
 
-        cur_show_id = self.usershow_repo.get_by_id(new_score.usershow_id.value).show_id
+        cur_show_id = self.usershow_service.get_by_id(new_score.usershow_id.value).show_id
         if self.all_users_scored(cur_show_id):
             self.show_service.stop(cur_show_id)
 

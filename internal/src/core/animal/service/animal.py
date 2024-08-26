@@ -9,11 +9,6 @@ from core.utils.types import ID
 
 class IAnimalService(ABC):
     @abstractmethod
-    def archive(self,
-                animal_id: ID) -> AnimalSchema:
-        raise NotImplementedError
-
-    @abstractmethod
     def delete(self,
                 animal_id: ID) -> AnimalSchemaDelete:
         raise NotImplementedError

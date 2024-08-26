@@ -9,7 +9,7 @@ from core.utils.types import ID, Email
 
 class IUserService(ABC):
     @abstractmethod
-    def archive(self,
+    def delete(self,
                 user_id: ID) -> UserSchema:
         raise NotImplementedError
 
