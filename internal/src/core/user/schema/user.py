@@ -53,3 +53,8 @@ class UserSchema(BaseModel):
             role=other.role,
             name=other.name
         )
+
+
+class UserSchemaDeleted(BaseModel):
+    id: ID
+    status: str = 'deleted'
