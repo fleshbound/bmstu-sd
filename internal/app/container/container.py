@@ -3,7 +3,7 @@ from dependency_injector import containers, providers
 from repository.sqlalchemy.animal import SqlAlchemyAnimalRepository
 from core.animal.service.impl.animal import AnimalService
 from repository.sqlalchemy.breed import SqlAlchemyBreedRepository
-from core.breed.service.impl.breed import BreedService
+from core.breed.service import BreedService
 from repository.sqlalchemy.group import SqlAlchemyGroupRepository
 from core.group.service.impl.group import GroupService
 from repository.sqlalchemy.species import SqlAlchemySpeciesRepository
