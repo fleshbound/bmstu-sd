@@ -5,9 +5,21 @@ from fastapi import APIRouter, Depends, status
 from internal.app.container.container import Container
 from pydantic import NonNegativeInt, PositiveInt
 
+<<<<<<<< HEAD:internal/src/api/router/species.py
 from internal.src.core.species.schema.species import SpeciesSchemaCreate, SpeciesSchema, SpeciesSchemaUpdate
 from internal.src.core.species.service.species import ISpeciesService
 from internal.src.core.utils.types import ID
+|||||||| parent of a759adf (add console UI files):internal/app/src/api/router/species.py
+from internal.app.container.container import Container
+from core.species.schema.species import SpeciesSchemaCreate, SpeciesSchema, SpeciesSchemaUpdate
+from core.species.service.species import ISpeciesService
+from core.utils.types import ID
+========
+from internal.petowo.container.container import Container
+from core.species.schema.species import SpeciesSchemaCreate, SpeciesSchema, SpeciesSchemaUpdate
+from core.species.service.species import ISpeciesService
+from core.utils.types import ID
+>>>>>>>> a759adf (add console UI files):internal/petowo/src/api/router/species.py
 
 router = APIRouter(
     prefix="/species",

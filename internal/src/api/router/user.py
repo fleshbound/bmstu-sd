@@ -5,9 +5,21 @@ from fastapi import Depends, status, APIRouter
 from internal.app.container.container import Container
 from pydantic import NonNegativeInt, PositiveInt
 
+<<<<<<<< HEAD:internal/src/api/router/user.py
 from internal.src.core.user.schema.user import UserSchemaCreate, UserSchema, UserSchemaUpdate
 from internal.src.core.user.service.user import IUserService
 from internal.src.core.utils.types import ID
+|||||||| parent of a759adf (add console UI files):internal/app/src/api/router/user.py
+from internal.app.container.container import Container
+from core.user.schema.user import UserSchemaCreate, UserSchema, UserSchemaUpdate
+from core.user.service.user import IUserService
+from core.utils.types import ID
+========
+from internal.petowo.container.container import Container
+from core.user.schema.user import UserSchemaCreate, UserSchema, UserSchemaUpdate
+from core.user.service.user import IUserService
+from core.utils.types import ID
+>>>>>>>> a759adf (add console UI files):internal/petowo/src/api/router/user.py
 
 router = APIRouter(
     prefix="/user",

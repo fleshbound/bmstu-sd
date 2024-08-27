@@ -5,9 +5,21 @@ from fastapi import APIRouter, Depends, status
 from internal.app.container.container import Container
 from pydantic import NonNegativeInt, PositiveInt
 
+<<<<<<<< HEAD:internal/src/api/router/animal.py
 from internal.src.core.animal.schema.animal import AnimalSchemaCreate, AnimalSchema, AnimalSchemaUpdate
 from internal.src.core.animal.service.animal import IAnimalService
 from internal.src.core.utils.types import ID
+|||||||| parent of a759adf (add console UI files):internal/app/src/api/router/animal.py
+from internal.app.container.container import Container
+from core.animal.schema.animal import AnimalSchemaCreate, AnimalSchema, AnimalSchemaUpdate
+from core.animal.service.animal import IAnimalService
+from core.utils.types import ID
+========
+from internal.petowo.container.container import Container
+from core.animal.schema.animal import AnimalSchemaCreate, AnimalSchema, AnimalSchemaUpdate
+from core.animal.service.animal import IAnimalService
+from core.utils.types import ID
+>>>>>>>> a759adf (add console UI files):internal/petowo/src/api/router/animal.py
 
 router = APIRouter(
     prefix="/animal",

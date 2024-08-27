@@ -5,9 +5,21 @@ from fastapi import APIRouter, Depends, status
 from internal.app.container.container import Container
 from pydantic import NonNegativeInt, PositiveInt
 
+<<<<<<<< HEAD:internal/src/api/router/group.py
 from internal.src.core.group.schema.group import GroupSchemaCreate, GroupSchema, GroupSchemaUpdate
 from internal.src.core.group.service.group import IGroupService
 from internal.src.core.utils.types import ID
+|||||||| parent of a759adf (add console UI files):internal/app/src/api/router/group.py
+from internal.app.container.container import Container
+from core.group.schema.group import GroupSchemaCreate, GroupSchema, GroupSchemaUpdate
+from core.group.service.group import IGroupService
+from core.utils.types import ID
+========
+from internal.petowo.container.container import Container
+from core.group.schema.group import GroupSchemaCreate, GroupSchema, GroupSchemaUpdate
+from core.group.service.group import IGroupService
+from core.utils.types import ID
+>>>>>>>> a759adf (add console UI files):internal/petowo/src/api/router/group.py
 
 router = APIRouter(
     prefix="/group",

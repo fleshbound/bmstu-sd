@@ -5,9 +5,21 @@ from fastapi import APIRouter, Depends, status
 from internal.app.container.container import Container
 from pydantic import NonNegativeInt, PositiveInt
 
+<<<<<<<< HEAD:internal/src/api/router/breed.py
 from internal.src.core.breed.schema.breed import BreedSchemaCreate, BreedSchema, BreedSchemaUpdate
 from internal.src.core.breed.service.breed import IBreedService
 from internal.src.core.utils.types import ID
+|||||||| parent of a759adf (add console UI files):internal/app/src/api/router/breed.py
+from internal.app.container.container import Container
+from core.breed.schema.breed import BreedSchemaCreate, BreedSchema, BreedSchemaUpdate
+from core.breed.service.breed import IBreedService
+from core.utils.types import ID
+========
+from internal.petowo.container.container import Container
+from core.breed.schema.breed import BreedSchemaCreate, BreedSchema, BreedSchemaUpdate
+from core.breed.service.breed import IBreedService
+from core.utils.types import ID
+>>>>>>>> a759adf (add console UI files):internal/petowo/src/api/router/breed.py
 
 router = APIRouter(
     prefix="/breed",
