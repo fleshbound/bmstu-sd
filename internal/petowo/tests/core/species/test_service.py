@@ -2,7 +2,7 @@ import pytest
 
 from core.species.schema.species import SpeciesSchema, SpeciesDeleteStatus, SpeciesSchemaCreate, SpeciesSchemaUpdate
 from core.species.service.impl.species import SpeciesService
-from internal.app.tests.core.species.mock.repository import MockedSpeciesRepository
+from internal.petowo.tests.core.species.mock.repository import MockedSpeciesRepository
 from core.utils.types import ID, SpeciesName
 
 

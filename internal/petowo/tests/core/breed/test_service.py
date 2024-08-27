@@ -2,7 +2,7 @@ import pytest
 
 from core.breed.schema.breed import BreedSchema, BreedDeleteStatus, BreedSchemaCreate, BreedSchemaUpdate
 from core.breed.service import BreedService
-from internal.app.tests.core.breed.mock.repository import MockedBreedRepository
+from internal.petowo.tests.core.breed.mock.repository import MockedBreedRepository
 from core.utils.types import ID, BreedName
 
 

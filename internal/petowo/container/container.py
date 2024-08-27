@@ -11,7 +11,7 @@ from core.species.service.impl.species import SpeciesService
 from repository.sqlalchemy.user import SqlAlchemyUserRepository
 from core.user.service.impl.user import UserService
 from database.database import SqlAlchemyDatabase
-from internal.app.config.config import configs
+from internal.petowo.config.config import configs
 
 
 class Container(containers.DeclarativeContainer):

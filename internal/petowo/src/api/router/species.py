@@ -4,7 +4,7 @@ from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends, status
 from pydantic import NonNegativeInt, PositiveInt
 
-from internal.app.container.container import Container
+from internal.petowo.container.container import Container
 from core.species.schema.species import SpeciesSchemaCreate, SpeciesSchema, SpeciesSchemaUpdate
 from core.species.service.species import ISpeciesService
 from core.utils.types import ID

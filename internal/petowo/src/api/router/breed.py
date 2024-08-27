@@ -4,7 +4,7 @@ from dependency_injector.wiring import Provide, inject
 from fastapi import APIRouter, Depends, status
 from pydantic import NonNegativeInt, PositiveInt
 
-from internal.app.container.container import Container
+from internal.petowo.container.container import Container
 from core.breed.schema.breed import BreedSchemaCreate, BreedSchema, BreedSchemaUpdate
 from core.breed.service.breed import IBreedService
 from core.utils.types import ID
