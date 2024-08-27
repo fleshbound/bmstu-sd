@@ -1,16 +1,8 @@
 import pytest
 
-from core.breed.schema.breed import BreedSchema, BreedDeleteStatus, BreedSchemaCreate, BreedSchemaUpdate
-<<<<<<<< HEAD:internal/tests/core/test_breed.py
-from core.breed.service.impl.breed import BreedService
-|||||||| parent of a759adf (add console UI files):internal/app/tests/core/breed/test_service.py
-from core.breed.service import BreedService
-from internal.app.tests.core.breed.mock.repository import MockedBreedRepository
-========
-from core.breed.service import BreedService
-from internal.petowo.tests.core.breed.mock.repository import MockedBreedRepository
->>>>>>>> a759adf (add console UI files):internal/petowo/tests/core/user/test_service.py
-from core.utils.types import ID, BreedName
+from internal.src.core.breed.schema.breed import BreedSchema, BreedDeleteStatus, BreedSchemaCreate, BreedSchemaUpdate
+from internal.src.core.breed.service.impl.breed import BreedService
+from internal.src.core.utils.types import ID, BreedName
 from internal.tests.core.mymock.repo.breed import MockedBreedRepository
 
 
