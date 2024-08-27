@@ -4,7 +4,13 @@ from dependency_injector.wiring import Provide, inject
 from fastapi import Depends, status, APIRouter
 from pydantic import NonNegativeInt, PositiveInt
 
+<<<<<<<< HEAD:internal/src/api/router/user.py
 from container.container import Container
+|||||||| parent of a759adf (add console UI files):internal/app/src/api/router/user.py
+from internal.app.container.container import Container
+========
+from internal.petowo.container.container import Container
+>>>>>>>> a759adf (add console UI files):internal/petowo/src/api/router/user.py
 from core.user.schema.user import UserSchemaCreate, UserSchema, UserSchemaUpdate
 from core.user.service.user import IUserService
 from core.utils.types import ID

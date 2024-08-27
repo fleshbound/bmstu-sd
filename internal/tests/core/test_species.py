@@ -3,6 +3,12 @@ import pytest
 from core.species.schema.species import SpeciesSchema, SpeciesDeleteStatus, SpeciesSchemaCreate, \
     SpeciesSchemaUpdate
 from core.species.service.impl.species import SpeciesService
+<<<<<<<< HEAD:internal/tests/core/test_species.py
+|||||||| parent of a759adf (add console UI files):internal/app/tests/core/species/test_service.py
+from internal.app.tests.core.species.mock.repository import MockedSpeciesRepository
+========
+from internal.petowo.tests.core.species.mock.repository import MockedSpeciesRepository
+>>>>>>>> a759adf (add console UI files):internal/petowo/tests/core/species/test_service.py
 from core.utils.types import ID, SpeciesName
 from internal.tests.core.mymock.repo.species import MockedSpeciesRepository
 
