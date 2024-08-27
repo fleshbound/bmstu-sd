@@ -1,21 +1,9 @@
 import pytest
 
-<<<<<<<< HEAD:internal/tests/core/test_user.py
 from internal.src.core.breed.schema.breed import BreedSchema, BreedDeleteStatus, BreedSchemaCreate, BreedSchemaUpdate
 from internal.src.core.breed.service.impl.breed import BreedService
 from internal.src.core.utils.types import ID, BreedName
 from internal.tests.core.mymock.repo.breed import MockedBreedRepository
-|||||||| ac98b70:internal/app/tests/core/user/test_service.py
-from core.breed.schema.breed import BreedSchema, BreedDeleteStatus, BreedSchemaCreate, BreedSchemaUpdate
-from core.breed.service import BreedService
-from internal.app.tests.core.breed.mock.repository import MockedBreedRepository
-from core.utils.types import ID, BreedName
-========
-from core.breed.schema.breed import BreedSchema, BreedDeleteStatus, BreedSchemaCreate, BreedSchemaUpdate
-from core.breed.service import BreedService
-from internal.petowo.tests.core.breed.mock.repository import MockedBreedRepository
-from core.utils.types import ID, BreedName
->>>>>>>> origin/lab5:internal/petowo/tests/core/breed/test_service.py
 
 
 @pytest.fixture
