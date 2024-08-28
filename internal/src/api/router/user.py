@@ -5,9 +5,9 @@ from fastapi import Depends, status, APIRouter
 from internal.app.container.container import Container
 from pydantic import NonNegativeInt, PositiveInt
 
-from core.user.schema.user import UserSchemaCreate, UserSchema, UserSchemaUpdate
-from core.user.service.user import IUserService
-from core.utils.types import ID
+from internal.src.core.user.schema.user import UserSchemaCreate, UserSchema, UserSchemaUpdate
+from internal.src.core.user.service.user import IUserService
+from internal.src.core.utils.types import ID
 
 router = APIRouter(
     prefix="/user",

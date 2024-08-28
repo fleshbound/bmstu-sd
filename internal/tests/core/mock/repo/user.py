@@ -2,8 +2,8 @@ from typing import List
 
 from pydantic import NonNegativeInt
 
-from core.breed.repository.breed import IBreedRepository
-from core.breed.schema.breed import BreedSchema
+from internal.src.core.breed.repository.breed import IBreedRepository
+from internal.src.core.breed.schema.breed import BreedSchema
 
 
 class MockedBreedRepository(IBreedRepository):

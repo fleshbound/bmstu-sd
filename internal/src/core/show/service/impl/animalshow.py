@@ -1,6 +1,7 @@
 from typing import List
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 from internal.src.core.show.repository.animalshow import IAnimalShowRepository
 from internal.src.core.show.schema.animalshow import AnimalShowSchemaCreate, AnimalShowSchema, AnimalShowSchemaDeleted
 from internal.src.core.show.service.animalshow import IAnimalShowService
@@ -18,6 +19,19 @@ from core.show.service.animalshow import IAnimalShowService
 from core.utils.exceptions import AnimalShowServiceError
 from core.utils.types import ID
 >>>>>>> fb32d3b (tests arent working watahel)
+||||||| parent of d8bdfb9 (add animal tests (init))
+from core.show.repository.animalshow import IAnimalShowRepository
+from core.show.schema.animalshow import AnimalShowSchemaCreate, AnimalShowSchema, AnimalShowSchemaDeleted
+from core.show.service.animalshow import IAnimalShowService
+from core.utils.exceptions import AnimalShowServiceError
+from core.utils.types import ID
+=======
+from internal.src.core.show.repository.animalshow import IAnimalShowRepository
+from internal.src.core.show.schema.animalshow import AnimalShowSchemaCreate, AnimalShowSchema, AnimalShowSchemaDeleted
+from internal.src.core.show.service.animalshow import IAnimalShowService
+from internal.src.core.utils.exceptions import AnimalShowServiceError
+from internal.src.core.utils.types import ID
+>>>>>>> d8bdfb9 (add animal tests (init))
 
 
 class AnimalShowService(IAnimalShowService):
