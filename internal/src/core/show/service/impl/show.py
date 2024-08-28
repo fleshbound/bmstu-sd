@@ -11,6 +11,7 @@ from internal.src.core.show.schema.animalshow import AnimalShowSchemaCreate
 from internal.src.core.show.schema.show import ShowSchemaCreate, ShowSchema, ShowSchemaUpdate, ShowSchemaDetailed, \
     ShowRegisterAnimalResult, ShowSchemaReport, ShowStatus, ShowRegisterAnimalStatus, ShowRegisterUserResult, \
     ShowRegisterUserStatus
+<<<<<<< HEAD
 from internal.src.core.show.schema.usershow import UserShowSchemaCreate
 from internal.src.core.show.service.animalshow import IAnimalShowService
 from internal.src.core.show.service.score import IScoreService
@@ -21,6 +22,29 @@ from internal.src.core.user.schema.user import UserRole
 from internal.src.core.user.service.user import IUserService
 from internal.src.core.utils.exceptions import ShowServiceError, NotFoundRepoError
 from internal.src.core.utils.types import ID
+||||||| parent of fb32d3b (tests arent working watahel)
+from core.show.schema.usershow import UserShowSchemaCreate
+from core.show.service.animalshow import IAnimalShowService
+from core.show.service.score import IScoreService
+from core.show.service.show import IShowService
+from core.show.service.usershow import IUserShowService
+from core.standard.service.standard import IStandardService
+from core.user.schema.user import UserRole
+from core.user.service.user import IUserService
+from core.utils.exceptions import ShowServiceError, NotFoundRepoError
+from core.utils.types import ID
+=======
+from core.show.schema.usershow import UserShowSchemaCreate
+from core.show.service.animalshow import IAnimalShowService
+from core.show.service.score import IScoreService
+from core.show.service.show import IShowService
+from core.show.service.usershow import IUserShowService
+from core.standard.service.standard import IStandardService
+from core.user.schema.user import UserRole
+from core.user.service.user import IUserService
+from core.utils.exceptions import ShowServiceError, NotFoundRepoError, AnimalShowServiceError, UserShowServiceError
+from core.utils.types import ID
+>>>>>>> fb32d3b (tests arent working watahel)
 
 
 class ShowService(IShowService):
@@ -76,7 +100,6 @@ class ShowService(IShowService):
 
         return self.show_repo.create(new_show)
 
-    
     def get_usershow_count(self, show_id: ID) -> NonNegativeInt:
         try:
             res = self.usershow_service.get_by_show_id(show_id)
@@ -236,7 +259,7 @@ class ShowService(IShowService):
             raise ShowServiceError(detail=f"user cannot be registered (not judge): id={user_id},"
                                           f" role={cur_user.role}")
         try:
-            self.animalshow_service.get_by_animal_show_id(user_id, show_id)
+            self.usershow_service.get_by_user_show_id(user_id, show_id)
         except NotFoundRepoError:
             usershow_record_create = UserShowSchemaCreate(user_id=user_id, show_id=show_id, is_archived=False)
             usershow_record = self.usershow_service.create(usershow_record_create)
@@ -254,8 +277,10 @@ class ShowService(IShowService):
         except NotFoundRepoError:
             raise ShowServiceError(detail=f"animal's not registered: "
                                           f"animal_id={animal_id}, show_id={show_id}")
-        self.animalshow_service.delete(record[0].id)
-        return ShowRegisterAnimalResult(record_id=record[0].id, status=ShowRegisterAnimalStatus.unregister_ok)
+        except AnimalShowServiceError as e:
+            raise e
+        self.animalshow_service.delete(record.id)
+        return ShowRegisterAnimalResult(record_id=record.id, status=ShowRegisterAnimalStatus.unregister_ok)
 
     def unregister_user(self, user_id: ID, show_id: ID) -> ShowRegisterUserResult:
         try:
@@ -263,5 +288,7 @@ class ShowService(IShowService):
         except NotFoundRepoError:
             raise ShowServiceError(detail=f"user's not registered: "
                                           f"user_id={user_id}, show_id={show_id}")
-        self.usershow_service.delete(record[0].id)
-        return ShowRegisterUserResult(record_id=record[0].id, status=ShowRegisterUserStatus.unregister_ok)
+        except UserShowServiceError as e:
+            raise e
+        self.usershow_service.delete(record.id)
+        return ShowRegisterUserResult(record_id=record.id, status=ShowRegisterUserStatus.unregister_ok)

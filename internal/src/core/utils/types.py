@@ -1,6 +1,6 @@
-from dataclasses import dataclass
 import datetime
 import enum
+from dataclasses import dataclass
 
 from pydantic import NonNegativeFloat, NonNegativeInt, EmailStr
 

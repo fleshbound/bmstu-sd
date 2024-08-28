@@ -3,7 +3,13 @@ from typing import List
 
 from pydantic import NonNegativeInt
 
+<<<<<<< HEAD
 from internal.src.core.user.schema.user import UserSchema, UserSchemaUpdate, UserSchemaCreate
+||||||| parent of fb32d3b (tests arent working watahel)
+from core.user.schema.user import UserSchema, UserSchemaUpdate, UserSchemaCreate
+=======
+from core.user.schema.user import UserSchema
+>>>>>>> fb32d3b (tests arent working watahel)
 
 
 class IUserRepository(ABC):

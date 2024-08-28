@@ -2,8 +2,16 @@ from dataclasses import dataclass
 
 from pydantic import BaseModel
 
+<<<<<<< HEAD
 from internal.src.core.user.schema.user import UserRole
 from internal.src.core.utils.types import ID, UserName, Email, HashedPassword
+||||||| parent of fb32d3b (tests arent working watahel)
+from core.user.schema.user import UserRole
+from core.utils.types import ID, UserName, Email, HashedPassword
+=======
+from core.user.schema.user import UserRole
+from core.utils.types import ID, UserName, Email
+>>>>>>> fb32d3b (tests arent working watahel)
 
 
 class Token(BaseModel):

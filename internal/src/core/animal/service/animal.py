@@ -3,8 +3,17 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
+<<<<<<< HEAD
 from internal.src.core.animal.schema.animal import AnimalSchema, AnimalSchemaUpdate, AnimalSchemaCreate, AnimalSchemaDelete
 from internal.src.core.utils.types import ID
+||||||| parent of fb32d3b (tests arent working watahel)
+from core.animal.schema.animal import AnimalSchema, AnimalSchemaUpdate, AnimalSchemaCreate, AnimalSchemaDelete
+from core.utils.types import ID
+=======
+from internal.src.core.animal.schema.animal import AnimalSchema, AnimalSchemaUpdate, AnimalSchemaCreate, \
+    AnimalSchemaDelete
+from internal.src.core.utils.types import ID
+>>>>>>> fb32d3b (tests arent working watahel)
 
 
 class IAnimalService(ABC):

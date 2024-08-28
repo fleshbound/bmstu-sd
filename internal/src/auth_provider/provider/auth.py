@@ -1,18 +1,14 @@
-import base64
 import uuid
 from datetime import datetime, timedelta, timezone
-from dataclasses import dataclass
+
+import uuid
+from datetime import datetime, timedelta, timezone
 
 import jwt
-from Cryptodome import Random
 from Cryptodome.Hash import SHA256
-from Cryptodome.Hash.SHA256 import SHA256Hash
-from Cryptodome.PublicKey import RSA
-from Cryptodome.PublicKey.RSA import RsaKey
-from Cryptodome.Signature import pkcs1_15
-from pydantic import NonNegativeInt, BaseModel
-
 from auth_provider.storage.auth import ISessionStorage, AuthSession
+from pydantic import BaseModel
+
 from auth_provider.utils.exceptions import AuthProviderError
 from internal.src.core.auth.provider.auth import IAuthProvider
 from internal.src.core.auth.schema.auth import Token, Fingerprint, AuthDetails, AuthPayload

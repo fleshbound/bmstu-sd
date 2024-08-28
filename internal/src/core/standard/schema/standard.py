@@ -1,6 +1,12 @@
 from pydantic import BaseModel, PositiveFloat
 
+<<<<<<< HEAD
 from internal.src.core.utils.types import ID, Weight, Height, Length, Country, Length
+||||||| parent of fb32d3b (tests arent working watahel)
+from core.utils.types import ID, Weight, Height, Length, Country, Length
+=======
+from core.utils.types import ID, Weight, Height, Country, Length
+>>>>>>> fb32d3b (tests arent working watahel)
 
 
 class StandardSchemaCreate(BaseModel):

@@ -3,7 +3,13 @@ from typing import List
 
 from pydantic import NonNegativeInt
 
+<<<<<<< HEAD
 from internal.src.core.standard.schema.standard import StandardSchema, StandardSchemaCreate
+||||||| parent of fb32d3b (tests arent working watahel)
+from core.standard.schema.standard import StandardSchema, StandardSchemaCreate
+=======
+from core.standard.schema.standard import StandardSchema
+>>>>>>> fb32d3b (tests arent working watahel)
 
 
 class IStandardRepository(ABC):

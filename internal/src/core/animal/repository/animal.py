@@ -3,7 +3,13 @@ from typing import List
 
 from pydantic import NonNegativeInt
 
+<<<<<<< HEAD
 from internal.src.core.animal.schema.animal import AnimalSchema, AnimalSchemaCreate, AnimalSchemaUpdate
+||||||| parent of fb32d3b (tests arent working watahel)
+from core.animal.schema.animal import AnimalSchema, AnimalSchemaCreate, AnimalSchemaUpdate
+=======
+from core.animal.schema.animal import AnimalSchema
+>>>>>>> fb32d3b (tests arent working watahel)
 
 
 class IAnimalRepository(ABC):

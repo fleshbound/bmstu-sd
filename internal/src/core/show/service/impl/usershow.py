@@ -1,9 +1,22 @@
 from typing import List
 
+<<<<<<< HEAD
 from internal.src.core.show.repository.usershow import IUserShowRepository
 from internal.src.core.show.schema.usershow import UserShowSchemaCreate, UserShowSchema, UserShowSchemaDelete
 from internal.src.core.show.service.usershow import IUserShowService
 from internal.src.core.utils.types import ID
+||||||| parent of fb32d3b (tests arent working watahel)
+from core.show.repository.usershow import IUserShowRepository
+from core.show.schema.usershow import UserShowSchemaCreate, UserShowSchema, UserShowSchemaDelete
+from core.show.service.usershow import IUserShowService
+from core.utils.types import ID
+=======
+from core.show.repository.usershow import IUserShowRepository
+from core.show.schema.usershow import UserShowSchemaCreate, UserShowSchema, UserShowSchemaDelete
+from core.show.service.usershow import IUserShowService
+from core.utils.exceptions import UserShowServiceError
+from core.utils.types import ID
+>>>>>>> fb32d3b (tests arent working watahel)
 
 
 class UserShowService(IUserShowService):
@@ -34,5 +47,8 @@ class UserShowService(IUserShowService):
     def get_by_show_id(self, show_id: ID) -> List[UserShowSchema]:
         return self.usershow_repo.get_by_show_id(show_id.value)
 
-    def get_by_user_show_id(self, user_id: ID, show_id: ID) -> List[UserShowSchema]:
-        return self.usershow_repo.get_by_user_show_id(user_id.value, show_id.value)
+    def get_by_user_show_id(self, user_id: ID, show_id: ID) -> UserShowSchema:
+        res = self.usershow_repo.get_by_user_show_id(user_id.value, show_id.value)
+        if len(res) > 1:
+            raise UserShowServiceError(detail='More than one usershow record')
+        return res[0]
