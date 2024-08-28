@@ -5,9 +5,9 @@ from fastapi import APIRouter, Depends, status
 from internal.app.container.container import Container
 from pydantic import NonNegativeInt, PositiveInt
 
-from core.breed.schema.breed import BreedSchemaCreate, BreedSchema, BreedSchemaUpdate
-from core.breed.service.breed import IBreedService
-from core.utils.types import ID
+from internal.src.core.breed.schema.breed import BreedSchemaCreate, BreedSchema, BreedSchemaUpdate
+from internal.src.core.breed.service.breed import IBreedService
+from internal.src.core.utils.types import ID
 
 router = APIRouter(
     prefix="/breed",

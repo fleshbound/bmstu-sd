@@ -12,6 +12,7 @@ from internal.src.core.show.schema.show import ShowSchemaCreate, ShowSchema, Sho
     ShowRegisterAnimalResult, ShowSchemaReport, ShowStatus, ShowRegisterAnimalStatus, ShowRegisterUserResult, \
     ShowRegisterUserStatus
 <<<<<<< HEAD
+<<<<<<< HEAD
 from internal.src.core.show.schema.usershow import UserShowSchemaCreate
 from internal.src.core.show.service.animalshow import IAnimalShowService
 from internal.src.core.show.service.score import IScoreService
@@ -45,6 +46,29 @@ from core.user.service.user import IUserService
 from core.utils.exceptions import ShowServiceError, NotFoundRepoError, AnimalShowServiceError, UserShowServiceError
 from core.utils.types import ID
 >>>>>>> fb32d3b (tests arent working watahel)
+||||||| parent of d8bdfb9 (add animal tests (init))
+from core.show.schema.usershow import UserShowSchemaCreate
+from core.show.service.animalshow import IAnimalShowService
+from core.show.service.score import IScoreService
+from core.show.service.show import IShowService
+from core.show.service.usershow import IUserShowService
+from core.standard.service.standard import IStandardService
+from core.user.schema.user import UserRole
+from core.user.service.user import IUserService
+from core.utils.exceptions import ShowServiceError, NotFoundRepoError, AnimalShowServiceError, UserShowServiceError
+from core.utils.types import ID
+=======
+from internal.src.core.show.schema.usershow import UserShowSchemaCreate
+from internal.src.core.show.service.animalshow import IAnimalShowService
+from internal.src.core.show.service.score import IScoreService
+from internal.src.core.show.service.show import IShowService
+from internal.src.core.show.service.usershow import IUserShowService
+from internal.src.core.standard.service.standard import IStandardService
+from internal.src.core.user.schema.user import UserRole
+from internal.src.core.user.service.user import IUserService
+from internal.src.core.utils.exceptions import ShowServiceError, NotFoundRepoError, AnimalShowServiceError, UserShowServiceError
+from internal.src.core.utils.types import ID
+>>>>>>> d8bdfb9 (add animal tests (init))
 
 
 class ShowService(IShowService):

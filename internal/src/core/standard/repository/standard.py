@@ -4,12 +4,18 @@ from typing import List
 from pydantic import NonNegativeInt
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 from internal.src.core.standard.schema.standard import StandardSchema, StandardSchemaCreate
 ||||||| parent of fb32d3b (tests arent working watahel)
 from core.standard.schema.standard import StandardSchema, StandardSchemaCreate
 =======
 from core.standard.schema.standard import StandardSchema
 >>>>>>> fb32d3b (tests arent working watahel)
+||||||| parent of d8bdfb9 (add animal tests (init))
+from core.standard.schema.standard import StandardSchema
+=======
+from internal.src.core.standard.schema.standard import StandardSchema
+>>>>>>> d8bdfb9 (add animal tests (init))
 
 
 class IStandardRepository(ABC):

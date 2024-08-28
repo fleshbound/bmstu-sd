@@ -4,10 +4,23 @@ from typing import List, Optional, Tuple
 from pydantic import NonNegativeInt, NonNegativeFloat
 from repository.utils.dict.impl.float import FloatKeyDictionary
 
+<<<<<<< HEAD
 from internal.src.core.show.repository.score import IScoreRepository
 from internal.src.core.show.service.usershow import IUserShowService
 from internal.src.core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, ScoreSchemaUpdate, Score, ScoreValue, \
+||||||| parent of d8bdfb9 (add animal tests (init))
+from core.show.repository.animalshow import IAnimalShowRepository
+from core.show.repository.score import IScoreRepository
+from core.show.repository.usershow import IUserShowRepository
+from core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, ScoreSchemaUpdate, Score, ScoreValue, \
+=======
+from internal.src.core.show.repository.animalshow import IAnimalShowRepository
+from internal.src.core.show.repository.score import IScoreRepository
+from internal.src.core.show.repository.usershow import IUserShowRepository
+from internal.src.core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, ScoreSchemaUpdate, Score, ScoreValue, \
+>>>>>>> d8bdfb9 (add animal tests (init))
     AniShowRankingInfo
+<<<<<<< HEAD
 <<<<<<< HEAD
 from internal.src.core.show.service.animalshow import IAnimalShowService
 from internal.src.core.show.service.score import IScoreService
@@ -24,6 +37,15 @@ from core.show.service.score import IScoreService
 from core.show.service.show import IShowService
 from core.utils.types import ID
 >>>>>>> fb32d3b (tests arent working watahel)
+||||||| parent of d8bdfb9 (add animal tests (init))
+from core.show.service.score import IScoreService
+from core.show.service.show import IShowService
+from core.utils.types import ID
+=======
+from internal.src.core.show.service.score import IScoreService
+from internal.src.core.show.service.show import IShowService
+from internal.src.core.utils.types import ID
+>>>>>>> d8bdfb9 (add animal tests (init))
 
 
 class ScoreService(IScoreService):

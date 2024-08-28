@@ -71,6 +71,7 @@ class AnimalSchema(BaseModel):
             is_multicolor=other.is_multicolor
         )
 
+
 class AnimalSchemaDelete(BaseModel):
     id: ID
     status: str = 'deleted'

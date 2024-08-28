@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from typing import List
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 from internal.src.core.show.schema.animalshow import AnimalShowSchemaCreate, AnimalShowSchema
 from internal.src.core.utils.types import ID
 ||||||| parent of fb32d3b (tests arent working watahel)
@@ -11,6 +12,13 @@ from core.utils.types import ID
 from core.show.schema.animalshow import AnimalShowSchemaCreate, AnimalShowSchema, AnimalShowSchemaDeleted
 from core.utils.types import ID
 >>>>>>> fb32d3b (tests arent working watahel)
+||||||| parent of d8bdfb9 (add animal tests (init))
+from core.show.schema.animalshow import AnimalShowSchemaCreate, AnimalShowSchema, AnimalShowSchemaDeleted
+from core.utils.types import ID
+=======
+from internal.src.core.show.schema.animalshow import AnimalShowSchemaCreate, AnimalShowSchema, AnimalShowSchemaDeleted
+from internal.src.core.utils.types import ID
+>>>>>>> d8bdfb9 (add animal tests (init))
 
 
 class IAnimalShowService(ABC):

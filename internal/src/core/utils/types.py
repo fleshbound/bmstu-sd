@@ -11,7 +11,7 @@ class Sex(str, enum.Enum):
     male = "M"
 
 
-@dataclass(frozen=True)
+@dataclass
 class UserName:
     value: str
 
@@ -21,7 +21,7 @@ class UserName:
         return other.value == self.value
 
 
-@dataclass(frozen=True)
+@dataclass
 class BreedName:
     value: str
 
@@ -31,7 +31,7 @@ class BreedName:
         return other.value == self.value
 
 
-@dataclass(frozen=True)
+@dataclass
 class SpeciesName:
     value: str
 
@@ -41,7 +41,7 @@ class SpeciesName:
         return other.value == self.value
 
 
-@dataclass(frozen=True)
+@dataclass
 class GroupName:
     value: str
 
@@ -51,7 +51,7 @@ class GroupName:
         return other.value == self.value
 
 
-@dataclass(frozen=True)
+@dataclass
 class Country:
     value: str
 
@@ -61,7 +61,7 @@ class Country:
         return other.value == self.value
 
 
-@dataclass(frozen=True)
+@dataclass
 class ShowName:
     value: str
 
@@ -71,7 +71,7 @@ class ShowName:
         return other.value == self.value
 
 
-@dataclass(frozen=True)
+@dataclass
 class Email:
     value: EmailStr
 
@@ -81,7 +81,7 @@ class Email:
         return other.value == self.value
 
 
-@dataclass(frozen=True)
+@dataclass
 class HashedPassword:
     value: str
 
@@ -91,7 +91,7 @@ class HashedPassword:
         return other.value == self.value
 
 
-@dataclass(frozen=True)
+@dataclass
 class AnimalName:
     value: str
 
@@ -101,7 +101,7 @@ class AnimalName:
         return other.value == self.value
 
 
-@dataclass(frozen=True)
+@dataclass
 class ID:
     value: NonNegativeInt
 
@@ -117,7 +117,7 @@ class ID:
         return n == self.value
 
 
-@dataclass(frozen=True)
+@dataclass
 class Datetime:
     value: datetime.datetime
 

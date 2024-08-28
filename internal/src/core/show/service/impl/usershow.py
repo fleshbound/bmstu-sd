@@ -1,6 +1,7 @@
 from typing import List
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 from internal.src.core.show.repository.usershow import IUserShowRepository
 from internal.src.core.show.schema.usershow import UserShowSchemaCreate, UserShowSchema, UserShowSchemaDelete
 from internal.src.core.show.service.usershow import IUserShowService
@@ -17,6 +18,19 @@ from core.show.service.usershow import IUserShowService
 from core.utils.exceptions import UserShowServiceError
 from core.utils.types import ID
 >>>>>>> fb32d3b (tests arent working watahel)
+||||||| parent of d8bdfb9 (add animal tests (init))
+from core.show.repository.usershow import IUserShowRepository
+from core.show.schema.usershow import UserShowSchemaCreate, UserShowSchema, UserShowSchemaDelete
+from core.show.service.usershow import IUserShowService
+from core.utils.exceptions import UserShowServiceError
+from core.utils.types import ID
+=======
+from internal.src.core.show.repository.usershow import IUserShowRepository
+from internal.src.core.show.schema.usershow import UserShowSchemaCreate, UserShowSchema, UserShowSchemaDelete
+from internal.src.core.show.service.usershow import IUserShowService
+from internal.src.core.utils.exceptions import UserShowServiceError
+from internal.src.core.utils.types import ID
+>>>>>>> d8bdfb9 (add animal tests (init))
 
 
 class UserShowService(IUserShowService):

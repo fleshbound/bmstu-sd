@@ -5,9 +5,9 @@ from fastapi import APIRouter, Depends, status
 from internal.app.container.container import Container
 from pydantic import NonNegativeInt, PositiveInt
 
-from core.group.schema.group import GroupSchemaCreate, GroupSchema, GroupSchemaUpdate
-from core.group.service.group import IGroupService
-from core.utils.types import ID
+from internal.src.core.group.schema.group import GroupSchemaCreate, GroupSchema, GroupSchemaUpdate
+from internal.src.core.group.service.group import IGroupService
+from internal.src.core.utils.types import ID
 
 router = APIRouter(
     prefix="/group",
