@@ -28,4 +28,7 @@ class ShowHandler:
 
     def get_show_result(self):
         raise NotImplementedError
+
+    def get_animals_by_show(self):
+        raise NotImplementedError
     
