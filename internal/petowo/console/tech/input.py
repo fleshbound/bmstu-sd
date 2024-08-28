@@ -3,14 +3,14 @@ from typing import Optional
 
 from pydantic import PositiveInt
 
-from core.utils.types import Datetime
 from internal.petowo.console.tech.utils.lang.langmodel import LanguageModel
 
 
 class InputHandler:
     lang_model: LanguageModel
 
-    def ask_question(self, query: str) -> str:
+    @staticmethod
+    def ask_question(query: str) -> str:
         print(query)
         return input('')
 
@@ -34,7 +34,7 @@ class InputHandler:
             try:
                 PositiveInt(res)
             except ValueError:
-                print(self.lang_model.input_incorrect)
+                print(self.lang_model.input_invalid)
             else:
                 return res
             out = self.ask_question(out_question)
@@ -42,7 +42,7 @@ class InputHandler:
                 input = False
         return None
 
-    def date_input(self, out_question: str) -> Optional[Datetime]:
+    def date_input(self, out_question: str) -> Optional[datetime]:
         input = True
         while input:
             day = self.ask_question(self.lang_model.question_day)
@@ -57,9 +57,15 @@ class InputHandler:
                     PositiveInt(month)
                     PositiveInt(year)
                 except ValueError:
-                    print(self.lang_model.input_incorrect)
+                    print(self.lang_model.input_invalid)
                 else:
                     try:
                         date = datetime.datetime(PositiveInt(year), PositiveInt(month), PositiveInt(day))
                     except ValueError:
-                        print(self.lang_model.input_incorrect)
+                        print(self.lang_model.input_invalid)
+                    else:
+                        return date
+            out = self.ask_question(out_question)
+            if out == '' or out == '\n' or self.lang_model.yes.lower() == out.lower():
+                input = False
+        return None
