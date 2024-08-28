@@ -1,6 +1,6 @@
 from pydantic import BaseModel, PositiveFloat
 
-from core.utils.types import ID, Weight, Height, Length, Country, Length
+from core.utils.types import ID, Weight, Height, Country, Length
 
 
 class StandardSchemaCreate(BaseModel):

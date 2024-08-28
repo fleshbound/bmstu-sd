@@ -1,14 +1,14 @@
 import pytest
+from core.mock.breed.breed import MockedBreedRepository
 
 from core.breed.schema.breed import BreedSchema, BreedDeleteStatus, BreedSchemaCreate, BreedSchemaUpdate
 from core.breed.service.impl.breed import BreedService
-from internal.tests.core.breed.mock.repository import MockedBreedRepository
 from core.utils.types import ID, BreedName
 
 
 @pytest.fixture
 def mocked_id():
-    return ID(value=1)
+    return ID(1)
 
 
 @pytest.fixture

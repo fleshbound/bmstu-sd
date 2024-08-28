@@ -2,9 +2,9 @@ from typing import List
 
 from dependency_injector.wiring import Provide, inject
 from fastapi import Depends, status, APIRouter
+from internal.app.container.container import Container
 from pydantic import NonNegativeInt, PositiveInt
 
-from internal.app.container.container import Container
 from core.user.schema.user import UserSchemaCreate, UserSchema, UserSchemaUpdate
 from core.user.service.user import IUserService
 from core.utils.types import ID

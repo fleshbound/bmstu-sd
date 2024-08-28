@@ -2,9 +2,8 @@ from typing import List
 
 from pydantic import NonNegativeInt
 
-from core.group.schema.group import GroupSchema
-
 from core.group.repository.group import IGroupRepository
+from core.group.schema.group import GroupSchema
 
 
 class MockedGroupRepository(IGroupRepository):

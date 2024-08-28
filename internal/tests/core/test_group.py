@@ -1,14 +1,14 @@
 import pytest
+from core.mock.group.group import MockedGroupRepository
 
 from core.group.schema.group import GroupSchema, GroupDeleteStatus, GroupSchemaCreate, GroupSchemaUpdate
 from core.group.service.impl.group import GroupService
-from internal.tests.core.group.mock.repository import MockedGroupRepository
 from core.utils.types import ID, GroupName
 
 
 @pytest.fixture
 def mocked_id():
-    return ID(value=1)
+    return ID(1)
 
 
 @pytest.fixture

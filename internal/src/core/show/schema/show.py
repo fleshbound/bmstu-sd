@@ -27,7 +27,6 @@ class ShowStatus(str, enum.Enum):
 class ShowSchemaCreate(BaseModel):
     species_id: Optional[ID]
     breed_id: Optional[ID]
-    status: ShowStatus
     country: Country
     s_class: ShowClass
     name: ShowName
@@ -56,7 +55,7 @@ class ShowSchema(BaseModel):
     def from_create(cls, create: ShowSchemaCreate):
         return cls(
             id=ID(0),
-            status=create.status,
+            status=ShowStatus.created,
             name=create.name,
             species_id=create.species_id,
             breed_id=create.breed_id,

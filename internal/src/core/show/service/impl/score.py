@@ -2,6 +2,7 @@ from collections import OrderedDict
 from typing import List, Optional, Tuple
 
 from pydantic import NonNegativeInt, NonNegativeFloat
+from repository.utils.dict.impl.float import FloatKeyDictionary
 
 from core.show.repository.animalshow import IAnimalShowRepository
 from core.show.repository.score import IScoreRepository
@@ -10,7 +11,6 @@ from core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreat
     AniShowRankingInfo
 from core.show.service.score import IScoreService
 from core.show.service.show import IShowService
-from repository.utils.dict.impl.float import FloatKeyDictionary
 from core.utils.types import ID
 
 

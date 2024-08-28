@@ -3,6 +3,7 @@ from typing import List
 from core.show.repository.animalshow import IAnimalShowRepository
 from core.show.schema.animalshow import AnimalShowSchemaCreate, AnimalShowSchema, AnimalShowSchemaDeleted
 from core.show.service.animalshow import IAnimalShowService
+from core.utils.exceptions import AnimalShowServiceError
 from core.utils.types import ID
 
 
@@ -34,5 +35,8 @@ class AnimalShowService(IAnimalShowService):
     def get_by_show_id(self, show_id: ID) -> List[AnimalShowSchema]:
         return self.animalshow_repo.get_by_show_id(show_id.value)
 
-    def get_by_animal_show_id(self, animal_id: ID, show_id: ID) -> List[AnimalShowSchema]:
-        return self.animalshow_repo.get_by_animal_show_id(animal_id.value, show_id.value)
+    def get_by_animal_show_id(self, animal_id: ID, show_id: ID) -> AnimalShowSchema:
+        res = self.animalshow_repo.get_by_animal_show_id(animal_id.value, show_id.value)
+        if len(res) > 0:
+            raise AnimalShowServiceError(detail='More than one animalshow record')
+        return res[0]

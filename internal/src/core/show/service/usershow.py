@@ -31,5 +31,5 @@ class IUserShowService(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def get_by_user_show_id(self, user_id: ID, show_id: ID) -> List[UserShowSchema]:
+    def get_by_user_show_id(self, user_id: ID, show_id: ID) -> UserShowSchema:
         raise NotImplementedError

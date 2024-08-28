@@ -1,14 +1,14 @@
 import pytest
+from core.mock.species.species import MockedSpeciesRepository
 
 from core.species.schema.species import SpeciesSchema, SpeciesDeleteStatus, SpeciesSchemaCreate, SpeciesSchemaUpdate
 from core.species.service.impl.species import SpeciesService
-from internal.tests.core.species.mock.repository import MockedSpeciesRepository
 from core.utils.types import ID, SpeciesName
 
 
 @pytest.fixture
 def mocked_id():
-    return ID(value=1)
+    return ID(1)
 
 
 @pytest.fixture

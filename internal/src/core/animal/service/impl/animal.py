@@ -25,12 +25,6 @@ class AnimalService(IAnimalService):
         self.animalshow_service = animalshow_service
         self.show_service = show_service
 
-    def archive(self,
-                animal_id: ID) -> AnimalSchema:
-        animal: AnimalSchema = self.animal_repo.get_by_id(animal_id)
-        animal.is_archived = True
-        return self.animal_repo.update(animal)
-
     def delete(self,
                animal_id: ID) -> AnimalSchemaDelete:
         try:

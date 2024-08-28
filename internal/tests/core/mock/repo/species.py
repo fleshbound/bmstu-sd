@@ -2,9 +2,8 @@ from typing import List
 
 from pydantic import NonNegativeInt
 
-from core.species.schema.species import SpeciesSchema, SpeciesSchemaDelete
-
 from core.species.repository.species import ISpeciesRepository
+from core.species.schema.species import SpeciesSchema
 
 
 class MockedSpeciesRepository(ISpeciesRepository):
