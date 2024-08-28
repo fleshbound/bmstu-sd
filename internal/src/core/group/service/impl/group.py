@@ -2,10 +2,10 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from core.group.repository.group import IGroupRepository
-from core.group.schema.group import GroupSchema, GroupSchemaCreate, GroupSchemaUpdate, GroupSchemaDelete
-from core.group.service.group import IGroupService
-from core.utils.types import ID
+from internal.src.core.group.repository.group import IGroupRepository
+from internal.src.core.group.schema.group import GroupSchema, GroupSchemaCreate, GroupSchemaUpdate, GroupSchemaDelete
+from internal.src.core.group.service.group import IGroupService
+from internal.src.core.utils.types import ID
 
 
 class GroupService(IGroupService):

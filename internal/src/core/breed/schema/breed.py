@@ -2,7 +2,7 @@ import enum
 
 from pydantic import BaseModel
 
-from core.utils.types import ID, BreedName
+from internal.src.core.utils.types import ID, BreedName
 
 
 class BreedSchema(BaseModel):

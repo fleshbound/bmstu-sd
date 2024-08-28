@@ -1,6 +1,6 @@
 from pydantic import BaseModel, NonNegativeInt
 
-from core.utils.types import ID
+from internal.src.core.utils.types import ID
 
 
 class CertificateSchemaCreate(BaseModel):

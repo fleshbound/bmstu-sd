@@ -2,10 +2,10 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from core.breed.repository.breed import IBreedRepository
-from core.breed.schema.breed import BreedSchema, BreedSchemaCreate, BreedSchemaUpdate, BreedSchemaDelete
-from core.breed.service.breed import IBreedService
-from core.utils.types import ID
+from internal.src.core.breed.repository.breed import IBreedRepository
+from internal.src.core.breed.schema.breed import BreedSchema, BreedSchemaCreate, BreedSchemaUpdate, BreedSchemaDelete
+from internal.src.core.breed.service.breed import IBreedService
+from internal.src.core.utils.types import ID
 
 
 class BreedService(IBreedService):
@@ -22,7 +22,7 @@ class BreedService(IBreedService):
 
     def create(self,
                create_breed: BreedSchemaCreate) -> BreedSchema:
-        param_dict = create_breed.dict()
+        param_dict = create_breed.model_dump()
         param_dict['id'] = ID(0)
         new_breed = BreedSchema(**param_dict)
         return self.breed_repo.create(new_breed)

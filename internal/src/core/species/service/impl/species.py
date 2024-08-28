@@ -2,10 +2,10 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from core.species.repository.species import ISpeciesRepository
-from core.species.schema.species import SpeciesSchema, SpeciesSchemaCreate, SpeciesSchemaUpdate, SpeciesSchemaDelete
-from core.species.service.species import ISpeciesService
-from core.utils.types import ID
+from internal.src.core.species.repository.species import ISpeciesRepository
+from internal.src.core.species.schema.species import SpeciesSchema, SpeciesSchemaCreate, SpeciesSchemaUpdate, SpeciesSchemaDelete
+from internal.src.core.species.service.species import ISpeciesService
+from internal.src.core.utils.types import ID
 
 
 class SpeciesService(ISpeciesService):

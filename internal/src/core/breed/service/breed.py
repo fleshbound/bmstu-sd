@@ -3,8 +3,8 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from core.breed.schema.breed import BreedSchema, BreedSchemaUpdate, BreedSchemaCreate, BreedSchemaDelete
-from core.utils.types import ID
+from internal.src.core.breed.schema.breed import BreedSchema, BreedSchemaUpdate, BreedSchemaCreate, BreedSchemaDelete
+from internal.src.core.utils.types import ID
 
 
 class IBreedService(ABC):

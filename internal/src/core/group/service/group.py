@@ -3,8 +3,8 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from core.group.schema.group import GroupSchema, GroupSchemaUpdate, GroupSchemaCreate, GroupSchemaDelete
-from core.utils.types import ID
+from internal.src.core.group.schema.group import GroupSchema, GroupSchemaUpdate, GroupSchemaCreate, GroupSchemaDelete
+from internal.src.core.utils.types import ID
 
 
 class IGroupService(ABC):

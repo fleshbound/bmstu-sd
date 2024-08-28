@@ -1,6 +1,6 @@
 from abc import abstractmethod, ABC
 
-from core.auth.schema.auth import Token, AuthSchemaSignIn, AuthSchemaSignUp, Fingerprint, AuthDetails, AuthPayload
+from internal.src.core.auth.schema.auth import Token, AuthSchemaSignIn, AuthSchemaSignUp, Fingerprint, AuthDetails, AuthPayload
 
 
 class IAuthService(ABC):

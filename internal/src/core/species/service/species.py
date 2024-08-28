@@ -3,8 +3,8 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from core.species.schema.species import SpeciesSchema, SpeciesSchemaUpdate, SpeciesSchemaCreate
-from core.utils.types import ID
+from internal.src.core.species.schema.species import SpeciesSchema, SpeciesSchemaUpdate, SpeciesSchemaCreate
+from internal.src.core.utils.types import ID
 
 
 class ISpeciesService(ABC):

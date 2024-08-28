@@ -4,14 +4,14 @@ from typing import List, Optional, Tuple
 from pydantic import NonNegativeInt, NonNegativeFloat
 from repository.utils.dict.impl.float import FloatKeyDictionary
 
-from core.show.repository.animalshow import IAnimalShowRepository
-from core.show.repository.score import IScoreRepository
-from core.show.repository.usershow import IUserShowRepository
-from core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, ScoreSchemaUpdate, Score, ScoreValue, \
+from internal.src.core.show.repository.animalshow import IAnimalShowRepository
+from internal.src.core.show.repository.score import IScoreRepository
+from internal.src.core.show.repository.usershow import IUserShowRepository
+from internal.src.core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, ScoreSchemaUpdate, Score, ScoreValue, \
     AniShowRankingInfo
-from core.show.service.score import IScoreService
-from core.show.service.show import IShowService
-from core.utils.types import ID
+from internal.src.core.show.service.score import IScoreService
+from internal.src.core.show.service.show import IShowService
+from internal.src.core.utils.types import ID
 
 
 class ScoreService(IScoreService):

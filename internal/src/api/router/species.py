@@ -5,9 +5,9 @@ from fastapi import APIRouter, Depends, status
 from internal.app.container.container import Container
 from pydantic import NonNegativeInt, PositiveInt
 
-from core.species.schema.species import SpeciesSchemaCreate, SpeciesSchema, SpeciesSchemaUpdate
-from core.species.service.species import ISpeciesService
-from core.utils.types import ID
+from internal.src.core.species.schema.species import SpeciesSchemaCreate, SpeciesSchema, SpeciesSchemaUpdate
+from internal.src.core.species.service.species import ISpeciesService
+from internal.src.core.utils.types import ID
 
 router = APIRouter(
     prefix="/species",

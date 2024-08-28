@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from core.utils.types import ID, AnimalName, Sex, Datetime, Length, Height, Weight
+from internal.src.core.utils.types import ID, AnimalName, Sex, Datetime, Length, Height, Weight
 
 
 class AnimalSchemaCreate(BaseModel):
@@ -70,6 +70,7 @@ class AnimalSchema(BaseModel):
             has_defects=other.has_defects,
             is_multicolor=other.is_multicolor
         )
+
 
 class AnimalSchemaDelete(BaseModel):
     id: ID

@@ -3,7 +3,7 @@ from typing import List
 
 from pydantic import NonNegativeInt
 
-from core.group.schema.group import GroupSchema
+from internal.src.core.group.schema.group import GroupSchema
 
 
 class IGroupRepository(ABC):

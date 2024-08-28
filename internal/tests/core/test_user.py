@@ -1,9 +1,9 @@
 import pytest
-from core.mock.breed.breed import MockedBreedRepository
+from internal.tests.core.mock.repo.breed import MockedBreedRepository
 
-from core.breed.schema.breed import BreedSchema, BreedDeleteStatus, BreedSchemaCreate, BreedSchemaUpdate
-from core.breed.service.impl.breed import BreedService
-from core.utils.types import ID, BreedName
+from internal.src.core.breed.schema.breed import BreedSchema, BreedDeleteStatus, BreedSchemaCreate, BreedSchemaUpdate
+from internal.src.core.breed.service.impl.breed import BreedService
+from internal.src.core.utils.types import ID, BreedName
 
 
 @pytest.fixture

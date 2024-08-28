@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from core.auth.schema.auth import AuthPayload, Fingerprint, Token, AuthDetails
-from core.utils.types import HashedPassword
+from internal.src.core.auth.schema.auth import AuthPayload, Fingerprint, Token, AuthDetails
+from internal.src.core.utils.types import HashedPassword
 
 
 class IAuthProvider(ABC):
