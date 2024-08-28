@@ -1,10 +1,23 @@
 from typing import List
 
+<<<<<<< HEAD
 from internal.src.core.show.repository.animalshow import IAnimalShowRepository
 from internal.src.core.show.schema.animalshow import AnimalShowSchemaCreate, AnimalShowSchema, AnimalShowSchemaDeleted
 from internal.src.core.show.service.animalshow import IAnimalShowService
 from internal.src.core.utils.exceptions import AnimalShowServiceError
 from internal.src.core.utils.types import ID
+||||||| parent of fb32d3b (tests arent working watahel)
+from core.show.repository.animalshow import IAnimalShowRepository
+from core.show.schema.animalshow import AnimalShowSchemaCreate, AnimalShowSchema, AnimalShowSchemaDeleted
+from core.show.service.animalshow import IAnimalShowService
+from core.utils.types import ID
+=======
+from core.show.repository.animalshow import IAnimalShowRepository
+from core.show.schema.animalshow import AnimalShowSchemaCreate, AnimalShowSchema, AnimalShowSchemaDeleted
+from core.show.service.animalshow import IAnimalShowService
+from core.utils.exceptions import AnimalShowServiceError
+from core.utils.types import ID
+>>>>>>> fb32d3b (tests arent working watahel)
 
 
 class AnimalShowService(IAnimalShowService):
