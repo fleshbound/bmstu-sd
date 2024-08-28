@@ -13,11 +13,11 @@ class AnimalHandler:
         self.show_service = show_service
 
     def delete_animal(self):
-        raise
+        raise NotImplementedError
 
     def create_animal(self):
         raise NotImplementedError
 
     def get_animals_all(self):
-        raise
+        raise NotImplementedError
 
