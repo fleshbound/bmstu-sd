@@ -3,10 +3,10 @@ from typing import List, Optional
 
 from pydantic import NonNegativeInt
 
-from core.mock.repo.score import MockedScoreRepository
-from core.mock.service.animalshow import MockedAnimalShowService
-from core.mock.service.show import MockedShowService
-from core.mock.service.usershow import MockedUserShowService
+from internal.tests.core.mock.repo.score import MockedScoreRepository
+from internal.tests.core.mock.service.animalshow import MockedAnimalShowService
+from internal.tests.core.mock.service.show import MockedShowService
+from internal.tests.core.mock.service.usershow import MockedUserShowService
 from internal.src.core.animal.schema.animal import AnimalSchema
 from internal.src.core.show.schema.animalshow import AnimalShowSchema
 from internal.src.core.show.schema.score import ScoreSchema, ScoreValue

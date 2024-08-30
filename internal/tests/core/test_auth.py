@@ -4,8 +4,8 @@ import pytest
 from fastapi import HTTPException
 from pydantic import NonNegativeInt
 
-from core.mock.provider.auth import MockedAuthProvider
-from core.mock.service.user import MockedUserService
+from internal.tests.core.mock.provider.auth import MockedAuthProvider
+from internal.tests.core.mock.service.user import MockedUserService
 from internal.src.core.auth.schema.auth import AuthSchemaSignIn, Fingerprint
 from internal.src.core.auth.service.impl.auth import AuthService
 from internal.src.core.user.schema.user import UserSchema, UserRole

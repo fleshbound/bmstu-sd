@@ -2,11 +2,11 @@ from collections import OrderedDict
 from typing import List, Optional, Tuple
 
 from pydantic import NonNegativeInt, NonNegativeFloat
-from repository.utils.dict.impl.float import FloatKeyDictionary
+from internal.src.core.utils.dict.impl.float import FloatKeyDictionary
 
-from internal.src.core.show.repository.animalshow import IAnimalShowService
+from internal.src.core.show.service.animalshow import IAnimalShowService
 from internal.src.core.show.repository.score import IScoreRepository
-from internal.src.core.show.repository.usershow import IUserShowService
+from internal.src.core.show.service.usershow import IUserShowService
 from internal.src.core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, ScoreSchemaUpdate, Score, ScoreValue, \
     AnimalShowRankingInfo
 from internal.src.core.show.service.score import IScoreService

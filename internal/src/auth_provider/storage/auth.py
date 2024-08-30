@@ -4,7 +4,7 @@ from dataclasses import dataclass
 
 from pydantic import BaseModel
 
-from core.auth.schema.auth import AuthPayload, Token, Fingerprint
+from internal.src.core.auth.schema.auth import AuthPayload, Token, Fingerprint
 
 
 class AuthSession(BaseModel):
