@@ -40,6 +40,6 @@ class MockedUserService(IUserService):
 
     def get_by_email(self, email: Email) -> UserSchema:
         for user in self._users:
-            if user.email == email:
+            if user.email.value == email.value:
                 return user
         raise NotFoundRepoError(detail='')

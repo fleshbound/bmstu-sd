@@ -25,10 +25,10 @@ class AuthService(IAuthService):
         except NotFoundRepoError:
             raise AuthServiceError(detail=f'email not found: email={signin_param.email.value}')
 
-        if cur_user.hashed_password != self.auth_provider.generate_password_hash(signin_param.password):
+        if cur_user.hashed_password.value != self.auth_provider.generate_password_hash(signin_param.password).value:
             raise AuthServiceError(detail=f'invalid password')
 
-        return self.auth_provider.create_jwt_session(AuthPayload(cur_user.id), signin_param.fingerprint)
+        return self.auth_provider.create_jwt_session(AuthPayload(user_id=cur_user.id), signin_param.fingerprint)
 
     def signup(self, singup_param: AuthSchemaSignUp) -> None:
         user = UserSchemaCreate(email=singup_param.email,

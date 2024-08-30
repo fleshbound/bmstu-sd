@@ -1,15 +1,12 @@
 import uuid
 from datetime import datetime, timedelta, timezone
 
-import uuid
-from datetime import datetime, timedelta, timezone
-
 import jwt
 from Cryptodome.Hash import SHA256
-from auth_provider.storage.auth import ISessionStorage, AuthSession
+from internal.src.auth_provider.storage.auth import ISessionStorage, AuthSession
 from pydantic import BaseModel
 
-from auth_provider.utils.exceptions import AuthProviderError
+from internal.src.auth_provider.utils.exceptions import AuthProviderError
 from internal.src.core.auth.provider.auth import IAuthProvider
 from internal.src.core.auth.schema.auth import Token, Fingerprint, AuthDetails, AuthPayload
 from internal.src.core.utils.types import HashedPassword, ID
