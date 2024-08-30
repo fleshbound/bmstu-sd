@@ -21,7 +21,7 @@ class StandardSchemaCreate(BaseModel):
     weight: Weight
     height: Height
     has_defects: bool
-    is_multi_color: bool
+    is_multicolor: bool
     length: Length
     weight_delta_percent: PositiveFloat
     height_delta_percent: PositiveFloat
@@ -35,7 +35,7 @@ class StandardSchema(BaseModel):
     weight: Weight
     height: Height
     has_defects: bool
-    is_multi_color: bool
+    is_multicolor: bool
     length: Length
     weight_delta_percent: PositiveFloat
     height_delta_percent: PositiveFloat
@@ -50,7 +50,7 @@ class StandardSchema(BaseModel):
             weight=other.weight,
             height=other.height,
             has_defects=other.bool,
-            is_multi_color=other.bool,
+            is_multicolor=other.bool,
             length=other.length,
             weight_delta_percent=other.weight_delta_percent,
             height_delta_percent=other.height_delta_percent,

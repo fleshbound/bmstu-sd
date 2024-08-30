@@ -1,5 +1,6 @@
 from typing import List
 
+from fastapi import HTTPException
 from pydantic import NonNegativeInt, PositiveInt
 
 from internal.src.core.animal.repository.animal import IAnimalRepository
@@ -29,7 +30,7 @@ class AnimalService(IAnimalService):
                animal_id: ID) -> AnimalSchemaDelete:
         try:
             records = self.animalshow_service.get_by_animal_id(animal_id)
-        except NotFoundRepoError:
+        except HTTPException:
             self.animal_repo.delete(animal_id)
             return AnimalSchemaDelete(id=animal_id)
 
