@@ -5,6 +5,7 @@ from pydantic import NonNegativeInt
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 from internal.src.core.standard.schema.standard import StandardSchema, StandardSchemaCreate
 ||||||| parent of fb32d3b (tests arent working watahel)
 from core.standard.schema.standard import StandardSchema, StandardSchemaCreate
@@ -14,8 +15,21 @@ from core.standard.schema.standard import StandardSchema
 ||||||| parent of d8bdfb9 (add animal tests (init))
 from core.standard.schema.standard import StandardSchema
 =======
+||||||| parent of 9dbb4c9 (fix imports)
+=======
+<<<<<<< HEAD
+>>>>>>> 9dbb4c9 (fix imports)
 from internal.src.core.standard.schema.standard import StandardSchema
+<<<<<<< HEAD
 >>>>>>> d8bdfb9 (add animal tests (init))
+||||||| parent of 9dbb4c9 (fix imports)
+=======
+||||||| parent of 34b5142 (fix imports)
+from core.standard.schema.standard import StandardSchema, StandardSchemaCreate
+=======
+from internal.src.core.standard.schema.standard import StandardSchema, StandardSchemaCreate
+>>>>>>> 34b5142 (fix imports)
+>>>>>>> 9dbb4c9 (fix imports)
 
 
 class IStandardRepository(ABC):

@@ -2,6 +2,7 @@ from pydantic import BaseModel, PositiveFloat
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 from internal.src.core.utils.types import ID, Weight, Height, Length, Country, Length
 ||||||| parent of fb32d3b (tests arent working watahel)
 from core.utils.types import ID, Weight, Height, Length, Country, Length
@@ -11,8 +12,21 @@ from core.utils.types import ID, Weight, Height, Country, Length
 ||||||| parent of d8bdfb9 (add animal tests (init))
 from core.utils.types import ID, Weight, Height, Country, Length
 =======
+||||||| parent of 9dbb4c9 (fix imports)
+=======
+<<<<<<< HEAD
+>>>>>>> 9dbb4c9 (fix imports)
 from internal.src.core.utils.types import ID, Weight, Height, Country, Length
+<<<<<<< HEAD
 >>>>>>> d8bdfb9 (add animal tests (init))
+||||||| parent of 9dbb4c9 (fix imports)
+=======
+||||||| parent of 34b5142 (fix imports)
+from core.utils.types import ID, Weight, Height, Length, Country, Length
+=======
+from internal.src.core.utils.types import ID, Weight, Height, Length, Country, Length
+>>>>>>> 34b5142 (fix imports)
+>>>>>>> 9dbb4c9 (fix imports)
 
 
 class StandardSchemaCreate(BaseModel):

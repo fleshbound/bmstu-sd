@@ -2,7 +2,28 @@ from collections import OrderedDict
 from typing import List, Optional, Tuple
 
 from pydantic import NonNegativeInt, NonNegativeFloat
+<<<<<<< HEAD
+||||||| parent of 34b5142 (fix imports)
+
+from core.show.repository.score import IScoreRepository
+from core.show.service.usershow import IUserShowService
+from core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, ScoreSchemaUpdate, Score, ScoreValue, \
+    AniShowRankingInfo
+from core.show.service.animalshow import IAnimalShowService
+from core.show.service.score import IScoreService
+from core.show.service.show import IShowService
+=======
+
+from internal.src.core.show.repository.score import IScoreRepository
+from internal.src.core.show.service.usershow import IUserShowService
+from internal.src.core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, ScoreSchemaUpdate, Score, ScoreValue, \
+    AniShowRankingInfo
+from internal.src.core.show.service.animalshow import IAnimalShowService
+from internal.src.core.show.service.score import IScoreService
+from internal.src.core.show.service.show import IShowService
+>>>>>>> 34b5142 (fix imports)
 from repository.utils.dict.impl.float import FloatKeyDictionary
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -57,7 +78,16 @@ from core.utils.types import ID
 from internal.src.core.show.service.score import IScoreService
 from internal.src.core.show.service.show import IShowService
 from internal.src.core.utils.types import ID
+<<<<<<< HEAD
 >>>>>>> d8bdfb9 (add animal tests (init))
+||||||| parent of 9dbb4c9 (fix imports)
+=======
+||||||| parent of 34b5142 (fix imports)
+from core.utils.types import ID
+=======
+from internal.src.core.utils.types import ID
+>>>>>>> 34b5142 (fix imports)
+>>>>>>> 9dbb4c9 (fix imports)
 
 
 class ScoreService(IScoreService):

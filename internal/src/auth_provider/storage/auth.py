@@ -4,6 +4,7 @@ from dataclasses import dataclass
 
 from pydantic import BaseModel
 
+<<<<<<< HEAD
 from internal.src.core.auth.schema.auth import AuthPayload, Token, Fingerprint
 
 
@@ -35,6 +36,11 @@ from dataclasses import dataclass
 from pydantic import BaseModel
 
 from core.auth.schema.auth import AuthPayload, Token, Fingerprint
+||||||| parent of 9dbb4c9 (fix imports)
+from core.auth.schema.auth import AuthPayload, Token, Fingerprint
+=======
+from internal.src.core.auth.schema.auth import AuthPayload, Token, Fingerprint
+>>>>>>> 9dbb4c9 (fix imports)
 
 
 class AuthSession(BaseModel):
