@@ -296,6 +296,10 @@ class ShowService(IShowService):
         )
 
     def unregister_animal(self, animal_id: ID, show_id: ID) -> ShowRegisterAnimalResult:
+        cur_show = self.show_repo.get_by_id(show_id)
+        if cur_show.status != ShowStatus.created:
+            raise ShowServiceError(detail=f"animal cannot be registered: animal_id={animal_id}, "
+                                          f"show_id={show_id}, show_status={cur_show.status}")
         try:
             record = self.animalshow_service.get_by_animal_show_id(animal_id, show_id)
         except NotFoundRepoError:
@@ -307,6 +311,10 @@ class ShowService(IShowService):
         return ShowRegisterAnimalResult(record_id=record.id, status=ShowRegisterAnimalStatus.unregister_ok)
 
     def unregister_user(self, user_id: ID, show_id: ID) -> ShowRegisterUserResult:
+        cur_show = self.show_repo.get_by_id(show_id)
+        if cur_show.status != ShowStatus.created:
+            raise ShowServiceError(detail=f"user cannot be registered: user_id={user_id}, "
+                                          f"show_id={show_id}, show_status={cur_show.status}")
         try:
             record = self.usershow_service.get_by_user_show_id(user_id, show_id)
         except NotFoundRepoError:

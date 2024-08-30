@@ -2,7 +2,7 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from core.utils.exceptions import NotFoundRepoError
+from internal.src.core.utils.exceptions import NotFoundRepoError
 from internal.src.core.animal.schema.animal import AnimalSchema
 from internal.src.core.show.schema.animalshow import AnimalShowSchema
 from internal.src.core.show.schema.show import ShowSchemaCreate, ShowSchema, ShowSchemaUpdate, ShowSchemaDetailed, \
@@ -34,6 +34,10 @@ class MockedShowService(IShowService):
 
     def create(self, show_create: ShowSchemaCreate) -> ShowSchema:
         self._shows.append(ShowSchema.from_create(show_create))
+        if len(self._shows) > 0:
+            self._shows[-1].id = ID(len(self._shows) - 1)
+        else:
+            self._shows[-1].id = ID(0)
         return self._shows[-1]
 
     def start(self, show_id: ID) -> ShowSchema:

@@ -4,7 +4,7 @@ from typing import List, Optional
 from pydantic import BaseModel, NonNegativeInt
 
 from internal.src.core.animal.schema.animal import AnimalSchema
-from internal.src.core.show.schema.score import AniShowRankingInfo
+from internal.src.core.show.schema.score import AnimalShowRankingInfo
 from internal.src.core.user.schema.user import UserSchema
 from internal.src.core.utils.types import Country, ShowName, ID
 
@@ -28,7 +28,7 @@ class ShowSchemaCreate(BaseModel):
     species_id: Optional[ID]
     breed_id: Optional[ID]
     country: Country
-    s_class: ShowClass
+    show_class: ShowClass
     name: ShowName
     standard_id: Optional[ID]
     is_multi_breed: bool
@@ -110,7 +110,7 @@ class ShowSchemaDetailed(BaseModel):
 
 
 class ShowSchemaReport(BaseModel):
-    ranking_info: List[AniShowRankingInfo]
+    ranking_info: List[AnimalShowRankingInfo]
     rank_count: NonNegativeInt
 
 

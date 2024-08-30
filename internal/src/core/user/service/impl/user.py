@@ -27,11 +27,21 @@ class UserService(IUserService):
                  user_repo: IUserRepository):
         self.user_repo = user_repo
 
+<<<<<<< HEAD
     def delete(self,
                user_id: ID) -> UserSchemaDeleted:
         self.user_repo.delete(user_id.value)
         return UserSchemaDeleted(id=user_id)
 
+||||||| parent of 1181f99 (add show service tests)
+    def archive(self,
+                user_id: ID) -> UserSchema:
+        user: UserSchema = self.user_repo.get_by_id(user_id)
+        user.is_archived = True
+        return self.user_repo.update(user)
+
+=======
+>>>>>>> 1181f99 (add show service tests)
     def create(self,
                create_user: UserSchemaCreate) -> UserSchema:
         cur_user = UserSchema.from_create(create_user)

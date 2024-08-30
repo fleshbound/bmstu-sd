@@ -26,7 +26,7 @@ from core.utils.exceptions import UserShowServiceError
 from core.utils.types import ID
 =======
 from internal.src.core.show.repository.usershow import IUserShowRepository
-from internal.src.core.show.schema.usershow import UserShowSchemaCreate, UserShowSchema, UserShowSchemaDelete
+from internal.src.core.show.schema.usershow import UserShowSchemaCreate, UserShowSchema, UserShowSchemaDeleted
 from internal.src.core.show.service.usershow import IUserShowService
 from internal.src.core.utils.exceptions import UserShowServiceError
 from internal.src.core.utils.types import ID
@@ -48,9 +48,9 @@ class UserShowService(IUserShowService):
         cur_usershow.is_archived = True
         return self.usershow_repo.update(cur_usershow)
 
-    def delete(self, usershow_id: ID) -> UserShowSchemaDelete:
+    def delete(self, usershow_id: ID) -> UserShowSchemaDeleted:
         self.usershow_repo.delete(usershow_id)
-        return UserShowSchemaDelete(id=usershow_id)
+        return UserShowSchemaDeleted(id=usershow_id)
 
     def get_by_id(self, id: ID) -> UserShowSchema:
         return self.usershow_repo.get_by_id(id.value)

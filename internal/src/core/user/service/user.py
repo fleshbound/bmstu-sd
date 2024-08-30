@@ -9,11 +9,20 @@ from internal.src.core.utils.types import ID, Email
 
 class IUserService(ABC):
     @abstractmethod
+<<<<<<< HEAD
     def delete(self,
                 user_id: ID) -> UserSchema:
         raise NotImplementedError
 
     @abstractmethod
+||||||| parent of 1181f99 (add show service tests)
+    def archive(self,
+                user_id: ID) -> UserSchema:
+        raise NotImplementedError
+
+    @abstractmethod
+=======
+>>>>>>> 1181f99 (add show service tests)
     def create(self,
                create_user: UserSchemaCreate) -> UserSchema:
         raise NotImplementedError

@@ -18,6 +18,7 @@ from internal.src.core.show.repository.animalshow import IAnimalShowRepository
 from internal.src.core.show.repository.score import IScoreRepository
 from internal.src.core.show.repository.usershow import IUserShowRepository
 from internal.src.core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, ScoreSchemaUpdate, Score, ScoreValue, \
+<<<<<<< HEAD
 >>>>>>> d8bdfb9 (add animal tests (init))
     AniShowRankingInfo
 <<<<<<< HEAD
@@ -42,6 +43,11 @@ from core.show.service.score import IScoreService
 from core.show.service.show import IShowService
 from core.utils.types import ID
 =======
+||||||| parent of 1181f99 (add show service tests)
+    AniShowRankingInfo
+=======
+    AnimalShowRankingInfo
+>>>>>>> 1181f99 (add show service tests)
 from internal.src.core.show.service.score import IScoreService
 from internal.src.core.show.service.show import IShowService
 from internal.src.core.utils.types import ID
@@ -68,8 +74,16 @@ class ScoreService(IScoreService):
     def dict_to_asc_ranked_ids(dict: FloatKeyDictionary) -> List[NonNegativeInt]:
         return list(OrderedDict(sorted(dict.items())).values())
 
+<<<<<<< HEAD
     def get_show_ranking_info(self, show_id: ID) -> Tuple[NonNegativeInt, List[AniShowRankingInfo]]:
         anishow_records = self.animalshow_service.get_by_show_id(show_id)
+||||||| parent of 1181f99 (add show service tests)
+    def get_show_ranking_info(self, show_id: ID) -> Tuple[NonNegativeInt, List[AniShowRankingInfo]]:
+        anishow_records = self.animalshow_repo.get_by_show_id(show_id)
+=======
+    def get_show_ranking_info(self, show_id: ID) -> Tuple[NonNegativeInt, List[AnimalShowRankingInfo]]:
+        anishow_records = self.animalshow_repo.get_by_show_id(show_id)
+>>>>>>> 1181f99 (add show service tests)
         total = []
         for record in anishow_records:
             score_info = self.get_total_by_animalshow_id(record.id)
@@ -87,7 +101,7 @@ class ScoreService(IScoreService):
         res = []
         for rank, total_id_list in enumerate(ranked_total_ids):
             for total_id in total_id_list:
-                info = AniShowRankingInfo(total_info=total[total_id], rank=rank)
+                info = AnimalShowRankingInfo(total_info=total[total_id], rank=rank)
                 res.append(info)
         return len(ranked_total_ids), res
 
@@ -133,16 +147,32 @@ class ScoreService(IScoreService):
         )
 
     def all_users_scored(self, show_id: ID) -> bool:
+<<<<<<< HEAD
         usershows = self.usershow_service.get_by_show_id(show_id)
         show_animal_count = len(self.show_service.get_by_id_detailed(show_id).animals)
+||||||| parent of 1181f99 (add show service tests)
+        usershows = self.usershow_repo.get_by_show_id(show_id)
+        show_animal_count = len(self.show_service.get_by_id_detailed_animals().animals)
+=======
+        usershows = self.usershow_repo.get_by_show_id(show_id)
+        show_animal_count = len(self.show_service.get_by_id_detailed().animals)
+>>>>>>> 1181f99 (add show service tests)
         for us in usershows:
             if self.get_count_by_usershow_id(us.id) != show_animal_count:
                 return False
         return True
 
     def get_users_scored_count(self, show_id: ID) -> NonNegativeInt:
+<<<<<<< HEAD
         usershows = self.usershow_service.get_by_show_id(show_id)
         show_animal_count = len(self.show_service.get_by_id_detailed(show_id).animals)
+||||||| parent of 1181f99 (add show service tests)
+        usershows = self.usershow_repo.get_by_show_id(show_id)
+        show_animal_count = len(self.show_service.get_by_id_detailed_animals().animals)
+=======
+        usershows = self.usershow_repo.get_by_show_id(show_id)
+        show_animal_count = len(self.show_service.get_by_id_detailed().animals)
+>>>>>>> 1181f99 (add show service tests)
         count = 0
         for us in usershows:
             if self.get_count_by_usershow_id(us.id) == show_animal_count:
