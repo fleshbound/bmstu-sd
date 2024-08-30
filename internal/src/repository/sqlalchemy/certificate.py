@@ -8,11 +8,11 @@ from sqlalchemy import insert, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from core.certificate.repository.certificate import ICertificateRepository
-from core.certificate.schema.certificate import CertificateSchema
+from internal.src.core.certificate.repository.certificate import ICertificateRepository
+from internal.src.core.certificate.schema.certificate import CertificateSchema
 from repository.sqlalchemy.model.certificate import CertificateORM
-from core.utils import types
-from core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
+from internal.src.core.utils import types
+from internal.src.core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
 
 
 class SqlAlchemyCertificateRepository(ICertificateRepository):

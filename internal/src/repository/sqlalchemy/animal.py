@@ -8,11 +8,11 @@ from sqlalchemy import update, insert
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from core.animal.repository.animal import IAnimalRepository
-from core.animal.schema.animal import AnimalSchema
+from internal.src.core.animal.repository.animal import IAnimalRepository
+from internal.src.core.animal.schema.animal import AnimalSchema
 from repository.sqlalchemy.model.animal import AnimalORM
-from core.utils import types
-from core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
+from internal.src.core.utils import types
+from internal.src.core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
 
 
 class SqlAlchemyAnimalRepository(IAnimalRepository):

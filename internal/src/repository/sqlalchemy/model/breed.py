@@ -1,9 +1,9 @@
 from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
-from core.breed.schema.breed import BreedSchema
+from internal.src.core.breed.schema.breed import BreedSchema
 from repository.sqlalchemy.model.base import Base
-from core.utils.types import ID, BreedName
+from internal.src.core.utils.types import ID, BreedName
 
 
 class BreedORM(Base):

@@ -3,9 +3,9 @@ from datetime import datetime
 from sqlalchemy import ForeignKey, String, DateTime, Float, Boolean
 from sqlalchemy.orm import mapped_column, Mapped
 
-from core.animal.schema.animal import AnimalSchema
+from internal.src.core.animal.schema.animal import AnimalSchema
 from repository.sqlalchemy.model.base import Base
-from core.utils.types import Sex, AnimalName, Datetime, Weight, Height, Length, ID
+from internal.src.core.utils.types import Sex, AnimalName, Datetime, Weight, Height, Length, ID
 
 
 class AnimalORM(Base):

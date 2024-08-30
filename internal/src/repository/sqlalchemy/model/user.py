@@ -1,9 +1,9 @@
 from sqlalchemy import String
 from sqlalchemy.orm import mapped_column, Mapped
 
-from core.user.schema.user import UserSchema, UserRole
+from internal.src.core.user.schema.user import UserSchema, UserRole
 from repository.sqlalchemy.model.base import Base
-from core.utils.types import Email, HashedPassword, UserName, ID
+from internal.src.core.utils.types import Email, HashedPassword, UserName, ID
 
 
 class UserORM(Base):
