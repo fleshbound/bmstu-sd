@@ -5,6 +5,7 @@ from pydantic import NonNegativeInt, NonNegativeFloat
 from repository.utils.dict.impl.float import FloatKeyDictionary
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 from internal.src.core.show.repository.score import IScoreRepository
 from internal.src.core.show.service.usershow import IUserShowService
 from internal.src.core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, ScoreSchemaUpdate, Score, ScoreValue, \
@@ -15,8 +16,13 @@ from core.show.repository.usershow import IUserShowRepository
 from core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, ScoreSchemaUpdate, Score, ScoreValue, \
 =======
 from internal.src.core.show.repository.animalshow import IAnimalShowRepository
+||||||| parent of 0206eae (add score tests files)
+from internal.src.core.show.repository.animalshow import IAnimalShowRepository
+=======
+from internal.src.core.show.repository.animalshow import IAnimalShowService
+>>>>>>> 0206eae (add score tests files)
 from internal.src.core.show.repository.score import IScoreRepository
-from internal.src.core.show.repository.usershow import IUserShowRepository
+from internal.src.core.show.repository.usershow import IUserShowService
 from internal.src.core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, ScoreSchemaUpdate, Score, ScoreValue, \
 <<<<<<< HEAD
 >>>>>>> d8bdfb9 (add animal tests (init))
@@ -63,12 +69,30 @@ class ScoreService(IScoreService):
     def __init__(self,
                  show_service: IShowService,
                  score_repo: IScoreRepository,
+<<<<<<< HEAD
                  animalshow_service: IAnimalShowService,
                  usershow_service: IUserShowService):
         self.show_service = show_service
+||||||| parent of 0206eae (add score tests files)
+                 animalshow_repo: IAnimalShowRepository,
+                 usershow_repo: IUserShowRepository):
+        self.show_service = show_service
+=======
+                 animalshow_service: IAnimalShowService,
+                 usershow_service: IUserShowService):
+>>>>>>> 0206eae (add score tests files)
         self.score_repo = score_repo
+<<<<<<< HEAD
         self.animalshow_service = animalshow_service
         self.usershow_service = usershow_service
+||||||| parent of 0206eae (add score tests files)
+        self.animalshow_repo = animalshow_repo
+        self.usershow_repo = usershow_repo
+=======
+        self.show_service = show_service
+        self.animalshow_service = animalshow_service
+        self.usershow_service = usershow_service
+>>>>>>> 0206eae (add score tests files)
 
     @staticmethod
     def dict_to_asc_ranked_ids(dict: FloatKeyDictionary) -> List[NonNegativeInt]:
@@ -82,8 +106,14 @@ class ScoreService(IScoreService):
         anishow_records = self.animalshow_repo.get_by_show_id(show_id)
 =======
     def get_show_ranking_info(self, show_id: ID) -> Tuple[NonNegativeInt, List[AnimalShowRankingInfo]]:
+<<<<<<< HEAD
         anishow_records = self.animalshow_repo.get_by_show_id(show_id)
 >>>>>>> 1181f99 (add show service tests)
+||||||| parent of 0206eae (add score tests files)
+        anishow_records = self.animalshow_repo.get_by_show_id(show_id)
+=======
+        anishow_records = self.animalshow_service.get_by_show_id(show_id)
+>>>>>>> 0206eae (add score tests files)
         total = []
         for record in anishow_records:
             score_info = self.get_total_by_animalshow_id(record.id)
@@ -148,21 +178,6 @@ class ScoreService(IScoreService):
 
     def all_users_scored(self, show_id: ID) -> bool:
 <<<<<<< HEAD
-        usershows = self.usershow_service.get_by_show_id(show_id)
-        show_animal_count = len(self.show_service.get_by_id_detailed(show_id).animals)
-||||||| parent of 1181f99 (add show service tests)
-        usershows = self.usershow_repo.get_by_show_id(show_id)
-        show_animal_count = len(self.show_service.get_by_id_detailed_animals().animals)
-=======
-        usershows = self.usershow_repo.get_by_show_id(show_id)
-        show_animal_count = len(self.show_service.get_by_id_detailed().animals)
->>>>>>> 1181f99 (add show service tests)
-        for us in usershows:
-            if self.get_count_by_usershow_id(us.id) != show_animal_count:
-                return False
-        return True
-
-    def get_users_scored_count(self, show_id: ID) -> NonNegativeInt:
 <<<<<<< HEAD
         usershows = self.usershow_service.get_by_show_id(show_id)
         show_animal_count = len(self.show_service.get_by_id_detailed(show_id).animals)
@@ -173,6 +188,37 @@ class ScoreService(IScoreService):
         usershows = self.usershow_repo.get_by_show_id(show_id)
         show_animal_count = len(self.show_service.get_by_id_detailed().animals)
 >>>>>>> 1181f99 (add show service tests)
+||||||| parent of 0206eae (add score tests files)
+        usershows = self.usershow_repo.get_by_show_id(show_id)
+        show_animal_count = len(self.show_service.get_by_id_detailed().animals)
+=======
+        usershows = self.usershow_service.get_by_show_id(show_id)
+        show_animal_count = len(self.show_service.get_by_id_detailed(show_id).animals)
+>>>>>>> 0206eae (add score tests files)
+        for us in usershows:
+            if self.get_count_by_usershow_id(us.id) != show_animal_count:
+                return False
+        return True
+
+    def get_users_scored_count(self, show_id: ID) -> NonNegativeInt:
+<<<<<<< HEAD
+<<<<<<< HEAD
+        usershows = self.usershow_service.get_by_show_id(show_id)
+        show_animal_count = len(self.show_service.get_by_id_detailed(show_id).animals)
+||||||| parent of 1181f99 (add show service tests)
+        usershows = self.usershow_repo.get_by_show_id(show_id)
+        show_animal_count = len(self.show_service.get_by_id_detailed_animals().animals)
+=======
+        usershows = self.usershow_repo.get_by_show_id(show_id)
+        show_animal_count = len(self.show_service.get_by_id_detailed().animals)
+>>>>>>> 1181f99 (add show service tests)
+||||||| parent of 0206eae (add score tests files)
+        usershows = self.usershow_repo.get_by_show_id(show_id)
+        show_animal_count = len(self.show_service.get_by_id_detailed().animals)
+=======
+        usershows = self.usershow_service.get_by_show_id(show_id)
+        show_animal_count = len(self.show_service.get_by_id_detailed(show_id).animals)
+>>>>>>> 0206eae (add score tests files)
         count = 0
         for us in usershows:
             if self.get_count_by_usershow_id(us.id) == show_animal_count:
