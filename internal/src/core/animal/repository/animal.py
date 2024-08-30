@@ -2,6 +2,7 @@ from abc import abstractmethod, ABC
 from typing import List
 
 from pydantic import NonNegativeInt
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 <<<<<<< HEAD
@@ -19,7 +20,13 @@ from core.animal.schema.animal import AnimalSchema
 =======
 <<<<<<< HEAD
 >>>>>>> 9dbb4c9 (fix imports)
+||||||| parent of a4e4ef4 (fix conflicts)
+
+<<<<<<< HEAD
+=======
+>>>>>>> a4e4ef4 (fix conflicts)
 from internal.src.core.animal.schema.animal import AnimalSchema
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> d8bdfb9 (add animal tests (init))
 ||||||| parent of 9dbb4c9 (fix imports)
@@ -30,6 +37,14 @@ from core.animal.schema.animal import AnimalSchema, AnimalSchemaCreate, AnimalSc
 from internal.src.core.animal.schema.animal import AnimalSchema, AnimalSchemaCreate, AnimalSchemaUpdate
 >>>>>>> 34b5142 (fix imports)
 >>>>>>> 9dbb4c9 (fix imports)
+||||||| parent of a4e4ef4 (fix conflicts)
+||||||| parent of 34b5142 (fix imports)
+from core.animal.schema.animal import AnimalSchema, AnimalSchemaCreate, AnimalSchemaUpdate
+=======
+from internal.src.core.animal.schema.animal import AnimalSchema, AnimalSchemaCreate, AnimalSchemaUpdate
+>>>>>>> 34b5142 (fix imports)
+=======
+>>>>>>> a4e4ef4 (fix conflicts)
 
 
 class IAnimalRepository(ABC):
