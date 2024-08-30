@@ -3,8 +3,16 @@ from typing import List, Tuple
 
 from pydantic import NonNegativeInt
 
+<<<<<<< HEAD
 from internal.src.core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, AnimalShowRankingInfo
 from internal.src.core.utils.types import ID
+||||||| parent of 34b5142 (fix imports)
+from core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, AniShowRankingInfo
+from core.utils.types import ID
+=======
+from internal.src.core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, AniShowRankingInfo
+from internal.src.core.utils.types import ID
+>>>>>>> 34b5142 (fix imports)
 
 
 class IScoreService(ABC):

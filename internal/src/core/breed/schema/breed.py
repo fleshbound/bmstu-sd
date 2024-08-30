@@ -2,7 +2,25 @@ import enum
 
 from pydantic import BaseModel
 
+<<<<<<< HEAD
 from internal.src.core.utils.types import ID, BreedName
+||||||| parent of 34b5142 (fix imports)
+from core.utils.types import ID, BreedName
+
+
+class BreedSchema(BaseModel):
+    id: ID
+    species_id: ID
+    name: BreedName
+=======
+from internal.src.core.utils.types import ID, BreedName
+
+
+class BreedSchema(BaseModel):
+    id: ID
+    species_id: ID
+    name: BreedName
+>>>>>>> 34b5142 (fix imports)
 
 
 class BreedSchemaUpdate(BaseModel):
