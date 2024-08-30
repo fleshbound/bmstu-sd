@@ -4,7 +4,7 @@ from sqlalchemy import ForeignKey, String, DateTime, Float, Boolean
 from sqlalchemy.orm import mapped_column, Mapped
 
 from internal.src.core.animal.schema.animal import AnimalSchema
-from repository.sqlalchemy.model.base import Base
+from internal.src.repository.sqlalchemy.model.base import Base
 from internal.src.core.utils.types import Sex, AnimalName, Datetime, Weight, Height, Length, ID
 
 

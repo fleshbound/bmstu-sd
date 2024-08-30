@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 
 from internal.src.core.animal.repository.animal import IAnimalRepository
 from internal.src.core.animal.schema.animal import AnimalSchema
-from repository.sqlalchemy.model.animal import AnimalORM
+from internal.src.repository.sqlalchemy.model.animal import AnimalORM
 from internal.src.core.utils import types
 from internal.src.core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
 

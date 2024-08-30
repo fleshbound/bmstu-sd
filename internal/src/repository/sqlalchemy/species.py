@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 
 from internal.src.core.species.repository.species import ISpeciesRepository
 from internal.src.core.species.schema.species import SpeciesSchema
-from repository.sqlalchemy.model.species import SpeciesORM
+from internal.src.repository.sqlalchemy.model.species import SpeciesORM
 from internal.src.core.utils import types
 from internal.src.core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
 
