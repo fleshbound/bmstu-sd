@@ -1,5 +1,6 @@
 from typing import List
 
+from internal.src.core.utils.exceptions import NotFoundRepoError
 from internal.src.core.show.schema.animalshow import AnimalShowSchemaCreate, AnimalShowSchema, AnimalShowSchemaDeleted
 from internal.src.core.show.service.animalshow import IAnimalShowService
 from internal.src.core.utils.types import ID
@@ -21,12 +22,13 @@ class MockedAnimalShowService(IAnimalShowService):
             if record.id == animalshow_id:
                 record.is_archived = True
                 return record
-        return AnimalShowSchema(
-            id=animalshow_id,
-            animal_id=ID(0),
-            show_id=ID(0),
-            is_archived=True
-        )
+        raise NotFoundRepoError(detail='')
+        # return AnimalShowSchema(
+        #     id=animalshow_id,
+        #     animal_id=ID(0),
+        #     show_id=ID(0),
+        #     is_archived=True
+        # )
 
     def delete(self, animalshow_id: ID) -> AnimalShowSchemaDeleted:
         for i, record in enumerate(self._animalshows):
@@ -39,18 +41,21 @@ class MockedAnimalShowService(IAnimalShowService):
         for record in self._animalshows:
             if record.id == id:
                 return record
-        return AnimalShowSchema(
-            id=id,
-            animal_id=ID(0),
-            show_id=ID(0),
-            is_archived=False
-        )
+        raise NotFoundRepoError(detail='')
+        # return AnimalShowSchema(
+        #     id=id,
+        #     animal_id=ID(0),
+        #     show_id=ID(0),
+        #     is_archived=False
+        # )
 
     def get_by_animal_id(self, animal_id: ID) -> List[AnimalShowSchema]:
         res = []
         for record in self._animalshows:
             if record.animal_id == animal_id:
                 res.append(record)
+        if len(res) == 0:
+            raise NotFoundRepoError(detail='')
         return res
         # return [AnimalShowSchema(
         #     id=ID(0),
@@ -64,6 +69,8 @@ class MockedAnimalShowService(IAnimalShowService):
         for record in self._animalshows:
             if record.show_id == show_id:
                 res.append(record)
+        if len(res) == 0:
+            raise NotFoundRepoError(detail='')
         return res
         # return [AnimalShowSchema(
         #     id=ID(0),
@@ -76,10 +83,11 @@ class MockedAnimalShowService(IAnimalShowService):
         for record in self._animalshows:
             if record.show_id == show_id and record.animal_id == animal_id:
                 return record
-        return AnimalShowSchema(
-            id=ID(0),
-            animal_id=animal_id,
-            show_id=show_id,
-            is_archived=False
-        )
+        raise NotFoundRepoError(detail='')
+        # return AnimalShowSchema(
+        #     id=ID(0),
+        #     animal_id=animal_id,
+        #     show_id=show_id,
+        #     is_archived=False
+        # )
     

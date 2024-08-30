@@ -2,7 +2,7 @@ import datetime
 import enum
 from dataclasses import dataclass
 
-from pydantic import NonNegativeFloat, NonNegativeInt, EmailStr
+from pydantic import NonNegativeFloat, NonNegativeInt, EmailStr, PositiveFloat
 
 
 @enum.unique
@@ -112,6 +112,9 @@ class ID:
 
     def __gt__(self, other) -> bool:
         return self.value > other.value
+    
+    def __le__(self, other) -> bool:
+        return self.value < other.value
 
     def eq_int(self, n: int) -> bool:
         return n == self.value
@@ -128,11 +131,14 @@ class Datetime:
 
     def __gt__(self, other) -> bool:
         return self.value > other.value
+    
+    def __le__(self, other) -> bool:
+        return self.value < other.value
 
 
 @dataclass
 class Weight:
-    value: NonNegativeFloat
+    value: PositiveFloat
 
     def __eq__(self, other) -> bool:
         if not isinstance(other, Weight):
@@ -141,6 +147,9 @@ class Weight:
 
     def __gt__(self, other) -> bool:
         return self.value > other.value
+    
+    def __le__(self, other) -> bool:
+        return self.value < other.value
 
     def __mul__(self, other: float):
         return Weight(self.value * other)
@@ -148,10 +157,13 @@ class Weight:
     def __sub__(self, other):
         return Weight(self.value - other.value)
 
+    def __truediv__(self, other):
+        return Weight(self.value / other.value)
+
 
 @dataclass
 class Height:
-    value: NonNegativeFloat
+    value: PositiveFloat
 
     def __eq__(self, other) -> bool:
         if not isinstance(other, Height):
@@ -160,6 +172,9 @@ class Height:
 
     def __gt__(self, other) -> bool:
         return self.value > other.value
+    
+    def __le__(self, other) -> bool:
+        return self.value < other.value
 
     def __mul__(self, other: float):
         return Weight(self.value * other)
@@ -170,7 +185,7 @@ class Height:
 
 @dataclass
 class Length:
-    value: NonNegativeFloat
+    value: PositiveFloat
 
     def __eq__(self, other) -> bool:
         if not isinstance(other, Length):
@@ -179,6 +194,9 @@ class Length:
 
     def __gt__(self, other) -> bool:
         return self.value > other.value
+    
+    def __le__(self, other) -> bool:
+        return self.value < other.value
 
     def __mul__(self, other: float):
         return Weight(self.value * other)
