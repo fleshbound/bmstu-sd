@@ -5,7 +5,6 @@ import pytest
 from fastapi import HTTPException
 from pydantic import NonNegativeInt, PositiveFloat
 
-from core.utils.exceptions import StandardServiceError
 from internal.src.core.animal.schema.animal import AnimalSchema
 from internal.tests.core.mock.repo.standard import MockedStandardRepository
 

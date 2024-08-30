@@ -35,7 +35,7 @@ def animal_service_create(animals: List[AnimalSchema], animalshows: List[AnimalS
     return AnimalService(
         animal_repo=MockedAnimalRepository(animals=animals),
         animalshow_service=MockedAnimalShowService(animalshows=animalshows),
-        show_service=MockedShowService(shows=shows)
+        show_service=MockedShowService(shows, [], [], [], [])
     )
 
 

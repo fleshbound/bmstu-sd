@@ -15,12 +15,6 @@ class UserService(IUserService):
                  user_repo: IUserRepository):
         self.user_repo = user_repo
 
-    def archive(self,
-                user_id: ID) -> UserSchema:
-        user: UserSchema = self.user_repo.get_by_id(user_id)
-        user.is_archived = True
-        return self.user_repo.update(user)
-
     def create(self,
                create_user: UserSchemaCreate) -> UserSchema:
         cur_user = UserSchema.from_create(create_user)

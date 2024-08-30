@@ -9,11 +9,6 @@ from internal.src.core.utils.types import ID, Email
 
 class IUserService(ABC):
     @abstractmethod
-    def archive(self,
-                user_id: ID) -> UserSchema:
-        raise NotImplementedError
-
-    @abstractmethod
     def create(self,
                create_user: UserSchemaCreate) -> UserSchema:
         raise NotImplementedError

@@ -8,7 +8,7 @@ from internal.src.core.show.repository.animalshow import IAnimalShowRepository
 from internal.src.core.show.repository.score import IScoreRepository
 from internal.src.core.show.repository.usershow import IUserShowRepository
 from internal.src.core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, ScoreSchemaUpdate, Score, ScoreValue, \
-    AniShowRankingInfo
+    AnimalShowRankingInfo
 from internal.src.core.show.service.score import IScoreService
 from internal.src.core.show.service.show import IShowService
 from internal.src.core.utils.types import ID
@@ -34,7 +34,7 @@ class ScoreService(IScoreService):
     def dict_to_asc_ranked_ids(dict: FloatKeyDictionary) -> List[NonNegativeInt]:
         return list(OrderedDict(sorted(dict.items())).values())
 
-    def get_show_ranking_info(self, show_id: ID) -> Tuple[NonNegativeInt, List[AniShowRankingInfo]]:
+    def get_show_ranking_info(self, show_id: ID) -> Tuple[NonNegativeInt, List[AnimalShowRankingInfo]]:
         anishow_records = self.animalshow_repo.get_by_show_id(show_id)
         total = []
         for record in anishow_records:
@@ -53,7 +53,7 @@ class ScoreService(IScoreService):
         res = []
         for rank, total_id_list in enumerate(ranked_total_ids):
             for total_id in total_id_list:
-                info = AniShowRankingInfo(total_info=total[total_id], rank=rank)
+                info = AnimalShowRankingInfo(total_info=total[total_id], rank=rank)
                 res.append(info)
         return len(ranked_total_ids), res
 
@@ -100,7 +100,7 @@ class ScoreService(IScoreService):
 
     def all_users_scored(self, show_id: ID) -> bool:
         usershows = self.usershow_repo.get_by_show_id(show_id)
-        show_animal_count = len(self.show_service.get_by_id_detailed_animals().animals)
+        show_animal_count = len(self.show_service.get_by_id_detailed().animals)
         for us in usershows:
             if self.get_count_by_usershow_id(us.id) != show_animal_count:
                 return False
@@ -108,7 +108,7 @@ class ScoreService(IScoreService):
 
     def get_users_scored_count(self, show_id: ID) -> NonNegativeInt:
         usershows = self.usershow_repo.get_by_show_id(show_id)
-        show_animal_count = len(self.show_service.get_by_id_detailed_animals().animals)
+        show_animal_count = len(self.show_service.get_by_id_detailed().animals)
         count = 0
         for us in usershows:
             if self.get_count_by_usershow_id(us.id) == show_animal_count:

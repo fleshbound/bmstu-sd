@@ -41,6 +41,7 @@ class UserShowSchema(BaseModel):
 class UserShowSchemaUpdateBody(BaseModel):
     is_archived: bool
 
-class UserShowSchemaDelete(BaseModel):
+
+class UserShowSchemaDeleted(BaseModel):
     id: ID
     status: str = "deleted"

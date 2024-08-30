@@ -14,7 +14,10 @@ class MockedAnimalShowService(IAnimalShowService):
 
     def create(self, animalshow_create: AnimalShowSchemaCreate) -> AnimalShowSchema:
         self._animalshows.append(AnimalShowSchema.from_create(animalshow_create))
-        self._animalshows[-1].id = len(self._animalshows) - 1
+        if len(self._animalshows) > 0:
+            self._animalshows[-1].id = ID(len(self._animalshows) - 1)
+        else:
+            self._animalshows[-1].id = ID(0)
         return self._animalshows[-1]
 
     def archive(self, animalshow_id: ID) -> AnimalShowSchema:

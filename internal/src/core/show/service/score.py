@@ -3,7 +3,7 @@ from typing import List, Tuple
 
 from pydantic import NonNegativeInt
 
-from internal.src.core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, AniShowRankingInfo
+from internal.src.core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, AnimalShowRankingInfo
 from internal.src.core.utils.types import ID
 
 
@@ -13,7 +13,7 @@ class IScoreService(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def get_show_ranking_info(self, show_id: ID) -> Tuple[NonNegativeInt, List[AniShowRankingInfo]]:
+    def get_show_ranking_info(self, show_id: ID) -> Tuple[NonNegativeInt, List[AnimalShowRankingInfo]]:
         raise NotImplementedError
 
     @abstractmethod

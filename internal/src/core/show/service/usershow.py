@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from internal.src.core.show.schema.usershow import UserShowSchemaCreate, UserShowSchema, UserShowSchemaDelete
+from internal.src.core.show.schema.usershow import UserShowSchemaCreate, UserShowSchema, UserShowSchemaDeleted
 from internal.src.core.utils.types import ID
 
 
@@ -15,7 +15,7 @@ class IUserShowService(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def delete(self, usershow_id: ID) -> UserShowSchemaDelete:
+    def delete(self, usershow_id: ID) -> UserShowSchemaDeleted:
         raise NotImplementedError
 
     @abstractmethod

@@ -61,7 +61,7 @@ class TotalScoreInfo(BaseModel):
     min_score: Optional[ScoreValue]
 
 
-class AniShowRankingInfo(BaseModel):
+class AnimalShowRankingInfo(BaseModel):
     total_info: TotalScoreInfo
     rank: NonNegativeInt
 
