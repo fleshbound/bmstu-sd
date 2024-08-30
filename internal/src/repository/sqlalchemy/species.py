@@ -8,11 +8,11 @@ from sqlalchemy import insert, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from core.species.repository.species import ISpeciesRepository
-from core.species.schema.species import SpeciesSchema
+from internal.src.core.species.repository.species import ISpeciesRepository
+from internal.src.core.species.schema.species import SpeciesSchema
 from repository.sqlalchemy.model.species import SpeciesORM
-from core.utils import types
-from core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
+from internal.src.core.utils import types
+from internal.src.core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
 
 
 class SqlAlchemySpeciesRepository(ISpeciesRepository):

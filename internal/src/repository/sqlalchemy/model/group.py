@@ -1,9 +1,9 @@
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
 
-from core.group.schema.group import GroupSchema
+from internal.src.core.group.schema.group import GroupSchema
 from repository.sqlalchemy.model.base import Base
-from core.utils.types import ID, GroupName
+from internal.src.core.utils.types import ID, GroupName
 
 
 class GroupORM(Base):

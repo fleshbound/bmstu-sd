@@ -3,10 +3,10 @@ from typing import List, Optional
 
 from pydantic import BaseModel, NonNegativeInt
 
-from core.animal.schema.animal import AnimalSchema
-from core.show.schema.score import AniShowRankingInfo
-from core.user.schema.user import UserSchema
-from core.utils.types import Country, ShowName, ID
+from internal.src.core.animal.schema.animal import AnimalSchema
+from internal.src.core.show.schema.score import AniShowRankingInfo
+from internal.src.core.user.schema.user import UserSchema
+from internal.src.core.utils.types import Country, ShowName, ID
 
 
 @enum.unique

@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from core.show.schema.usershow import UserShowSchemaCreate, UserShowSchema, UserShowSchemaDelete
-from core.utils.types import ID
+from internal.src.core.show.schema.usershow import UserShowSchemaCreate, UserShowSchema, UserShowSchemaDelete
+from internal.src.core.utils.types import ID
 
 
 class IUserShowService(ABC):

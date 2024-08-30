@@ -8,12 +8,12 @@ from pydantic import NonNegativeInt, BaseModel
 from sqlalchemy import insert
 from sqlalchemy.orm import Session
 
-from core.standard.repository.standard import IStandardRepository
-from core.standard.schema.standard import StandardSchema
+from internal.src.core.standard.repository.standard import IStandardRepository
+from internal.src.core.standard.schema.standard import StandardSchema
 
 from repository.sqlalchemy.model.standard import StandardORM
-from core.utils import types
-from core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
+from internal.src.core.utils import types
+from internal.src.core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
 
 
 class SqlAlchemyStandardRepository(IStandardRepository):

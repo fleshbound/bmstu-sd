@@ -2,8 +2,8 @@ from dataclasses import dataclass
 
 from pydantic import BaseModel
 
-from core.user.schema.user import UserRole
-from core.utils.types import ID, UserName, Email, HashedPassword
+from internal.src.core.user.schema.user import UserRole
+from internal.src.core.utils.types import ID, UserName, Email, HashedPassword
 
 
 class Token(BaseModel):

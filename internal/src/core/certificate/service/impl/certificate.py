@@ -2,10 +2,10 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from core.certificate.repository.certificate import ICertificateRepository
-from core.certificate.schema.certificate import CertificateSchemaCreate, CertificateSchema
-from core.certificate.service.certificate import ICertificateService
-from core.utils.types import ID
+from internal.src.core.certificate.repository.certificate import ICertificateRepository
+from internal.src.core.certificate.schema.certificate import CertificateSchemaCreate, CertificateSchema
+from internal.src.core.certificate.service.certificate import ICertificateService
+from internal.src.core.utils.types import ID
 
 
 class CertificateService(ICertificateService):

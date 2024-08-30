@@ -2,14 +2,14 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from core.animal.repository.animal import IAnimalRepository
-from core.animal.schema.animal import AnimalSchema, AnimalSchemaCreate, AnimalSchemaUpdate, AnimalSchemaDelete
-from core.animal.service.animal import IAnimalService
-from core.show.schema.show import ShowStatus
-from core.show.service.animalshow import IAnimalShowService
-from core.show.service.show import IShowService
-from core.utils.exceptions import NotFoundRepoError, AnimalServiceError
-from core.utils.types import ID
+from internal.src.core.animal.repository.animal import IAnimalRepository
+from internal.src.core.animal.schema.animal import AnimalSchema, AnimalSchemaCreate, AnimalSchemaUpdate, AnimalSchemaDelete
+from internal.src.core.animal.service.animal import IAnimalService
+from internal.src.core.show.schema.show import ShowStatus
+from internal.src.core.show.service.animalshow import IAnimalShowService
+from internal.src.core.show.service.show import IShowService
+from internal.src.core.utils.exceptions import NotFoundRepoError, AnimalServiceError
+from internal.src.core.utils.types import ID
 
 
 class AnimalService(IAnimalService):

@@ -2,7 +2,7 @@ import enum
 
 from pydantic import BaseModel
 
-from core.utils.types import GroupName, ID
+from internal.src.core.utils.types import GroupName, ID
 
 
 class GroupSchemaCreate(BaseModel):

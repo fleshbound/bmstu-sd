@@ -2,9 +2,9 @@ from pydantic import NonNegativeInt
 from sqlalchemy import ForeignKey, Boolean
 from sqlalchemy.orm import Mapped, mapped_column
 
-from core.show.schema.animalshow import AnimalShowSchema
+from internal.src.core.show.schema.animalshow import AnimalShowSchema
 from repository.sqlalchemy.model.base import Base
-from core.utils.types import ID
+from internal.src.core.utils.types import ID
 
 
 class AnimalShowORM(Base):

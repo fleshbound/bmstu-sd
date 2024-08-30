@@ -2,13 +2,13 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from core.animal.schema.animal import AnimalSchema
-from core.show.service.show import IShowService
-from core.standard.repository.standard import IStandardRepository
-from core.standard.schema.standard import StandardSchema, StandardSchemaCreate, StandardSchemaDeleteResponse
-from core.standard.service.standard import IStandardService
-from core.utils.exceptions import StandardServiceError
-from core.utils.types import ID
+from internal.src.core.animal.schema.animal import AnimalSchema
+from internal.src.core.show.service.show import IShowService
+from internal.src.core.standard.repository.standard import IStandardRepository
+from internal.src.core.standard.schema.standard import StandardSchema, StandardSchemaCreate, StandardSchemaDeleteResponse
+from internal.src.core.standard.service.standard import IStandardService
+from internal.src.core.utils.exceptions import StandardServiceError
+from internal.src.core.utils.types import ID
 
 
 class StandardService(IStandardService):

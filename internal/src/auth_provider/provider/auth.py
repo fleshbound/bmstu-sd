@@ -14,9 +14,9 @@ from pydantic import NonNegativeInt, BaseModel
 
 from auth_provider.storage.auth import ISessionStorage, AuthSession
 from auth_provider.utils.exceptions import AuthProviderError
-from core.auth.provider.auth import IAuthProvider
-from core.auth.schema.auth import Token, Fingerprint, AuthDetails, AuthPayload
-from core.utils.types import HashedPassword, ID
+from internal.src.core.auth.provider.auth import IAuthProvider
+from internal.src.core.auth.schema.auth import Token, Fingerprint, AuthDetails, AuthPayload
+from internal.src.core.utils.types import HashedPassword, ID
 
 
 class AuthConfig(BaseModel):

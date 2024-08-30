@@ -2,10 +2,10 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from core.user.repository.user import IUserRepository
-from core.user.schema.user import UserSchema, UserSchemaCreate, UserSchemaUpdate, UserSchemaDeleted
-from core.user.service.user import IUserService
-from core.utils.types import ID, Email
+from internal.src.core.user.repository.user import IUserRepository
+from internal.src.core.user.schema.user import UserSchema, UserSchemaCreate, UserSchemaUpdate, UserSchemaDeleted
+from internal.src.core.user.service.user import IUserService
+from internal.src.core.utils.types import ID, Email
 
 
 class UserService(IUserService):

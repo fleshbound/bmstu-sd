@@ -8,11 +8,11 @@ from sqlalchemy import insert, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from core.show.repository.usershow import IUserShowRepository
-from core.show.schema.usershow import UserShowSchema
+from internal.src.core.show.repository.usershow import IUserShowRepository
+from internal.src.core.show.schema.usershow import UserShowSchema
 from repository.sqlalchemy.model.usershow import UserShowORM
-from core.utils import types
-from core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
+from internal.src.core.utils import types
+from internal.src.core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
 
 
 class SqlAlchemyUserShowRepository(IUserShowRepository):

@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from core.show.schema.animalshow import AnimalShowSchemaCreate, AnimalShowSchema
-from core.utils.types import ID
+from internal.src.core.show.schema.animalshow import AnimalShowSchemaCreate, AnimalShowSchema
+from internal.src.core.utils.types import ID
 
 
 class IAnimalShowService(ABC):

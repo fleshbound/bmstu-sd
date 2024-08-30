@@ -3,9 +3,9 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from core.show.schema.show import ShowSchemaCreate, ShowSchema, ShowSchemaUpdate, ShowSchemaDetailed, \
+from internal.src.core.show.schema.show import ShowSchemaCreate, ShowSchema, ShowSchemaUpdate, ShowSchemaDetailed, \
     ShowRegisterAnimalResult, ShowRegisterUserResult
-from core.utils.types import ID
+from internal.src.core.utils.types import ID
 
 
 class IShowService(ABC):

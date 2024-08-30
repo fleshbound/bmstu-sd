@@ -8,11 +8,11 @@ from sqlalchemy import update, insert
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from core.breed.repository.breed import IBreedRepository
-from core.breed.schema.breed import BreedSchema
+from internal.src.core.breed.repository.breed import IBreedRepository
+from internal.src.core.breed.schema.breed import BreedSchema
 from repository.sqlalchemy.model.breed import BreedORM
-from core.utils import types
-from core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
+from internal.src.core.utils import types
+from internal.src.core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
 
 
 class SqlAlchemyBreedRepository(IBreedRepository):

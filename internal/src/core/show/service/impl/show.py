@@ -2,25 +2,25 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from core.animal.service.animal import IAnimalService
-from core.breed.service.breed import IBreedService
-from core.certificate.schema.certificate import CertificateSchemaCreate
-from core.certificate.service.certificate import ICertificateService
-from core.show.repository.show import IShowRepository
-from core.show.schema.animalshow import AnimalShowSchemaCreate
-from core.show.schema.show import ShowSchemaCreate, ShowSchema, ShowSchemaUpdate, ShowSchemaDetailed, \
+from internal.src.core.animal.service.animal import IAnimalService
+from internal.src.core.breed.service.breed import IBreedService
+from internal.src.core.certificate.schema.certificate import CertificateSchemaCreate
+from internal.src.core.certificate.service.certificate import ICertificateService
+from internal.src.core.show.repository.show import IShowRepository
+from internal.src.core.show.schema.animalshow import AnimalShowSchemaCreate
+from internal.src.core.show.schema.show import ShowSchemaCreate, ShowSchema, ShowSchemaUpdate, ShowSchemaDetailed, \
     ShowRegisterAnimalResult, ShowSchemaReport, ShowStatus, ShowRegisterAnimalStatus, ShowRegisterUserResult, \
     ShowRegisterUserStatus
-from core.show.schema.usershow import UserShowSchemaCreate
-from core.show.service.animalshow import IAnimalShowService
-from core.show.service.score import IScoreService
-from core.show.service.show import IShowService
-from core.show.service.usershow import IUserShowService
-from core.standard.service.standard import IStandardService
-from core.user.schema.user import UserRole
-from core.user.service.user import IUserService
-from core.utils.exceptions import ShowServiceError, NotFoundRepoError
-from core.utils.types import ID
+from internal.src.core.show.schema.usershow import UserShowSchemaCreate
+from internal.src.core.show.service.animalshow import IAnimalShowService
+from internal.src.core.show.service.score import IScoreService
+from internal.src.core.show.service.show import IShowService
+from internal.src.core.show.service.usershow import IUserShowService
+from internal.src.core.standard.service.standard import IStandardService
+from internal.src.core.user.schema.user import UserRole
+from internal.src.core.user.service.user import IUserService
+from internal.src.core.utils.exceptions import ShowServiceError, NotFoundRepoError
+from internal.src.core.utils.types import ID
 
 
 class ShowService(IShowService):

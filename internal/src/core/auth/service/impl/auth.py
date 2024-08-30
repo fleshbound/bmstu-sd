@@ -1,9 +1,9 @@
-from core.auth.provider.auth import IAuthProvider
-from core.auth.schema.auth import Token, AuthSchemaSignIn, AuthSchemaSignUp, Fingerprint, AuthPayload, AuthDetails
-from core.auth.service.auth import IAuthService
-from core.user.schema.user import UserSchemaCreate
-from core.user.service.user import IUserService
-from core.utils.exceptions import NotFoundRepoError, AuthServiceError
+from internal.src.core.auth.provider.auth import IAuthProvider
+from internal.src.core.auth.schema.auth import Token, AuthSchemaSignIn, AuthSchemaSignUp, Fingerprint, AuthPayload, AuthDetails
+from internal.src.core.auth.service.auth import IAuthService
+from internal.src.core.user.schema.user import UserSchemaCreate
+from internal.src.core.user.service.user import IUserService
+from internal.src.core.utils.exceptions import NotFoundRepoError, AuthServiceError
 
 
 class AuthService(IAuthService):
