@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 
 from internal.src.core.show.repository.usershow import IUserShowRepository
 from internal.src.core.show.schema.usershow import UserShowSchema
-from repository.sqlalchemy.model.usershow import UserShowORM
+from internal.src.repository.sqlalchemy.model.usershow import UserShowORM
 from internal.src.core.utils import types
 from internal.src.core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
 

@@ -2,7 +2,7 @@ from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 
 from internal.src.core.species.schema.species import SpeciesSchema
-from repository.sqlalchemy.model.base import Base
+from internal.src.repository.sqlalchemy.model.base import Base
 from internal.src.core.utils.types import ID, SpeciesName
 
 

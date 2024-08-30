@@ -11,7 +11,7 @@ from sqlalchemy.orm import Session
 from internal.src.core.standard.repository.standard import IStandardRepository
 from internal.src.core.standard.schema.standard import StandardSchema
 
-from repository.sqlalchemy.model.standard import StandardORM
+from internal.src.repository.sqlalchemy.model.standard import StandardORM
 from internal.src.core.utils import types
 from internal.src.core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
 

@@ -5,7 +5,7 @@ from sqlalchemy import ForeignKey, String, Boolean
 from sqlalchemy.orm import Mapped, mapped_column
 
 from internal.src.core.show.schema.show import ShowSchema, ShowState, ShowClass
-from repository.sqlalchemy.model.base import Base
+from internal.src.repository.sqlalchemy.model.base import Base
 from internal.src.core.utils.types import ID, ShowName
 
 

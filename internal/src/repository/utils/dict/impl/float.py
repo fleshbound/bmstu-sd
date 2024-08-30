@@ -1,4 +1,4 @@
-from repository.utils.dict.dict import KeyTransformDictionaryBase
+from internal.src.repository.utils.dict.dict import KeyTransformDictionaryBase
 
 
 class FloatKeyDictionary(KeyTransformDictionaryBase):

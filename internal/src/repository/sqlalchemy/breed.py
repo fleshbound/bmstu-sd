@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 
 from internal.src.core.breed.repository.breed import IBreedRepository
 from internal.src.core.breed.schema.breed import BreedSchema
-from repository.sqlalchemy.model.breed import BreedORM
+from internal.src.repository.sqlalchemy.model.breed import BreedORM
 from internal.src.core.utils import types
 from internal.src.core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
 
