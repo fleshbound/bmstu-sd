@@ -63,7 +63,7 @@ class AnimalShowRankingInfo(BaseModel):
     rank: NonNegativeInt
 
 
-class AniShowRankingInfo(BaseModel):
+class AnimalShowRankingInfo(BaseModel):
     total_info: TotalScoreInfo
     rank: NonNegativeInt
 

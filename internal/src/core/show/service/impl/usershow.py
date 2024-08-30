@@ -27,7 +27,7 @@ from core.utils.exceptions import UserShowServiceError
 from core.utils.types import ID
 =======
 from internal.src.core.show.repository.usershow import IUserShowRepository
-from internal.src.core.show.schema.usershow import UserShowSchemaCreate, UserShowSchema, UserShowSchemaDelete
+from internal.src.core.show.schema.usershow import UserShowSchemaCreate, UserShowSchema, UserShowSchemaDeleted
 from internal.src.core.show.service.usershow import IUserShowService
 from internal.src.core.utils.exceptions import UserShowServiceError
 from internal.src.core.utils.types import ID
