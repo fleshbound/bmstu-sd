@@ -2,6 +2,7 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
+from core.utils.exceptions import NotFoundRepoError
 from internal.src.core.animal.schema.animal import AnimalSchema
 from internal.src.core.show.schema.animalshow import AnimalShowSchema
 from internal.src.core.show.schema.show import ShowSchemaCreate, ShowSchema, ShowSchemaUpdate, ShowSchemaDetailed, \
@@ -15,13 +16,21 @@ from internal.src.core.utils.types import ID, ShowName, Country
 
 class MockedShowService(IShowService):
     _shows: List[ShowSchema]
-    _animalshow: List[AnimalShowSchema]
-    _usershow: List[UserShowSchema]
+    _animalshows: List[AnimalShowSchema]
+    _usershows: List[UserShowSchema]
     _animals: List[AnimalSchema]
     _users: List[UserSchema]
 
-    def __init__(self, shows: List[ShowSchema]):
+    def __init__(self, shows: List[ShowSchema],
+                 animalshows: List[AnimalShowSchema],
+                 usershows: List[UserShowSchema],
+                 animals: List[AnimalSchema],
+                 users: List[UserSchema]):
         self._shows = shows
+        self._animalshows = animalshows
+        self._users = users
+        self._animals = animals
+        self._usershows = usershows
 
     def create(self, show_create: ShowSchemaCreate) -> ShowSchema:
         self._shows.append(ShowSchema.from_create(show_create))
@@ -97,32 +106,26 @@ class MockedShowService(IShowService):
         for show in self._shows:
             if show.id == show_id:
                 return show
-        return ShowSchema(
-                id=show_id,
-                status=ShowStatus.created,
-                name=ShowName('Cool Show Name'),
-                species_id=None,
-                breed_id=ID(0),
-                country=Country('Russian Federation'),
-                show_class=ShowClass.one,
-                standard_id=ID(0),
-                is_multi_breed=False
-            )
+        raise NotFoundRepoError(detail='')
 
     def get_by_standard_id(self, standard_id: ID) -> List[ShowSchema]:
         res = []
         for show in self._shows:
             if show.standard_id == standard_id:
                 res.append(show)
+        if len(res) == 0:
+            raise NotFoundRepoError(detail='')
         return res
 
     def get_by_user_id(self, user_id: ID) -> List[ShowSchema]:
         res = []
-        for record in self._usershow:
+        for record in self._usershows:
             if record.user_id == user_id:
                 for show in self._shows:
                     if show.id == record.show_id:
                         res.append(show)
+        if len(res) == 0:
+            raise NotFoundRepoError(detail='')
         return res
         # return [
         #     ShowSchema(
@@ -140,11 +143,13 @@ class MockedShowService(IShowService):
 
     def get_by_animal_id(self, animal_id: ID) -> List[ShowSchema]:
         res = []
-        for record in self._animalshow:
+        for record in self._animalshows:
             if record.animal_id == animal_id:
                 for show in self._shows:
                     if show.id == record.show_id:
                         res.append(show)
+        if len(res) == 0:
+            raise NotFoundRepoError(detail='')
         return res
         # return [
         #     ShowSchema(
