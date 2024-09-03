@@ -1,6 +1,6 @@
 from typing import List
 
-from internal.src.core.utils.exceptions import NotFoundRepoError
+from internal.src.core.utils.exceptions import NotFoundRepoError, StartShowZeroRecordsError, UserShowServiceError
 from internal.src.core.show.schema.usershow import UserShowSchemaCreate, UserShowSchema, UserShowSchemaDeleted
 from internal.src.core.show.service.usershow import IUserShowService
 from internal.src.core.utils.types import ID
@@ -73,7 +73,7 @@ class MockedUserShowService(IUserShowService):
             if record.show_id == show_id:
                 res.append(record)
         if len(res) == 0:
-            raise NotFoundRepoError(detail='')
+            raise NotFoundRepoError()
         return res
         # return [UserShowSchema(
         #     id=ID(0),
@@ -86,7 +86,7 @@ class MockedUserShowService(IUserShowService):
         for record in self._usershows:
             if record.show_id == show_id and record.user_id == user_id:
                 return record
-        raise NotFoundRepoError(detail='')
+        raise NotFoundRepoError()
         # return UserShowSchema(
         #     id=ID(0),
         #     user_id=user_id,

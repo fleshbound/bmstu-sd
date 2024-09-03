@@ -1,8 +1,10 @@
 import datetime
 from typing import List, Optional
 
+import pytest
 from pydantic import NonNegativeInt
 
+from internal.src.core.utils.exceptions import ScoreServiceError
 from internal.tests.core.mock.repo.score import MockedScoreRepository
 from internal.tests.core.mock.service.animalshow import MockedAnimalShowService
 from internal.tests.core.mock.service.show import MockedShowService
@@ -17,7 +19,7 @@ from internal.src.core.user.schema.user import UserSchema, UserRole
 from internal.src.core.utils.types import ID, Datetime, ShowName, Country, HashedPassword, Email, UserName
 
 
-def score_service(scores: List[ScoreSchema],
+def score_service_create(scores: List[ScoreSchema],
                   shows: List[ShowSchema],
                   animalshows: List[AnimalShowSchema],
                   usershows: List[UserShowSchema],
@@ -32,11 +34,11 @@ def score_service(scores: List[ScoreSchema],
 def mocked_scoreschema(id: NonNegativeInt,
                        usershow_id: NonNegativeInt,
                        animalshow_id: NonNegativeInt,
-                       value: ScoreValue,
+                       value: NonNegativeInt,
                        is_archived: bool):
     return ScoreSchema(
             id=ID(id),
-            value=value,
+            value=ScoreValue(value),
             dt_created=Datetime(datetime.datetime(2020, 5, 10)),
             usershow_id=ID(usershow_id),
             animalshow_id=ID(animalshow_id),
@@ -97,5 +99,70 @@ def mocked_animalshowschema(id: NonNegativeInt,
     )
 
 
-def test_get_total_by_usershow_id_():
-    pass
+def test_get_show_ranking_info_one_animal():
+    scores = [mocked_scoreschema(0, 0, 0, 5, False),
+              mocked_scoreschema(0, 1, 0, 0, False)]
+    animalshows = [mocked_animalshowschema(0, 0,             0, False)]
+    score_service = score_service_create(scores, [], animalshows, [], [], [])
+    count, res = score_service.get_show_ranking_info(ID(0))
+    assert count == 1
+    assert res[0].rank == 1
+    assert res[0].total_info.average == 2.5
+
+
+def test_get_show_ranking_info_two_not_equal():
+    scores = [mocked_scoreschema(0, 0, 0, 5, False),
+              mocked_scoreschema(1, 1, 0, 0, False),
+              mocked_scoreschema(2, 0, 1, 4, False),
+              mocked_scoreschema(3, 1, 1, 4, False)]
+    animalshows = [mocked_animalshowschema(0, 0, 0, False),
+                   mocked_animalshowschema(1, 1, 0, False)]
+    score_service = score_service_create(scores, [], animalshows, [], [], [])
+    count, res = score_service.get_show_ranking_info(ID(0))
+    assert count == 2
+    assert res[0].rank == 1 and res[0].total_info.record_id.value == 1
+    assert res[1].rank == 2 and res[1].total_info.record_id.value == 0
+    assert res[0].total_info.average == 4
+    assert res[1].total_info.average == 2.5
+    assert res[0].total_info.max_score.value == 4 and res[0].total_info.min_score.value == 4
+    assert res[1].total_info.max_score.value == 5 and res[1].total_info.min_score.value == 0
+
+
+def test_get_show_ranking_info_two_equal():
+    scores = [mocked_scoreschema(0, 0, 0, 5, False),
+              mocked_scoreschema(1, 1, 0, 0, False),
+              mocked_scoreschema(2, 0, 1, 0, False),
+              mocked_scoreschema(3, 1, 1, 5, False)]
+    animalshows = [mocked_animalshowschema(0, 0, 0, False),
+                   mocked_animalshowschema(1, 1, 0, False)]
+    score_service = score_service_create(scores, [], animalshows, [], [], [])
+    count, res = score_service.get_show_ranking_info(ID(0))
+    assert count == 1
+    assert len(res) == 2
+    assert res[0].rank == 1 and res[0].total_info.record_id.value == 0
+    assert res[1].rank == 1 and res[1].total_info.record_id.value == 1
+    assert res[0].total_info.average == 2.5
+    assert res[1].total_info.average == 2.5
+    assert res[0].total_info.max_score.value == 5 and res[0].total_info.min_score.value == 0
+    assert res[1].total_info.max_score.value == 5 and res[1].total_info.min_score.value == 0
+
+
+def test_get_show_ranking_info_avg_zero():
+    scores = [mocked_scoreschema(0, 0, 0, 0, False),
+              mocked_scoreschema(1, 1, 0, 0, False)]
+    animalshows = [mocked_animalshowschema(0, 0, 0, False)]
+    score_service = score_service_create(scores, [], animalshows, [], [], [])
+    count, res = score_service.get_show_ranking_info(ID(0))
+    assert count == 1
+    assert len(res) == 1
+    assert res[0].rank == 1 and res[0].total_info.record_id.value == 0
+    assert res[0].total_info.average == 0
+    assert res[0].total_info.max_score.value == 0 and res[0].total_info.min_score.value == 0
+
+
+def test_get_show_ranking_info_no_scores_error():
+    scores = []
+    animalshows = [mocked_animalshowschema(0, 0, 0, False)]
+    score_service = score_service_create(scores, [], animalshows, [], [], [])
+    with pytest.raises(ScoreServiceError):
+        score_service.get_show_ranking_info(ID(0))

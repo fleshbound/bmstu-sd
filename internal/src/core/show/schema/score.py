@@ -36,19 +36,16 @@ class Score:
         return cls(other.value)
 
     def __add__(self, other):
-        if not isinstance(other, Score):
-            raise ValueError("Sum parameter must be the instance of " + object.__class__.__name__ + " class")
         return Score(self.value + other.value)
 
     def __gt__(self, other) -> bool:
-        if not isinstance(other, Score):
-            raise ValueError("Sum parameter must be the instance of " + object.__class__.__name__ + " class")
         return self.value > other.value
+
+    def __le__(self, other) -> bool:
+        return self.value < other.value
 
     @classmethod
     def from_other(cls, other):
-        if not isinstance(other, Score):
-            raise ValueError("Init parameter must be the instance of " + object.__class__.__name__ + " class")
         return Score(other.value)
 
 
@@ -57,8 +54,8 @@ class TotalScoreInfo(BaseModel):
     total: Score
     count: NonNegativeInt
     average: Optional[NonNegativeFloat]
-    max_score: Optional[ScoreValue]
-    min_score: Optional[ScoreValue]
+    max_score: Optional[Score]
+    min_score: Optional[Score]
 
 
 class AnimalShowRankingInfo(BaseModel):

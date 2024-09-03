@@ -6,6 +6,7 @@ from fastapi import HTTPException
 from pydantic import NonNegativeInt, PositiveFloat
 
 from internal.src.core.animal.schema.animal import AnimalSchema
+from internal.src.core.utils.exceptions import CheckAnimalStandardError, StandardInUseError, CheckAnimalBreedError
 from internal.tests.core.mock.repo.standard import MockedStandardRepository
 
 from internal.tests.core.mock.service.show import MockedShowService
@@ -88,7 +89,7 @@ def test_check_wrongbreed_error():
     standards = [mocked_standardschema(0, 1, 1, 1, True, True, 10, 10, 10)]
     animal = mocked_animalschema(1, 1, 1, 1, True, True)
     standard_service = standard_service_create(standards, [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(CheckAnimalBreedError):
         standard_service.check_animal_by_standard(ID(0), animal)
 
 
@@ -96,56 +97,64 @@ def test_check_moreweight_false():
     standards = [mocked_standardschema(0, 100, 1, 1, True, True, 10, 10, 10)]
     animal = mocked_animalschema(0, 89, 1, 1, True, True)
     standard_service = standard_service_create(standards, [])
-    assert standard_service.check_animal_by_standard(ID(0), animal) is False
+    with pytest.raises(CheckAnimalStandardError):
+        standard_service.check_animal_by_standard(ID(0), animal)
 
 
 def test_check_lessweight_false():
     standards = [mocked_standardschema(0, 100, 1, 1, True, True, 10, 10, 10)]
     animal = mocked_animalschema(0, 111, 1, 1, True, True)
     standard_service = standard_service_create(standards, [])
-    assert standard_service.check_animal_by_standard(ID(0), animal) is False
+    with pytest.raises(CheckAnimalStandardError):
+        standard_service.check_animal_by_standard(ID(0), animal)
 
 
 def test_check_lesslength_false():
     standards = [mocked_standardschema(0, 100, 100, 1, True, True, 10, 10, 10)]
     animal = mocked_animalschema(0, 100, 89, 1, True, True)
     standard_service = standard_service_create(standards, [])
-    assert standard_service.check_animal_by_standard(ID(0), animal) is False
+    with pytest.raises(CheckAnimalStandardError):
+        standard_service.check_animal_by_standard(ID(0), animal)
 
 
 def test_check_morelength_false():
     standards = [mocked_standardschema(0, 100, 100, 1, True, True, 10, 10, 10)]
     animal = mocked_animalschema(0, 100, 111, 1, True, True)
     standard_service = standard_service_create(standards, [])
-    assert standard_service.check_animal_by_standard(ID(0), animal) is False
+    with pytest.raises(CheckAnimalStandardError):
+        standard_service.check_animal_by_standard(ID(0), animal)
 
 
 def test_check_lessheight_false():
     standards = [mocked_standardschema(0, 100, 100, 100, True, True, 10, 10, 10)]
     animal = mocked_animalschema(0, 100, 100, 89, True, True)
     standard_service = standard_service_create(standards, [])
-    assert standard_service.check_animal_by_standard(ID(0), animal) is False
+    with pytest.raises(CheckAnimalStandardError):
+        standard_service.check_animal_by_standard(ID(0), animal)
 
 
 def test_check_moreheight_false():
     standards = [mocked_standardschema(0, 100, 100, 100, True, True, 10, 10, 10)]
     animal = mocked_animalschema(0, 100, 100, 111, True, True)
     standard_service = standard_service_create(standards, [])
-    assert standard_service.check_animal_by_standard(ID(0), animal) is False
+    with pytest.raises(CheckAnimalStandardError):
+        standard_service.check_animal_by_standard(ID(0), animal)
 
 
 def test_check_hasdefects_false():
     standards = [mocked_standardschema(0, 100, 100, 100, False, True, 10, 10, 10)]
     animal = mocked_animalschema(0, 100, 100, 100, True, True)
     standard_service = standard_service_create(standards, [])
-    assert standard_service.check_animal_by_standard(ID(0), animal) is False
+    with pytest.raises(CheckAnimalStandardError):
+        standard_service.check_animal_by_standard(ID(0), animal)
 
 
 def test_check_ismulticolor_false():
     standards = [mocked_standardschema(0, 100, 100, 100, True, False, 10, 10, 10)]
     animal = mocked_animalschema(0, 100, 100, 100, True, True)
     standard_service = standard_service_create(standards, [])
-    assert standard_service.check_animal_by_standard(ID(0), animal) is False
+    with pytest.raises(CheckAnimalStandardError):
+        standard_service.check_animal_by_standard(ID(0), animal)
 
 
 def test_check_allok_true():
@@ -159,7 +168,7 @@ def test_delete_inuse_error():
     standards = [mocked_standardschema(0, 100, 100, 100, True, True, 10, 10, 10)]
     shows = [mocked_showschema(id=0, standard_id=0)]
     standard_service = standard_service_create(standards, shows)
-    with pytest.raises(HTTPException):
+    with pytest.raises(StandardInUseError):
         standard_service.delete(ID(0))
 
 

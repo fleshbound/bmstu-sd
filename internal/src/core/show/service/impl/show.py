@@ -25,7 +25,7 @@ from internal.src.core.utils.exceptions import NotFoundRepoError, \
     RegisterUserRoleError, RegisterUserRegisteredError, UnregisterShowStatusError, UnregisterAnimalNotRegisteredError, \
     UnregisterUserNotRegisteredError, CreateShowMultiBreedError, CreateShowSingleBreedError, StartShowStatusError, \
     StartShowZeroRecordsError, AbortShowStatusError, StopShowStatusError, StopNotAllUsersScoredError, \
-    UpdateShowStatusError
+    UpdateShowStatusError, CheckAnimalStandardError
 from internal.src.core.utils.types import ID
 
 
@@ -64,18 +64,18 @@ class ShowService(IShowService):
     def check_show_parameters(new_show: ShowSchema):
         if new_show.is_multi_breed:
             if new_show.breed_id is not None:
-                raise CreateShowMultiBreedError(detail='breed_id must be None')
+                raise CreateShowMultiBreedError(detail='breed_id must be None', property_name='breed_id')
             if new_show.species_id is None:
-                raise CreateShowMultiBreedError(detail='species_id must be not None')
+                raise CreateShowMultiBreedError(detail='species_id must be not None', property_name='species_id')
             if new_show.standard_id is not None:
-                raise CreateShowMultiBreedError(detail='standard_id must be None')
+                raise CreateShowMultiBreedError(detail='standard_id must be None', property_name='standard_id')
         else:
             if new_show.species_id is not None:
-                raise CreateShowSingleBreedError(detail='species_id must be None')
+                raise CreateShowSingleBreedError(detail='species_id must be None', property_name='breed_id')
             if new_show.breed_id is None:
-                raise CreateShowSingleBreedError(detail='breed_id must be not None')
+                raise CreateShowSingleBreedError(detail='breed_id must be not None', property_name='species_id')
             if new_show.standard_id is None:
-                raise CreateShowSingleBreedError(detail='standard_id must be not None')
+                raise CreateShowSingleBreedError(detail='standard_id must be not None', property_name='standard_id')
 
     def create(self, show_create: ShowSchemaCreate) -> ShowSchema:
         new_show = ShowSchema.from_create(show_create)
@@ -101,10 +101,10 @@ class ShowService(IShowService):
         if cur_show.status != ShowStatus.created:
             raise StartShowStatusError(show_id=show_id, show_status=cur_show.status)
 
-        if self.get_usershow_count(show_id):
+        if not self.get_usershow_count(show_id):
             raise StartShowZeroRecordsError(show_id=show_id, type='user')
 
-        if self.get_animalshow_count(show_id):
+        if not self.get_animalshow_count(show_id):
             raise StartShowZeroRecordsError(show_id=show_id, type='animal')
 
         cur_show.status = ShowStatus.started
@@ -206,7 +206,9 @@ class ShowService(IShowService):
         else:
             if animal.breed_id != show.breed_id:
                 raise RegisterAnimalCheckError(detail=f'improper animal breed', show_id=show.id, animal_id=animal.id)
-            if not self.standard_service.check_animal_by_standard(show.standard_id, animal):
+            try:
+                self.standard_service.check_animal_by_standard(show.standard_id, animal)
+            except CheckAnimalStandardError:
                 raise RegisterAnimalCheckError(detail=f'animal doesn\'t meet the show standard',
                                                animal_id=animal.id, show_id=show.id)
 

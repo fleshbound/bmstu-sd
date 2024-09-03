@@ -33,7 +33,7 @@ class AnimalService(IAnimalService):
         return records
 
     def delete(self, animal_id: ID) -> AnimalSchemaDelete:
-        if animal_registration_records := self.get_animal_registration_records(animal_id):
+        if not (animal_registration_records := self.get_animal_registration_records(animal_id)):
             self.animal_repo.delete(animal_id)
             return AnimalSchemaDelete(id=animal_id)
 

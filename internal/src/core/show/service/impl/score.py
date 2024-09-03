@@ -11,6 +11,7 @@ from internal.src.core.show.schema.score import TotalScoreInfo, ScoreSchema, Sco
     AnimalShowRankingInfo
 from internal.src.core.show.service.score import IScoreService
 from internal.src.core.show.service.show import IShowService
+from internal.src.core.utils.exceptions import ScoreServiceError, NotFoundRepoError
 from internal.src.core.utils.types import ID
 
 
@@ -35,7 +36,10 @@ class ScoreService(IScoreService):
 
     @staticmethod
     def dict_to_asc_ranked_ids(dict: FloatKeyDictionary) -> List[NonNegativeInt]:
-        return list(OrderedDict(sorted(dict.items())).values())
+        avgs = list(dict.keys())
+        avgs.sort(reverse=True)
+        return [dict[i] for i in avgs]
+        # return list(OrderedDict(sorted(dict.keys())).values())
 
     def get_show_ranking_info(self, show_id: ID) -> Tuple[NonNegativeInt, List[AnimalShowRankingInfo]]:
         animalshow_records = self.animalshow_service.get_by_show_id(show_id)
@@ -44,10 +48,9 @@ class ScoreService(IScoreService):
         res = []
         for rank, total_id_list in enumerate(total_scores_ranked):
             for total_id in total_id_list:
-                info = AnimalShowRankingInfo(total_info=total_scores_by_animal[total_id], rank=rank)
-                res.append(info)
+                res.append(AnimalShowRankingInfo(total_info=total_scores_by_animal[total_id], rank=rank + 1))
         return len(total_scores_ranked), res
-    
+
     def get_total_scores_ranked(self, total: List[TotalScoreInfo]):
         map = FloatKeyDictionary(DECIMALS)
         for i, res in enumerate(total):
@@ -59,36 +62,46 @@ class ScoreService(IScoreService):
         return self.dict_to_asc_ranked_ids(map)
 
     def get_total_by_animalshow_id(self, animalshow_id: ID) -> TotalScoreInfo:
-        scores = self.score_repo.get_by_animalshow_id(animalshow_id)
+        try:
+            scores = self.score_repo.get_by_animalshow_id(animalshow_id)
+        except NotFoundRepoError:
+            raise ScoreServiceError('no animalshow scores found')
         return self.calc_total(animalshow_id, scores)
 
     def get_total_by_usershow_id(self, usershow_id: ID) -> TotalScoreInfo:
-        scores = self.score_repo.get_by_usershow_id(usershow_id)
+        try:
+            scores = self.score_repo.get_by_usershow_id(usershow_id)
+        except NotFoundRepoError:
+            raise ScoreServiceError('no usershow scores found')
         return self.calc_total(usershow_id, scores)
 
     def get_count_by_usershow_id(self, usershow_id: ID) -> NonNegativeInt:
-        scores = self.score_repo.get_by_usershow_id(usershow_id)
+        try:
+            scores = self.score_repo.get_by_usershow_id(usershow_id)
+        except NotFoundRepoError:
+            raise ScoreServiceError('no usershow scores found')
         return len(scores)
 
     @staticmethod
     def calc_total(id: ID, scores: List[ScoreSchema]) -> TotalScoreInfo:
         count: NonNegativeInt = len(scores)
+        if count == 0:
+            raise ScoreServiceError('no scores were given')
         total: Score = Score(0)
-        avg: Optional[NonNegativeFloat] = None
-        min_score: Optional[ScoreValue] = None
-        max_score: Optional[ScoreValue] = None
+        avg: Optional[NonNegativeFloat]
+        min_score: Optional[Score]
+        max_score: Optional[Score]
 
-        if count > 0:
-            max_score = ScoreValue(scores[0].value.min)
-            min_score = ScoreValue(scores[0].value.max)
-            for score in scores:
-                cur_score = Score.from_scorevalue(score.value)
-                total += cur_score
-                if cur_score > max_score:
-                    max_score = cur_score
-                if cur_score < min_score:
-                    min_score = cur_score
-            avg = total.value / count
+        max_score = Score(scores[0].value.min)
+        min_score = Score(scores[0].value.max)
+        for score in scores:
+            cur_score = Score.from_scorevalue(score.value)
+            total += cur_score
+            if cur_score > max_score:
+                max_score = cur_score
+            if cur_score < min_score:
+                min_score = cur_score
+        avg = total.value / count
 
         return TotalScoreInfo(record_id=id, total=total, count=count, average=avg,
                               min_score=min_score, max_score=max_score)

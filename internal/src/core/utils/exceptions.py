@@ -58,8 +58,11 @@ class StartShowZeroRecordsError(ShowServiceError):
 
 
 class CreateShowMultiBreedError(ShowServiceError):
-    def __init__(self, detail: Any = None):
-        super().__init__("invalid multi-breed show parameters" + (": " + detail) if detail is not None else "")
+    property_name: str
+
+    def __init__(self, property_name: str, detail: Any = None):
+        super().__init__(f"invalid multi-breed show parameters: {property_name}"
+                         + (": " + detail) if detail is not None else "")
 
 
 class CreateShowSingleBreedError(ShowServiceError):
@@ -165,6 +168,11 @@ class DeleteAnimalStartedShowError(AnimalServiceError):
 
 
 class AnimalShowServiceError(Exception):
+    def __init__(self, detail: Any = None) -> None:
+        super().__init__(detail)
+
+
+class ScoreServiceError(Exception):
     def __init__(self, detail: Any = None) -> None:
         super().__init__(detail)
 

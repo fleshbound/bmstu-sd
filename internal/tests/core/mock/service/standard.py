@@ -6,7 +6,7 @@ from internal.src.core.animal.schema.animal import AnimalSchema
 from internal.src.core.standard.schema.standard import StandardSchema, StandardSchemaCreate, \
     StandardSchemaDeleteResponse
 from internal.src.core.standard.service.standard import IStandardService
-from internal.src.core.utils.exceptions import NotFoundRepoError
+from internal.src.core.utils.exceptions import NotFoundRepoError, CheckAnimalStandardError
 from internal.src.core.utils.types import ID
 
 
@@ -43,6 +43,7 @@ class MockedStandardService(IStandardService):
                 return StandardSchemaDeleteResponse(id=id)
         return StandardSchemaDeleteResponse(id=id)
 
-    def check_animal_by_standard(self, standard_id: ID, animal: AnimalSchema) -> bool:
-        return standard_id.value / 2 == 0
+    def check_animal_by_standard(self, standard_id: ID, animal: AnimalSchema):
+        if standard_id.value / 2:
+            raise CheckAnimalStandardError(animal_id=animal.id, standard_id=standard_id)
     

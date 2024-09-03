@@ -4,6 +4,7 @@ import pytest
 from fastapi import HTTPException
 from pydantic import NonNegativeInt
 
+from internal.src.core.utils.exceptions import SignInPasswordError, SignInNotFoundEmailError
 from internal.tests.core.mock.provider.auth import MockedAuthProvider
 from internal.tests.core.mock.service.user import MockedUserService
 from internal.src.core.auth.schema.auth import AuthSchemaSignIn, Fingerprint
@@ -39,7 +40,7 @@ def test_signin_notfound_error():
     params = mocked_authschemasignin(email='notthisemail@mail.ru',
                                      fingerprint='fingerprint123',
                                      password='coolpassword')
-    with pytest.raises(HTTPException):
+    with pytest.raises(SignInNotFoundEmailError):
         auth_service.signin(params)
 
 
@@ -49,7 +50,7 @@ def test_signin_wrongpassword_error():
     params = mocked_authschemasignin(email='email@mail.ru',
                                      fingerprint='fingerprint123',
                                      password='wrong')
-    with pytest.raises(HTTPException):
+    with pytest.raises(SignInPasswordError):
         auth_service.signin(params)
 
 
