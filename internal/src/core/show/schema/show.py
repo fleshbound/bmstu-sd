@@ -3,22 +3,10 @@ from typing import List, Optional
 
 from pydantic import BaseModel, NonNegativeInt
 
-<<<<<<< HEAD
 from internal.src.core.animal.schema.animal import AnimalSchema
 from internal.src.core.show.schema.score import AnimalShowRankingInfo
 from internal.src.core.user.schema.user import UserSchema
 from internal.src.core.utils.types import Country, ShowName, ID
-||||||| parent of 34b5142 (fix imports)
-from core.animal.schema.animal import AnimalSchema
-from core.show.schema.score import AniShowRankingInfo
-from core.user.schema.user import UserSchema
-from core.utils.types import Country, ShowName, ID
-=======
-from internal.src.core.animal.schema.animal import AnimalSchema
-from internal.src.core.show.schema.score import AniShowRankingInfo
-from internal.src.core.user.schema.user import UserSchema
-from internal.src.core.utils.types import Country, ShowName, ID
->>>>>>> 34b5142 (fix imports)
 
 
 @enum.unique
@@ -50,7 +38,7 @@ class ShowSchemaUpdate(BaseModel):
     id: ID
     status: ShowStatus
     name: ShowName
-    
+
 
 class ShowSchema(BaseModel):
     id: ID

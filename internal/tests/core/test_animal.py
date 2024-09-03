@@ -6,7 +6,7 @@ from pydantic import NonNegativeInt
 
 from internal.src.core.show.schema.animalshow import AnimalShowSchema
 from internal.src.core.show.schema.show import ShowStatus, ShowSchema, ShowClass
-from internal.src.core.utils.exceptions import AnimalServiceError
+from internal.src.core.utils.exceptions import AnimalServiceError, DeleteAnimalStartedShowError
 from internal.src.core.animal.schema.animal import AnimalSchema
 from internal.src.core.animal.service.impl.animal import AnimalService
 from internal.src.core.utils.types import ID, AnimalName, Datetime, Sex, Weight, Height, Length, ShowName, Country
@@ -35,7 +35,7 @@ def animal_service_create(animals: List[AnimalSchema], animalshows: List[AnimalS
     return AnimalService(
         animal_repo=MockedAnimalRepository(animals=animals),
         animalshow_service=MockedAnimalShowService(animalshows=animalshows),
-        show_service=MockedShowService(shows, [], [], [], [])
+        show_service=MockedShowService(shows, animalshows, [], animals, [])
     )
 
 
@@ -73,14 +73,14 @@ def test_delete_noanimalshow_ok():
 
 def test_delete_animalshowstarted_error():
     animals = [mocked_animalschema(id=0)]
-    shows = [mocked_showschema(0, ShowStatus.started)]
+    shows = [mocked_showschema(id=0, status=ShowStatus.started)]
     animalshows = [mocked_animalshowschema(0, 0, 0)]
     animal_service = animal_service_create(animals=animals, animalshows=animalshows, shows=shows)
-    with pytest.raises(AnimalServiceError):
+    with pytest.raises(DeleteAnimalStartedShowError):
         animal_service.delete(ID(0))
 
 
-def test_delete_animalshowcreated_error():
+def test_delete_animalshowcreated_ok():
     animals = [mocked_animalschema(id=0)]
     shows = [mocked_showschema(0, ShowStatus.created)]
     animalshows = [mocked_animalshowschema(0, 0, 0)]

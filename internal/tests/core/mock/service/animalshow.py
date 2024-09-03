@@ -1,6 +1,6 @@
 from typing import List
 
-from internal.src.core.utils.exceptions import NotFoundRepoError
+from internal.src.core.utils.exceptions import NotFoundRepoError, AnimalShowServiceError, StartShowZeroRecordsError
 from internal.src.core.show.schema.animalshow import AnimalShowSchemaCreate, AnimalShowSchema, AnimalShowSchemaDeleted
 from internal.src.core.show.service.animalshow import IAnimalShowService
 from internal.src.core.utils.types import ID
@@ -73,7 +73,7 @@ class MockedAnimalShowService(IAnimalShowService):
             if record.show_id == show_id:
                 res.append(record)
         if len(res) == 0:
-            raise NotFoundRepoError(detail='')
+            raise NotFoundRepoError()
         return res
         # return [AnimalShowSchema(
         #     id=ID(0),
@@ -86,7 +86,7 @@ class MockedAnimalShowService(IAnimalShowService):
         for record in self._animalshows:
             if record.show_id == show_id and record.animal_id == animal_id:
                 return record
-        raise NotFoundRepoError(detail='')
+        raise NotFoundRepoError()
         # return AnimalShowSchema(
         #     id=ID(0),
         #     animal_id=animal_id,

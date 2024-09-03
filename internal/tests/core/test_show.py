@@ -9,7 +9,13 @@ from internal.src.core.breed.schema.breed import BreedSchema
 from internal.src.core.certificate.schema.certificate import CertificateSchema
 from internal.src.core.show.schema.animalshow import AnimalShowSchema
 from internal.src.core.show.schema.usershow import UserShowSchema
+from internal.src.core.species.schema.species import SpeciesSchema
 from internal.src.core.user.schema.user import UserSchema, UserRole
+from internal.src.core.utils.exceptions import CreateShowMultiBreedError, CreateShowSingleBreedError, \
+    StartShowStatusError, StartShowZeroRecordsError, StopShowStatusError, RegisterShowStatusError, \
+    RegisterAnimalCheckError, RegisterUserRoleError, RegisterUserRegisteredError, UnregisterShowStatusError, \
+    UnregisterAnimalNotRegisteredError, UnregisterUserNotRegisteredError, StopNotAllUsersScoredError, \
+    RegisterAnimalRegisteredError
 from internal.tests.core.mock.repo.show import MockedShowRepository
 from internal.tests.core.mock.service.animal import MockedAnimalService
 from internal.tests.core.mock.service.animalshow import MockedAnimalShowService
@@ -25,7 +31,7 @@ from internal.src.core.animal.schema.animal import AnimalSchema
 from internal.src.core.show.schema.show import ShowSchema, ShowStatus, ShowClass, ShowSchemaCreate, \
     ShowRegisterAnimalStatus, ShowRegisterUserStatus
 from internal.src.core.utils.types import ID, Country, Weight, Height, Length, AnimalName, Datetime, Sex, ShowName, \
-    BreedName, Email, HashedPassword, UserName
+    BreedName, Email, HashedPassword, UserName, SpeciesName
 from internal.src.core.show.service.impl.show import ShowService
 
 
@@ -188,21 +194,21 @@ def mocked_userschema(id: NonNegativeInt, role: UserRole):
 def test_create_multibreed_yesbreed_error():
     create_show = mocked_showschemacreate(0, 0, None, True)
     show_service = show_service_create([], [], [], [], [], [], [], [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(CreateShowMultiBreedError) as e:
         show_service.create(create_show)
 
 
 def test_create_multibreed_nospecies_error():
     create_show = mocked_showschemacreate(None, None, None, True)
     show_service = show_service_create([], [], [], [], [], [], [], [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(CreateShowMultiBreedError):
         show_service.create(create_show)
 
 
 def test_create_multibreed_yesstandard_error():
     create_show = mocked_showschemacreate(0, None, 0, True)
     show_service = show_service_create([], [], [], [], [], [], [], [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(CreateShowMultiBreedError):
         show_service.create(create_show)
 
 
@@ -215,21 +221,21 @@ def test_create_multibreed_ok():
 def test_create_singlebreed_nostandard_error():
     create_show = mocked_showschemacreate(None, 0, None, False)
     show_service = show_service_create([], [], [], [], [], [], [], [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(CreateShowSingleBreedError):
         show_service.create(create_show)
 
 
 def test_create_singlebreed_yesspecies_error():
     create_show = mocked_showschemacreate(0, 0, 0, False)
     show_service = show_service_create([], [], [], [], [], [], [], [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(CreateShowSingleBreedError):
         show_service.create(create_show)
 
 
 def test_create_singlebreed_nobreed_error():
     create_show = mocked_showschemacreate(None, None, 0, False)
     show_service = show_service_create([], [], [], [], [], [], [], [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(CreateShowSingleBreedError):
         show_service.create(create_show)
 
 
@@ -270,21 +276,21 @@ def test_get_animalshow_count_zero():
 def test_start_started_error():
     shows = [mocked_showschema(id=0, status=ShowStatus.started)]
     show_service = show_service_create(shows, [], [], [], [], [], [], [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(StartShowStatusError):
         show_service.start(ID(0))
 
 
 def test_start_stopped_error():
     shows = [mocked_showschema(id=0, status=ShowStatus.stopped)]
     show_service = show_service_create(shows, [], [], [], [], [], [], [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(StartShowStatusError):
         show_service.start(ID(0))
 
 
 def test_start_aborted_error():
     shows = [mocked_showschema(id=0, status=ShowStatus.aborted)]
     show_service = show_service_create(shows, [], [], [], [], [], [], [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(StartShowStatusError):
         show_service.start(ID(0))
 
 
@@ -292,7 +298,7 @@ def test_start_nousershows_error():
     shows = [mocked_showschema(id=0, status=ShowStatus.created)]
     usershows = [mocked_usershowschema(0, 1, 1, False)]
     show_service = show_service_create(shows, [], [], usershows, [], [], [], [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(StartShowZeroRecordsError):
         show_service.start(ID(0))
 
 
@@ -300,7 +306,7 @@ def test_start_noanimalshows_error():
     shows = [mocked_showschema(id=0, status=ShowStatus.created)]
     animalshows = [mocked_animalshowschema(0, 1, 1, False)]
     show_service = show_service_create(shows, [], animalshows, [], [], [], [], [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(StartShowZeroRecordsError):
         show_service.start(ID(0))
 
 
@@ -315,21 +321,21 @@ def test_start_ok():
 def test_stop_created_error():
     shows = [mocked_showschema(id=0, status=ShowStatus.created)]
     show_service = show_service_create(shows, [], [], [], [], [], [], [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(StopShowStatusError):
         show_service.stop(ID(0))
 
 
 def test_stop_stopped_error():
     shows = [mocked_showschema(id=0, status=ShowStatus.stopped)]
     show_service = show_service_create(shows, [], [], [], [], [], [], [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(StopShowStatusError):
         show_service.stop(ID(0))
 
 
 def test_stop_aborted_error():
     shows = [mocked_showschema(id=0, status=ShowStatus.aborted)]
     show_service = show_service_create(shows, [], [], [], [], [], [], [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(StopShowStatusError):
         show_service.stop(ID(0))
 
 
@@ -338,7 +344,7 @@ def test_stop_notallusersscored_error():
     usershows = [mocked_usershowschema(0, 0, 0, False)]
     animalshows = [mocked_animalshowschema(0, 0, 0, False)]
     show_service = show_service_create(shows, [], animalshows, usershows, [], [], [], [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(StopNotAllUsersScoredError):
         show_service.stop(ID(1))
 
 
@@ -354,7 +360,7 @@ def test_register_animal_started_error():
     shows = [mocked_showschema(id=0, status=ShowStatus.started)]
     animals = [mocked_animalschema(0, 0, 0, 100, 100, 100, False, False)]
     show_service = show_service_create(shows, [], [], [], [], animals, [], [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(RegisterShowStatusError):
         show_service.register_animal(ID(0), ID(0))
 
 
@@ -362,7 +368,7 @@ def test_register_animal_stopped_error():
     shows = [mocked_showschema(id=0, status=ShowStatus.stopped)]
     animals = [mocked_animalschema(0, 0, 0, 100, 100, 100, False, False)]
     show_service = show_service_create(shows, [], [], [], [], animals, [], [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(RegisterShowStatusError):
         show_service.register_animal(ID(0), ID(0))
 
 
@@ -370,16 +376,16 @@ def test_register_animal_aborted_error():
     shows = [mocked_showschema(id=0, status=ShowStatus.aborted)]
     animals = [mocked_animalschema(0, 0, 0, 100, 100, 100, False, False)]
     show_service = show_service_create(shows, [], [], [], [], animals, [], [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(RegisterShowStatusError):
         show_service.register_animal(ID(0), ID(0))
 
 
 def test_register_animal_multibreed_wrongspecies_error():
     shows = [mocked_showschema(id=0, status=ShowStatus.created, species_id=0, is_multi_breed=True, breed_id=None, standard_id=None)]
     breeds = [mocked_breedschema(id=0, species_id=1)]
-    animals = [mocked_animalschema(0, 0, 1, 100, 100, 100, False, False)]
+    animals = [mocked_animalschema(0, 0, 0, 100, 100, 100, False, False)]
     show_service = show_service_create(shows, [], [], [], [], animals, [], breeds, [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(RegisterAnimalCheckError):
         show_service.register_animal(animal_id=ID(0), show_id=ID(0))
 
 
@@ -389,17 +395,17 @@ def test_register_animal_singlebreed_wrongbreed_error():
     standards = [mocked_standardschema(0, 0, 100, 100, 100, False, False, 10, 10, 10)]
     animals = [mocked_animalschema(0, 0, 1, 100, 100, 100, False, False)]
     show_service = show_service_create(shows, [], [], [], [], animals, [], breeds, standards)
-    with pytest.raises(HTTPException):
+    with pytest.raises(RegisterAnimalCheckError):
         show_service.register_animal(animal_id=ID(0), show_id=ID(0))
 
 
-def test_register_animal_singlebreed_standardfalse_error():
+def test_register_animal_singlebreed_checkanimal_error():
     shows = [mocked_showschema(id=0, status=ShowStatus.created, species_id=None, is_multi_breed=False, breed_id=0, standard_id=1)]
     breeds = [mocked_breedschema(id=0, species_id=1)]
     standards = [mocked_standardschema(1, 0, 100, 100, 100, False, False, 10, 10, 10)]
-    animals = [mocked_animalschema(0, 0, 0, 100, 100, 100, False, False)]
+    animals = [mocked_animalschema(0, 0, 0, 100, 100, 100, True, False)]
     show_service = show_service_create(shows, [], [], [], [], animals, [], breeds, standards)
-    with pytest.raises(HTTPException):
+    with pytest.raises(RegisterAnimalCheckError):
         show_service.register_animal(animal_id=ID(0), show_id=ID(0))
 
 
@@ -410,7 +416,7 @@ def test_register_animal_registered_error():
     animals = [mocked_animalschema(0, 0, 0, 100, 100, 100, False, False)]
     animalshows = [mocked_animalshowschema(0, 0, 0, False)]
     show_service = show_service_create(shows, [], animalshows, [], [], animals, [], breeds, standards)
-    with pytest.raises(HTTPException):
+    with pytest.raises(RegisterAnimalRegisteredError):
         show_service.register_animal(animal_id=ID(0), show_id=ID(0))
 
 
@@ -428,7 +434,7 @@ def test_register_user_started_error():
     shows = [mocked_showschema(id=0, status=ShowStatus.started)]
     users = [mocked_userschema(0, UserRole.judge)]
     show_service = show_service_create(shows, [], [], [], [], [], users, [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(RegisterShowStatusError):
         show_service.register_user(ID(0), ID(0))
 
 
@@ -436,7 +442,7 @@ def test_register_user_stopped_error():
     shows = [mocked_showschema(id=0, status=ShowStatus.stopped)]
     users = [mocked_userschema(0, UserRole.judge)]
     show_service = show_service_create(shows, [], [], [], [], [], users, [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(RegisterShowStatusError):
         show_service.register_user(ID(0), ID(0))
 
 
@@ -444,7 +450,7 @@ def test_register_user_aborted_error():
     shows = [mocked_showschema(id=0, status=ShowStatus.aborted)]
     users = [mocked_userschema(0, UserRole.judge)]
     show_service = show_service_create(shows, [], [], [], [], [], users, [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(RegisterShowStatusError):
         show_service.register_user(ID(0), ID(0))
 
 
@@ -452,7 +458,7 @@ def test_register_user_admin_error():
     shows = [mocked_showschema(id=0, status=ShowStatus.created)]
     users = [mocked_userschema(0, UserRole.admin)]
     show_service = show_service_create(shows, [], [], [], [], [], users, [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(RegisterUserRoleError):
         show_service.register_user(ID(0), ID(0))
 
 
@@ -460,7 +466,7 @@ def test_register_user_guest_error():
     shows = [mocked_showschema(id=0, status=ShowStatus.created)]
     users = [mocked_userschema(0, UserRole.guest)]
     show_service = show_service_create(shows, [], [], [], [], [], users, [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(RegisterUserRoleError):
         show_service.register_user(ID(0), ID(0))
 
 
@@ -468,7 +474,7 @@ def test_register_user_breeder_error():
     shows = [mocked_showschema(id=0, status=ShowStatus.created)]
     users = [mocked_userschema(0, UserRole.breeder)]
     show_service = show_service_create(shows, [], [], [], [], [], users, [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(RegisterUserRoleError):
         show_service.register_user(ID(0), ID(0))
 
 
@@ -477,7 +483,7 @@ def test_register_user_registered_error():
     users = [mocked_userschema(0, UserRole.judge)]
     usershows = [mocked_usershowschema(0, 0, 0, False)]
     show_service = show_service_create(shows, [], [], usershows, [], [], users, [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(RegisterUserRegisteredError):
         show_service.register_user(ID(0), ID(0))
 
 
@@ -494,7 +500,7 @@ def test_unregister_animal_stopped_error():
     animals = [mocked_animalschema(0, 0, 0, 100, 100, 100, False, False)]
     animalshows = [mocked_animalshowschema(0, 0, 0, False)]
     show_service = show_service_create(shows, [], animalshows, [], [],  animals, [], [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(UnregisterShowStatusError):
         show_service.unregister_animal(ID(0), ID(0))
 
 
@@ -503,7 +509,7 @@ def test_unregister_animal_aborted_error():
     animals = [mocked_animalschema(0, 0, 0, 100, 100, 100, False, False)]
     animalshows = [mocked_animalshowschema(0, 0, 0, False)]
     show_service = show_service_create(shows, [], animalshows, [], [],  animals, [], [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(UnregisterShowStatusError):
         show_service.unregister_animal(ID(0), ID(0))
 
 
@@ -512,7 +518,7 @@ def test_unregister_animal_started_error():
     animals = [mocked_animalschema(0, 0, 0, 100, 100, 100, False, False)]
     animalshows = [mocked_animalshowschema(0, 0, 0, False)]
     show_service = show_service_create(shows, [], animalshows, [], [],  animals, [], [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(UnregisterShowStatusError):
         show_service.unregister_animal(ID(0), ID(0))
 
 
@@ -521,7 +527,7 @@ def test_unregister_animal_notregistered_error():
     animals = [mocked_animalschema(0, 0, 0, 100, 100, 100, False, False)]
     animalshows = []
     show_service = show_service_create(shows, [], animalshows, [], [],  animals, [], [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(UnregisterAnimalNotRegisteredError):
         show_service.unregister_animal(ID(0), ID(0))
 
 
@@ -538,7 +544,7 @@ def test_unregister_user_stopped_error():
     users = [mocked_userschema(0, UserRole.judge)]
     usershows = [mocked_usershowschema(0, 0, 0, False)]
     show_service = show_service_create(shows, [], [], usershows, [], [], users, [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(UnregisterShowStatusError):
         show_service.unregister_user(ID(0), ID(0))
 
 
@@ -547,7 +553,7 @@ def test_unregister_user_aborted_error():
     users = [mocked_userschema(0, UserRole.judge)]
     usershows = [mocked_usershowschema(0, 0, 0, False)]
     show_service = show_service_create(shows, [], [], usershows, [], [], users, [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(UnregisterShowStatusError):
         show_service.unregister_user(ID(0), ID(0))
 
 
@@ -556,7 +562,7 @@ def test_unregister_user_started_error():
     users = [mocked_userschema(0, UserRole.judge)]
     usershows = [mocked_usershowschema(0, 0, 0, False)]
     show_service = show_service_create(shows, [], [], usershows, [], [], users, [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(UnregisterShowStatusError):
         show_service.unregister_user(ID(0), ID(0))
 
 
@@ -565,7 +571,7 @@ def test_unregister_user_notregistered_error():
     users = [mocked_userschema(0, UserRole.judge)]
     usershows = []
     show_service = show_service_create(shows, [], [], usershows, [], [], users, [], [])
-    with pytest.raises(HTTPException):
+    with pytest.raises(UnregisterUserNotRegisteredError):
         show_service.unregister_user(ID(0), ID(0))
 
 
