@@ -14,6 +14,9 @@ from internal.src.core.show.service.show import IShowService
 from internal.src.core.utils.types import ID
 
 
+DECIMALS = 4
+
+
 class ScoreService(IScoreService):
     show_service: IShowService
     score_repo: IScoreRepository
@@ -35,27 +38,25 @@ class ScoreService(IScoreService):
         return list(OrderedDict(sorted(dict.items())).values())
 
     def get_show_ranking_info(self, show_id: ID) -> Tuple[NonNegativeInt, List[AnimalShowRankingInfo]]:
-        anishow_records = self.animalshow_service.get_by_show_id(show_id)
-        total = []
-        for record in anishow_records:
-            score_info = self.get_total_by_animalshow_id(record.id)
-            total.append(score_info)
-
-        map = FloatKeyDictionary(4)
+        animalshow_records = self.animalshow_service.get_by_show_id(show_id)
+        total_scores_by_animal = [self.get_total_by_animalshow_id(record.id) for record in animalshow_records]
+        total_scores_ranked = self.get_total_scores_ranked(total_scores_by_animal)
+        res = []
+        for rank, total_id_list in enumerate(total_scores_ranked):
+            for total_id in total_id_list:
+                info = AnimalShowRankingInfo(total_info=total_scores_by_animal[total_id], rank=rank)
+                res.append(info)
+        return len(total_scores_ranked), res
+    
+    def get_total_scores_ranked(self, total: List[TotalScoreInfo]):
+        map = FloatKeyDictionary(DECIMALS)
         for i, res in enumerate(total):
             key = res.average
             if key in map:
                 map[key].append(i)
             else:
                 map[key] = [i]
-        ranked_total_ids = self.dict_to_asc_ranked_ids(map)
-
-        res = []
-        for rank, total_id_list in enumerate(ranked_total_ids):
-            for total_id in total_id_list:
-                info = AnimalShowRankingInfo(total_info=total[total_id], rank=rank)
-                res.append(info)
-        return len(ranked_total_ids), res
+        return self.dict_to_asc_ranked_ids(map)
 
     def get_total_by_animalshow_id(self, animalshow_id: ID) -> TotalScoreInfo:
         scores = self.score_repo.get_by_animalshow_id(animalshow_id)
@@ -89,14 +90,8 @@ class ScoreService(IScoreService):
                     min_score = cur_score
             avg = total.value / count
 
-        return TotalScoreInfo(
-            record_id=id,
-            total=total,
-            count=count,
-            average=avg,
-            min_score=min_score,
-            max_score=max_score
-        )
+        return TotalScoreInfo(record_id=id, total=total, count=count, average=avg,
+                              min_score=min_score, max_score=max_score)
 
     def all_users_scored(self, show_id: ID) -> bool:
         usershows = self.usershow_service.get_by_show_id(show_id)

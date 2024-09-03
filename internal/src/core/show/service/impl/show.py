@@ -2,6 +2,7 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
+from internal.src.core.animal.schema.animal import AnimalSchema
 from internal.src.core.animal.service.animal import IAnimalService
 from internal.src.core.breed.service.breed import IBreedService
 from internal.src.core.certificate.schema.certificate import CertificateSchemaCreate
@@ -19,7 +20,12 @@ from internal.src.core.show.service.usershow import IUserShowService
 from internal.src.core.standard.service.standard import IStandardService
 from internal.src.core.user.schema.user import UserRole
 from internal.src.core.user.service.user import IUserService
-from internal.src.core.utils.exceptions import ShowServiceError, NotFoundRepoError, AnimalShowServiceError, UserShowServiceError
+from internal.src.core.utils.exceptions import NotFoundRepoError, \
+    RegisterAnimalCheckError, RegisterShowStatusError, RegisterAnimalRegisteredError, \
+    RegisterUserRoleError, RegisterUserRegisteredError, UnregisterShowStatusError, UnregisterAnimalNotRegisteredError, \
+    UnregisterUserNotRegisteredError, CreateShowMultiBreedError, CreateShowSingleBreedError, StartShowStatusError, \
+    StartShowZeroRecordsError, AbortShowStatusError, StopShowStatusError, StopNotAllUsersScoredError, \
+    UpdateShowStatusError
 from internal.src.core.utils.types import ID
 
 
@@ -54,26 +60,26 @@ class ShowService(IShowService):
         self.breed_service = breed_service
         self.standard_service = standard_service
 
+    @staticmethod
+    def check_show_parameters(new_show: ShowSchema):
+        if new_show.is_multi_breed:
+            if new_show.breed_id is not None:
+                raise CreateShowMultiBreedError(detail='breed_id must be None')
+            if new_show.species_id is None:
+                raise CreateShowMultiBreedError(detail='species_id must be not None')
+            if new_show.standard_id is not None:
+                raise CreateShowMultiBreedError(detail='standard_id must be None')
+        else:
+            if new_show.species_id is not None:
+                raise CreateShowSingleBreedError(detail='species_id must be None')
+            if new_show.breed_id is None:
+                raise CreateShowSingleBreedError(detail='breed_id must be not None')
+            if new_show.standard_id is None:
+                raise CreateShowSingleBreedError(detail='standard_id must be not None')
+
     def create(self, show_create: ShowSchemaCreate) -> ShowSchema:
         new_show = ShowSchema.from_create(show_create)
-        if new_show.is_multi_breed:
-            if not new_show.breed_id is None:
-                raise ShowServiceError(detail=f"multi_breed breed_id not None (create): id={new_show.id},"
-                                              f" breed_id={new_show.breed_id}")
-            if new_show.species_id is None:
-                raise ShowServiceError(detail=f"multi_breed species_id None (create): id={new_show.id}")
-            if not new_show.standard_id is None:
-                raise ShowServiceError(detail=f"multi_breed standard_id not None (create): id={new_show.id},"
-                                              f" standard_id={new_show.standard_id}")
-        else:
-            if not new_show.species_id is None:
-                raise ShowServiceError(detail=f"not multi_breed species_id not None (create): id={new_show.id},"
-                                              f" breed_id={new_show.species_id}")
-            if new_show.breed_id is None:
-                raise ShowServiceError(detail=f"not multi_breed breed_id None (create): id={new_show.id}")
-            if new_show.standard_id is None:
-                raise ShowServiceError(detail=f"not multi_breed standard_id None (create): id={new_show.id}")
-
+        self.check_show_parameters(new_show)
         return self.show_repo.create(new_show)
 
     def get_usershow_count(self, show_id: ID) -> NonNegativeInt:
@@ -92,17 +98,14 @@ class ShowService(IShowService):
 
     def start(self, show_id: ID) -> ShowSchema:
         cur_show = self.show_repo.get_by_id(show_id)
-        
         if cur_show.status != ShowStatus.created:
-            raise ShowServiceError(detail=f"show cannot be started: id={show_id}, status={cur_show.status}")
-        
-        user_count = self.get_usershow_count(show_id)
-        if user_count == 0:
-            raise ShowServiceError(detail=f"show cannot be started: id={show_id}, user_count={user_count}")
+            raise StartShowStatusError(show_id=show_id, show_status=cur_show.status)
 
-        animal_count = self.get_animalshow_count(show_id)
-        if animal_count == 0:
-            raise ShowServiceError(detail=f"show cannot be started: id={show_id}, user_count={user_count}")
+        if self.get_usershow_count(show_id):
+            raise StartShowZeroRecordsError(show_id=show_id, type='user')
+
+        if self.get_animalshow_count(show_id):
+            raise StartShowZeroRecordsError(show_id=show_id, type='animal')
 
         cur_show.status = ShowStatus.started
         return self.show_repo.update(cur_show)
@@ -110,51 +113,51 @@ class ShowService(IShowService):
     def abort(self, show_id: ID) -> ShowSchema:
         cur_show = self.show_repo.get_by_id(show_id)
         if cur_show.status != ShowStatus.started:
-            raise ShowServiceError(detail=f"show cannot be stopped: id={show_id}, status={cur_show.status}")
+            raise AbortShowStatusError(show_id=show_id, show_status=cur_show.status)
         cur_show.status = ShowStatus.aborted
 
-        animalshow_records = self.animalshow_service.get_by_show_id(show_id)
-        for record in animalshow_records:
-            self.animalshow_service.archive(record.id)
-        usershow_records = self.usershow_service.get_by_show_id(show_id)
-        for record in usershow_records:
-            self.usershow_service.archive(record.id)
+        self.archive_animals(show_id)
+        self.archive_users(show_id)
 
         return self.show_repo.update(cur_show)
 
     def stop(self, show_id: ID) -> ShowSchemaReport:
         cur_show = self.show_repo.get_by_id(show_id)
+
         if cur_show.status != ShowStatus.started:
-            raise ShowServiceError(detail=f"show cannot be stopped: id={show_id}, status={cur_show.status}")
+            raise StopShowStatusError(show_id=show_id, show_status=cur_show.status)
+
         if not self.score_service.all_users_scored(show_id):
-            users_scored = self.score_service.get_users_scored_count(show_id)
-            raise ShowServiceError(detail=f"show cannot be stopped: id={show_id}, count_scored={users_scored}")
+            raise StopNotAllUsersScoredError(show_id=show_id, count=self.score_service.get_users_scored_count(show_id))
+
         cur_show.status = ShowStatus.stopped
         self.show_repo.update(cur_show)
 
         rank_count, ranking_info = self.score_service.get_show_ranking_info(show_id)
         for record in ranking_info:
-            cert = CertificateSchemaCreate(
-                animalshow_id=record.total_info.record_id,
-                rank=record.rank
-            )
+            cert = CertificateSchemaCreate(animalshow_id=record.total_info.record_id, rank=record.rank)
             self.certificate_service.create(cert)
             self.animalshow_service.archive(record.total_info.record_id)
 
+        self.archive_users(show_id)
+
+        return ShowSchemaReport(ranking_info=ranking_info, rank_count=rank_count)
+
+    def archive_users(self, show_id: ID):
         usershow_records = self.usershow_service.get_by_show_id(show_id)
         for record in usershow_records:
             self.usershow_service.archive(record.id)
 
-        return ShowSchemaReport(
-            ranking_info=ranking_info,
-            rank_count=rank_count
-        )
+    def archive_animals(self, show_id: ID):
+        animalshow_records = self.animalshow_service.get_by_show_id(show_id)
+        for record in animalshow_records:
+            self.animalshow_service.archive(record.id)
 
     def update(self, show_update: ShowSchemaUpdate) -> ShowSchema:
         show_id = show_update.id
         cur_show = self.show_repo.get_by_id(show_id)
         if cur_show.status != ShowStatus.started:
-            raise ShowServiceError(detail=f"show cannot be updated: id={show_id}, status={cur_show.status}")
+            raise UpdateShowStatusError(show_id=show_id, show_status=cur_show.status)
         new_show = cur_show.from_update(show_update)
         return self.show_repo.update(new_show)
 
@@ -196,83 +199,78 @@ class ShowService(IShowService):
         detailed.users = users
         return detailed
 
-    def register_animal(self, animal_id: ID, show_id: ID) -> ShowRegisterAnimalResult:
-        cur_show = self.show_repo.get_by_id(show_id)
-        if cur_show.status != ShowStatus.created:
-            raise ShowServiceError(detail=f"animal cannot be registered: animal_id={animal_id}, "
-                                          f"show_id={show_id}, show_status={cur_show.status}")
-        cur_animal = self.animal_service.get_by_id(animal_id)
-
-        if cur_show.is_multi_breed:
-            if self.breed_service.get_by_id(cur_animal.breed_id).species_id != cur_show.species_id:
-                raise ShowServiceError(detail=f'invalid animal species: animal_id={cur_animal.id}, show_id={show_id}')
+    def check_animal_meets_show_requirements(self, show: ShowSchema, animal: AnimalSchema) -> None:
+        if show.is_multi_breed:
+            if self.breed_service.get_by_id(animal.breed_id).species_id != show.species_id:
+                raise RegisterAnimalCheckError(detail=f'improper animal species', show_id=show.id, animal_id=animal.id)
         else:
-            if cur_animal.breed_id != cur_show.breed_id:
-                raise ShowServiceError(detail=f'invalid animal breed: animal_id={cur_animal.id}, show_id={show_id}')
-            if not self.standard_service.check_animal_by_standard(cur_show.standard_id, cur_animal):
-                raise ShowServiceError(detail=f'invalid animal standard check: animal_id={cur_animal.id},'
-                                              f' show_id={show_id}')
+            if animal.breed_id != show.breed_id:
+                raise RegisterAnimalCheckError(detail=f'improper animal breed', show_id=show.id, animal_id=animal.id)
+            if not self.standard_service.check_animal_by_standard(show.standard_id, animal):
+                raise RegisterAnimalCheckError(detail=f'animal doesn\'t meet the show standard',
+                                               animal_id=animal.id, show_id=show.id)
+
+    def is_animal_registered(self, animal_id: ID, show_id: ID) -> bool:
         try:
             self.animalshow_service.get_by_animal_show_id(animal_id, show_id)
         except NotFoundRepoError:
-            animalshow_record_create = AnimalShowSchemaCreate(animal_id=animal_id, show_id=show_id, is_archived=False)
-            animalshow_record = self.animalshow_service.create(animalshow_record_create)
-        else:
-            raise ShowServiceError(detail=f"animal is already registered: "
-                                          f"animal_id={animal_id}, show_id={show_id}")
-        return ShowRegisterAnimalResult(
-            record_id=animalshow_record.id,
-            status=ShowRegisterAnimalStatus.register_ok
-        )
+            return False
+        return True
+
+    def register_animal(self, animal_id: ID, show_id: ID) -> ShowRegisterAnimalResult:
+        cur_show = self.show_repo.get_by_id(show_id)
+        if cur_show.status != ShowStatus.created:
+            raise RegisterShowStatusError(show_id=show_id, show_status=cur_show.status)
+
+        cur_animal = self.animal_service.get_by_id(animal_id)
+        self.check_animal_meets_show_requirements(cur_show, cur_animal)
+
+        if self.is_animal_registered(animal_id, show_id):
+            raise RegisterAnimalRegisteredError(animal_id=animal_id, show_id=show_id)
+
+        animalshow_record = self.animalshow_service.create(AnimalShowSchemaCreate(animal_id=animal_id, show_id=show_id))
+        return ShowRegisterAnimalResult(record_id=animalshow_record.id, status=ShowRegisterAnimalStatus.register_ok)
+
+    def is_user_registered(self, user_id: ID, show_id: ID) -> bool:
+        try:
+            self.usershow_service.get_by_user_show_id(user_id, show_id)
+        except NotFoundRepoError:
+            return False
+        return True
 
     def register_user(self, user_id: ID, show_id: ID) -> ShowRegisterUserResult:
         cur_show = self.show_repo.get_by_id(show_id)
         if cur_show.status != ShowStatus.created:
-            raise ShowServiceError(detail=f"user cannot be registered: user_id={user_id}, "
-                                          f"show_id={show_id}, show_status={cur_show.status}")
+            raise RegisterShowStatusError(show_id=show_id, show_status=cur_show.status)
+
         cur_user = self.user_service.get_by_id(user_id)
         if cur_user.role != UserRole.judge:
-            raise ShowServiceError(detail=f"user cannot be registered (not judge): id={user_id},"
-                                          f" role={cur_user.role}")
-        try:
-            self.usershow_service.get_by_user_show_id(user_id, show_id)
-        except NotFoundRepoError:
-            usershow_record_create = UserShowSchemaCreate(user_id=user_id, show_id=show_id, is_archived=False)
-            usershow_record = self.usershow_service.create(usershow_record_create)
-        else:
-            raise ShowServiceError(detail=f"user is already registered: "
-                                          f"user_id={user_id}, show_id={show_id}")
-        return ShowRegisterUserResult(
-            record_id=usershow_record.id,
-            status=ShowRegisterUserStatus.register_ok
-        )
+            raise RegisterUserRoleError(show_id=show_id, user_id=user_id, role=cur_user.role)
+
+        if self.is_user_registered(user_id, show_id):
+            raise RegisterUserRegisteredError(user_id=user_id, show_id=show_id)
+
+        usershow_record = self.usershow_service.create(UserShowSchemaCreate(user_id=user_id, show_id=show_id))
+        return ShowRegisterUserResult(record_id=usershow_record.id, status=ShowRegisterUserStatus.register_ok)
 
     def unregister_animal(self, animal_id: ID, show_id: ID) -> ShowRegisterAnimalResult:
         cur_show = self.show_repo.get_by_id(show_id)
         if cur_show.status != ShowStatus.created:
-            raise ShowServiceError(detail=f"animal cannot be registered: animal_id={animal_id}, "
-                                          f"show_id={show_id}, show_status={cur_show.status}")
-        try:
-            record = self.animalshow_service.get_by_animal_show_id(animal_id, show_id)
-        except NotFoundRepoError:
-            raise ShowServiceError(detail=f"animal's not registered: "
-                                          f"animal_id={animal_id}, show_id={show_id}")
-        except AnimalShowServiceError as e:
-            raise e
-        self.animalshow_service.delete(record.id)
-        return ShowRegisterAnimalResult(record_id=record.id, status=ShowRegisterAnimalStatus.unregister_ok)
+            raise UnregisterShowStatusError(show_id=show_id, show_status=cur_show.status)
+
+        if not self.is_animal_registered(animal_id, show_id):
+            raise UnregisterAnimalNotRegisteredError(animal_id=animal_id, show_id=show_id)
+
+        res = self.animalshow_service.delete(self.animalshow_service.get_by_animal_show_id(animal_id, show_id).id)
+        return ShowRegisterAnimalResult(record_id=res.id, status=ShowRegisterAnimalStatus.unregister_ok)
 
     def unregister_user(self, user_id: ID, show_id: ID) -> ShowRegisterUserResult:
         cur_show = self.show_repo.get_by_id(show_id)
         if cur_show.status != ShowStatus.created:
-            raise ShowServiceError(detail=f"user cannot be registered: user_id={user_id}, "
-                                          f"show_id={show_id}, show_status={cur_show.status}")
-        try:
-            record = self.usershow_service.get_by_user_show_id(user_id, show_id)
-        except NotFoundRepoError:
-            raise ShowServiceError(detail=f"user's not registered: "
-                                          f"user_id={user_id}, show_id={show_id}")
-        except UserShowServiceError as e:
-            raise e
-        self.usershow_service.delete(record.id)
-        return ShowRegisterUserResult(record_id=record.id, status=ShowRegisterUserStatus.unregister_ok)
+            raise UnregisterShowStatusError(show_id=show_id, show_status=cur_show.status)
+
+        if not self.is_user_registered(user_id, show_id):
+            raise UnregisterUserNotRegisteredError(user_id=user_id, show_id=show_id)
+
+        res = self.usershow_service.delete(self.usershow_service.get_by_user_show_id(user_id, show_id).id)
+        return ShowRegisterUserResult(record_id=res.id, status=ShowRegisterUserStatus.unregister_ok)

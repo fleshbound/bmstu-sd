@@ -6,7 +6,7 @@ from internal.src.core.utils.types import ID
 class UserShowSchemaCreate(BaseModel):
     user_id: ID
     show_id: ID
-    is_archived: bool
+    is_archived: bool = False
 
 
 class UserShowSchemaUpdate(BaseModel):
