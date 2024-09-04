@@ -1,4 +1,7 @@
-from dbconfig import DB_PWD, DB_HOST, DB_NAME, DB_USER, SQL_PATH
+from urllib.parse import urlparse  # for python 3+ use: from urllib.parse import urlparse
+from typing import Any
+
+from dbconfig import DB_PWD, DB_HOST, DB_NAME, DB_USER, SQL_PATH, DB_PORT, DB_TEST_NAME
 import psycopg2
 
 
@@ -10,12 +13,27 @@ class ConfigSQL:
         self.CONSTRAINTS_FILE = f"{SQL_PATH}/constraints.sql"
 
 
-class DataBase:
+class Database:
+    connection: Any
+    cursor: Any
+
     def __init__(self):
         print("PSQL: Creating connection... ", end="")
         try:
             self.sqlconfig = ConfigSQL()
-            self.connection = psycopg2.connect(dbname=DB_NAME, host=DB_HOST, user=DB_USER, password=DB_PWD)
+            result = urlparse(f"postgresql://{DB_USER}:{DB_PWD}@postgres:{DB_PORT}/{DB_TEST_NAME}")
+            username = result.username
+            password = result.password
+            database = result.path[1:]
+            hostname = result.hostname
+            port = result.port
+            self.connection = psycopg2.connect(
+                database=database,
+                user=username,
+                password=password,
+                host=hostname,
+                port=port
+            )
             self.connection.autocommit = True
             self.cursor = self.connection.cursor()
             print("DONE")
