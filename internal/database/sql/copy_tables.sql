@@ -1,4 +1,4 @@
-copy animal(id, user_id, breed_id, name, birth_dt, sex, weight, height, length, has_defects, is_multicolor)
+copy animal(user_id, breed_id, name, birth_dt, sex, weight, height, length, has_defects, is_multicolor)
 from '/home/sheglar/bmstu/db/lab_01/data/animal.csv'
 delimiter ';'
 header csv;

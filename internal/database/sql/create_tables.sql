@@ -2,12 +2,12 @@ create table if not exists Animal (
     id int,
     user_id int,
     breed_id int,
-    name text,
+    "name" text,
     birth_dt date,
     sex text,
     weight float,
     height float,
-    length float,
+    "length" float,
     has_defects bool,
     is_multicolor bool
 );
@@ -16,8 +16,8 @@ create table if not exists "User" (
     id int,
     email text,
     hashed_password text,
-    role text,
-    name text
+    "role" text,
+    "name" text
 );
 
 create table if not exists UserShow (
