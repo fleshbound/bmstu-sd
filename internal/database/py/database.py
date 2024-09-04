@@ -21,7 +21,7 @@ class Database:
         print("PSQL: Creating connection... ", end="")
         try:
             self.sqlconfig = ConfigSQL()
-            result = urlparse(f"postgresql://{DB_USER}:{DB_PWD}@postgres:{DB_PORT}/{DB_TEST_NAME}")
+            result = urlparse(f"postgresql://{DB_USER}:{DB_PWD}@{DB_HOST}:{DB_PORT}/{DB_TEST_NAME}")
             username = result.username
             password = result.password
             database = result.path[1:]

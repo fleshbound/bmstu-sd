@@ -1,2 +1,2 @@
-test:
-	pytest ./tests/
+test_core:
+	pytest ./tests/core/

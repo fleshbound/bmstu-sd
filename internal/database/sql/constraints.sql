@@ -1,7 +1,7 @@
 create sequence animal_id_seq owned by Animal.id;
 alter table Animal
     add primary key (id),
-    add foreign key (user_id) references User(id) on delete cascade,
+    add foreign key (user_id) references "User"(id) on delete cascade,
     add foreign key (breed_id) references Breed(id) on delete cascade,
     alter column id set not null,
     alter column id set default nextval('animal_id_seq'),
@@ -21,7 +21,7 @@ alter table Animal
     add check (length > 0);
 
 create sequence user_id_seq owned by "User".id;
-alter table User
+alter table "User"
     add primary key (id),
     alter column id set not null,
     alter column id set default nextval('user_id_seq'),
@@ -37,7 +37,7 @@ alter table User
 create sequence usershow_id_seq owned by UserShow.id;
 alter table UserShow
     add primary key (id),
-    add foreign key (user_id) references user(id) on delete cascade,
+    add foreign key (user_id) references "user"(id) on delete cascade,
     add foreign key (show_id) references show(id) on delete cascade,
     alter column id set not null,
     alter column id set default nextval('usershow_id_seq'),
@@ -59,7 +59,7 @@ alter table AnimalShow
 create sequence species_id_seq owned by Species.id;
 alter table Species
     add primary key (id),
-    add foreign key (group_id) references group(id) on delete cascade,
+    add foreign key (group_id) references "group"(id) on delete cascade,
     alter column id set not null,
     alter column id set default nextval('species_id_seq'),
     alter column group_id set not null,
@@ -76,8 +76,8 @@ alter table Breed
     alter column name set not null,
     add check (name != '');
 
-create sequence group_id_seq owned by Group.id;
-alter table Group
+create sequence group_id_seq owned by "Group".id;
+alter table "Group"
     add primary key (id),
     alter column id set not null,
     alter column id set default nextval('group_id_seq'),
@@ -99,7 +99,7 @@ alter table score
     add foreign key (animalshow_id) references animalshow(id) on delete cascade,
     add foreign key (usershow) references usershow(id) on delete cascade,
     alter column id set not null,
-    alter column id set default nextval('certificate_id_seq'),
+    alter column id set default nextval('score_id_seq'),
     alter column animalshow_id set not null,
     alter column usershow_id set not null,
     alter column value set not null,
@@ -111,7 +111,7 @@ alter table standard
     add primary key (id),
     add foreign key (breed_id) references Breed(id) on delete cascade,
     alter column id set not null,
-    alter column id set default nextval('animal_id_seq'),
+    alter column id set default nextval('standard_id_seq'),
     alter column breed_id set not null,
     alter column country set not null,
     alter column name set not null,
@@ -140,7 +140,7 @@ alter table Show
     add foreign key (breed_id) references Breed(id) on delete cascade,
     add foreign key (standard_id) references Standard(id) on delete cascade,
     alter column id set not null,
-    alter column id set default nextval('animal_id_seq'),
+    alter column id set default nextval('show_id_seq'),
     alter column country set not null,
     alter column name set not null,
     alter column status set not null,
