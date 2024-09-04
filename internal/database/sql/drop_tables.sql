@@ -1,0 +1,11 @@
+drop table if exists Animal cascade;
+drop table if exists "User" cascade;
+drop table if exists UserShow cascade;
+drop table if exists AnimalShow cascade;
+drop table if exists Show cascade;
+drop table if exists Score cascade;
+drop table if exists Certificate cascade;
+drop table if exists Standard cascade;
+drop table if exists Species cascade;
+drop table if exists "Group" cascade;
+drop table if exists Breed cascade;

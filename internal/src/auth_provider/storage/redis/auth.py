@@ -3,8 +3,8 @@ import json
 
 from redis import Redis, RedisError
 
-from auth_provider.storage.auth import ISessionStorage, AuthSession
-from auth_provider.utils.exceptions import AuthStorageError
+from internal.src.auth_provider.storage.auth import ISessionStorage, AuthSession
+from internal.src.auth_provider.utils.exceptions import AuthStorageError
 
 
 class SessionStorage(ISessionStorage):
