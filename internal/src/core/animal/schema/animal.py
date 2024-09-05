@@ -70,6 +70,19 @@ class AnimalSchema(BaseModel):
             has_defects=other.has_defects,
             is_multicolor=other.is_multicolor
         )
+    
+    def __eq__(self, other):
+        cond = (self.id == other.id
+                and self.user_id == other.user_id
+                and self.breed_id == other.breed_id
+                and self.weight == other.weight
+                and self.length == other.length
+                and self.height == other.height
+                and self.has_defects == other.has_defects
+                and self.is_multicolor == other.is_multicolor
+                and self.name == other.name
+                and self.sex == other.sex)
+        return cond
 
 
 class AnimalSchemaDelete(BaseModel):

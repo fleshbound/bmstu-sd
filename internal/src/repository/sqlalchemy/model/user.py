@@ -10,7 +10,7 @@ class UserORM(Base):
     __tablename__ = "user"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    login: Mapped[str] = mapped_column(String, nullable=False)
+    email: Mapped[str] = mapped_column(String, nullable=False)
     hashed_password: Mapped[str] = mapped_column(String, nullable=False)
     role: Mapped[str] = mapped_column(String, nullable=False)
     name: Mapped[str] = mapped_column(String, nullable=False)
@@ -18,7 +18,7 @@ class UserORM(Base):
     def to_schema(self) -> UserSchema:
         return UserSchema(
             id=ID(self.id),
-            login=Email(self.login),
+            email=Email(self.email),
             hashed_password=HashedPassword(self.hashed_password),
             role=UserRole(self.role),
             name=UserName(self.name)

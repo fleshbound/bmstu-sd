@@ -52,7 +52,7 @@ class SqlAlchemyCertificateRepository(ICertificateRepository):
     @staticmethod
     def get_dict(other: BaseModel, exclude: List[str] | None = None) -> dict:
         dct = dict()
-        for field in other.__fields__.keys():
+        for field in other.model_fields.keys():
             field_value = getattr(other, field)
             if exclude is None or field not in exclude:
                 if type(field_value).__name__ in tuple(x[0] for x in inspect.getmembers(types, inspect.isclass)):

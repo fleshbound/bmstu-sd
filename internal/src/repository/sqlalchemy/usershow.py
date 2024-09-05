@@ -4,7 +4,7 @@ from typing import List, Callable, Type, cast
 
 from psycopg2.errors import UniqueViolation
 from pydantic import NonNegativeInt, BaseModel
-from sqlalchemy import insert, update
+from sqlalchemy import insert, update, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -17,28 +17,28 @@ from internal.src.repository.sqlalchemy.model.usershow import UserShowORM
 
 class SqlAlchemyUserShowRepository(IUserShowRepository):
     session_factory: Callable[..., AbstractContextManager[Session]]
-    model = Type[UserShowORM]
-    schema = Type[UserShowSchema]
 
     def __init__(self, session_factory: Callable[..., AbstractContextManager[Session]]):
         self.session_factory = session_factory
 
     def get_all(self, skip: int = 0, limit: int = 100) -> List[UserShowSchema]:
         with self.session_factory() as session:
-            rows = session.query(self.model).offset(skip).limit(limit).all()
-            return [self.model.to_schema() for row in rows]
+            query = select(UserShowORM).offset(skip).limit(limit)
+            rows = session.execute(query).scalars().all()
+            return [UserShowSchema.model_validate(row.to_schema(), from_attributes=True) for row in rows]
 
     def get_by_id(self, id: NonNegativeInt) -> UserShowSchema:
         with self.session_factory() as session:
-            row = session.query(self.model).filter_by(id=id).first()
+            query = select(UserShowORM).filter_by(id=id)
+            row = session.execute(query).scalar()
             if row is None:
                 raise NotFoundRepoError(detail=f"not found id : {id}")
-            return self.model.to_schema()
+            return UserShowSchema.model_validate(row.to_schema(), from_attributes=True)
 
     def create(self, other: UserShowSchema) -> UserShowSchema:
         with self.session_factory() as session:
-            other_dict = self.get_dict(other)
-            stmt = insert(self.model).values(other_dict).returning(self.model.id)
+            other_dict = self.get_dict(other, exclude=['id'])
+            stmt = insert(UserShowORM).values(other_dict).returning(UserShowORM.id)
             try:
                 result = session.execute(stmt)
                 session.commit()
@@ -52,10 +52,12 @@ class SqlAlchemyUserShowRepository(IUserShowRepository):
     @staticmethod
     def get_dict(other: BaseModel, exclude: List[str] | None = None) -> dict:
         dct = dict()
-        for field in other.__fields__.keys():
+        for field in other.model_fields.keys():
             field_value = getattr(other, field)
             if exclude is None or field not in exclude:
                 if type(field_value).__name__ in tuple(x[0] for x in inspect.getmembers(types, inspect.isclass)):
+                    # if getattr(field_value, '__module__', None) == types.__name__:
+                    #     f = fields(field_value)[0]
                     val = getattr(field_value, 'value')
                     dct[field] = val
                 else:
@@ -65,10 +67,8 @@ class SqlAlchemyUserShowRepository(IUserShowRepository):
     def update(self, other: UserShowSchema) -> UserShowSchema:
         with self.session_factory() as session:
             other_dict = self.get_dict(other, exclude=['id'])
-            stmt = update(self.model
-                          ).where(cast("ColumnElement[bool]", other.id.eq_int(self.model.id))
-                                  ).values(other_dict
-                                           ).returning(self.model.id)
+            stmt = update(UserShowORM).where(cast("ColumnElement[bool]", other.id.eq_int(UserShowORM.id))).values(
+                other_dict).returning(UserShowORM.id)
             try:
                 result = session.execute(stmt)
                 session.commit()
@@ -78,13 +78,14 @@ class SqlAlchemyUserShowRepository(IUserShowRepository):
                 raise ValidationRepoError(detail=str(e.orig))
             row = result.fetchone()
             if row is None:
-                raise NotFoundRepoError(detail=f"not found id: {id}")
+                raise NotFoundRepoError(detail=f"not found id : {id}")
 
             return self.get_by_id(row[0])
 
     def delete(self, id: NonNegativeInt) -> None:
         with self.session_factory() as session:
-            row = session.query(self.model).filter_by(id=id).first()
+            query = select(UserShowORM).filter_by(id=id)
+            row = session.execute(query).scalar()
             if row is None:
                 raise NotFoundRepoError(detail=f"not found id : {id}")
             session.delete(row)
@@ -92,21 +93,24 @@ class SqlAlchemyUserShowRepository(IUserShowRepository):
 
     def get_by_user_id(self, user_id: NonNegativeInt) -> List[UserShowSchema]:
         with self.session_factory() as session:
-            res = session.query(self.model).filter_by(user_id=user_id).all()
+            query = select(UserShowORM).filter_by(user_id=user_id)
+            res = session.execute(query).scalars().all()
             if res is None:
-                raise NotFoundRepoError(detail=f"not found user_id : {user_id}")
-            return [self.model.to_schema() for row in res]
+                raise NotFoundRepoError(detail=f"not found by user_id: {user_id}")
+            return [UserShowSchema.model_validate(row.to_schema(), from_attributes=True) for row in res]
 
     def get_by_show_id(self, show_id: NonNegativeInt) -> List[UserShowSchema]:
         with self.session_factory() as session:
-            res = session.query(self.model).filter_by(show_id=show_id).all()
+            query = select(UserShowORM).filter_by(show_id=show_id)
+            res = session.execute(query).scalars().all()
             if res is None:
-                raise NotFoundRepoError(detail=f"not found show_id : {show_id}")
-            return [self.model.to_schema() for row in res]
+                raise NotFoundRepoError(detail=f"not found by show_id: {show_id}")
+            return [UserShowSchema.model_validate(row.to_schema(), from_attributes=True) for row in res]
 
     def get_by_user_show_id(self, user_id: NonNegativeInt, show_id: NonNegativeInt) -> List[UserShowSchema]:
         with self.session_factory() as session:
-            res = session.query(self.model).filter_by(show_id=show_id, user_id=user_id).all()
+            query = select(UserShowORM).filter_by(show_id=show_id, user_id=user_id)
+            res = session.execute(query).scalars().all()
             if res is None:
-                raise NotFoundRepoError(detail=f"not found show_id: {show_id}, user_id: {user_id}")
-            return [self.model.to_schema() for row in res]
+                raise NotFoundRepoError(detail=f"not found by show_id: {show_id}, user_id: {user_id}")
+            return [UserShowSchema.model_validate(row.to_schema(), from_attributes=True) for row in res]

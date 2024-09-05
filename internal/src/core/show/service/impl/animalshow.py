@@ -1,50 +1,11 @@
 from typing import List
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 from internal.src.core.show.repository.animalshow import IAnimalShowRepository
 from internal.src.core.show.schema.animalshow import AnimalShowSchemaCreate, AnimalShowSchema, AnimalShowSchemaDeleted
 from internal.src.core.show.service.animalshow import IAnimalShowService
 from internal.src.core.utils.exceptions import AnimalShowServiceError
 from internal.src.core.utils.types import ID
-||||||| parent of fb32d3b (tests arent working watahel)
-from core.show.repository.animalshow import IAnimalShowRepository
-from core.show.schema.animalshow import AnimalShowSchemaCreate, AnimalShowSchema, AnimalShowSchemaDeleted
-=======
-from core.show.repository.animalshow import IAnimalShowRepository
-from core.utils.exceptions import AnimalShowServiceError
-from core.utils.types import ID
->>>>>>> fb32d3b (tests arent working watahel)
-||||||| parent of d8bdfb9 (add animal tests (init))
-from core.show.repository.animalshow import IAnimalShowRepository
-from core.show.service.animalshow import IAnimalShowService
-from core.utils.exceptions import AnimalShowServiceError
-from core.utils.types import ID
-=======
-||||||| parent of 9dbb4c9 (fix imports)
-=======
-<<<<<<< HEAD
->>>>>>> 9dbb4c9 (fix imports)
-from internal.src.core.show.repository.animalshow import IAnimalShowRepository
-from internal.src.core.show.schema.animalshow import AnimalShowSchemaCreate, AnimalShowSchema, AnimalShowSchemaDeleted
-from internal.src.core.show.service.animalshow import IAnimalShowService
-from internal.src.core.utils.exceptions import AnimalShowServiceError
-<<<<<<< HEAD
->>>>>>> d8bdfb9 (add animal tests (init))
-||||||| parent of 9dbb4c9 (fix imports)
-=======
-||||||| parent of 34b5142 (fix imports)
-from core.show.repository.animalshow import IAnimalShowRepository
-from core.show.schema.animalshow import AnimalShowSchemaCreate, AnimalShowSchema, AnimalShowSchemaDeleted
-from core.utils.types import ID
-=======
-from internal.src.core.show.repository.animalshow import IAnimalShowRepository
-from internal.src.core.show.schema.animalshow import AnimalShowSchemaCreate, AnimalShowSchema, AnimalShowSchemaDeleted
-from internal.src.core.show.service.animalshow import IAnimalShowService
-from internal.src.core.utils.types import ID
->>>>>>> 34b5142 (fix imports)
->>>>>>> 9dbb4c9 (fix imports)
+
 
 
 class AnimalShowService(IAnimalShowService):
