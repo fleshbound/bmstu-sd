@@ -1,16 +1,16 @@
 from typing import List
 
-from fastapi import HTTPException
 from pydantic import NonNegativeInt, PositiveInt
 
 from internal.src.core.animal.schema.animal import AnimalSchema
 from internal.src.core.show.service.show import IShowService
 from internal.src.core.standard.repository.standard import IStandardRepository
-from internal.src.core.standard.schema.standard import StandardSchema, StandardSchemaCreate, StandardSchemaDeleteResponse
+from internal.src.core.standard.schema.standard import StandardSchema, StandardSchemaCreate, \
+    StandardSchemaDeleteResponse
 from internal.src.core.standard.service.standard import IStandardService
-from internal.src.core.utils.exceptions import StandardServiceError, CheckAnimalStandardError, CheckAnimalBreedError, \
+from internal.src.core.utils.exceptions import CheckAnimalStandardError, CheckAnimalBreedError, \
     NotFoundRepoError, StandardInUseError
-from internal.src.core.utils.types import ID, Weight, Height, Length
+from internal.src.core.utils.types import ID, Weight
 
 
 class StandardService(IStandardService):

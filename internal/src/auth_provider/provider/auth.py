@@ -1,4 +1,3 @@
-import base64
 import uuid
 from datetime import datetime, timedelta, timezone
 
@@ -9,8 +8,8 @@ from pydantic import BaseModel
 from internal.src.auth_provider.storage.auth import ISessionStorage, AuthSession
 from internal.src.auth_provider.utils.exceptions import AuthProviderError
 from internal.src.core.auth.provider.auth import IAuthProvider
-from internal.src.core.auth.schema.auth import Token, Fingerprint, AuthDetails, AuthPayload
-from internal.src.core.utils.types import HashedPassword, ID
+from internal.src.core.auth.schema.auth import AuthDetails, AuthPayload
+from internal.src.core.utils.types import HashedPassword, ID, Token, Fingerprint
 
 
 class AuthConfig(BaseModel):

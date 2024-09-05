@@ -1,14 +1,14 @@
 import datetime
 import enum
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
-from pydantic import NonNegativeFloat, NonNegativeInt, EmailStr, PositiveFloat
+from pydantic import NonNegativeInt, EmailStr, PositiveFloat, BaseModel
 
 
 @enum.unique
 class Sex(str, enum.Enum):
-    female = "F"
-    male = "M"
+    female = "male"
+    male = "female"
 
 
 @dataclass
@@ -203,3 +203,73 @@ class Length:
 
     def __sub__(self, other):
         return Length(self.value - other.value)
+
+
+class Token(BaseModel):
+    value: str
+
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, Token):
+            return False
+        return other.value == self.value
+
+    def __gt__(self, other) -> bool:
+        return self.value > other.value
+
+
+class Fingerprint(BaseModel):
+    value: str
+
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, Fingerprint):
+            return False
+        return other.value == self.value
+
+    def __gt__(self, other) -> bool:
+        return self.value > other.value
+
+
+MAX_SCORE_VALUE = 5
+
+
+@dataclass(frozen=True)
+class ScoreValue:
+    value: NonNegativeInt
+    min: NonNegativeInt = field(init=False)
+    max: NonNegativeInt = field(init=False)
+
+    def __post_init__(self):
+        object.__setattr__(self, "min", 0)
+        object.__setattr__(self, "max", MAX_SCORE_VALUE)
+
+        if self.value > self.max or self.value < self.min:
+            raise ValueError("Value of ScoreValue must be greater than " + str(self.min)
+                             + " and less than " + str(self.max))
+
+    @classmethod
+    def from_other(cls, other):
+        if not isinstance(other, ScoreValue):
+            raise ValueError("Parameter must be the instance of " + cls.__name__ + " class")
+        return cls(other.value)
+
+
+@dataclass(frozen=False)
+class Score:
+    value: NonNegativeInt
+
+    @classmethod
+    def from_scorevalue(cls, other: ScoreValue):
+        return cls(other.value)
+
+    def __add__(self, other):
+        return Score(self.value + other.value)
+
+    def __gt__(self, other) -> bool:
+        return self.value > other.value
+
+    def __le__(self, other) -> bool:
+        return self.value < other.value
+
+    @classmethod
+    def from_other(cls, other):
+        return Score(other.value)

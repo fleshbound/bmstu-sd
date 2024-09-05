@@ -1,31 +1,7 @@
 from pydantic import BaseModel
 
 from internal.src.core.user.schema.user import UserRole
-from internal.src.core.utils.types import ID, UserName, Email
-
-
-class Token(BaseModel):
-    value: str
-
-    def __eq__(self, other) -> bool:
-        if not isinstance(other, Token):
-            return False
-        return other.value == self.value
-
-    def __gt__(self, other) -> bool:
-        return self.value > other.value
-
-
-class Fingerprint(BaseModel):
-    value: str
-
-    def __eq__(self, other) -> bool:
-        if not isinstance(other, Fingerprint):
-            return False
-        return other.value == self.value
-
-    def __gt__(self, other) -> bool:
-        return self.value > other.value
+from internal.src.core.utils.types import ID, UserName, Email, Token, Fingerprint
 
 
 class AuthDetails(BaseModel):

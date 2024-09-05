@@ -1,16 +1,16 @@
 from typing import List
 
-from fastapi import HTTPException
 from pydantic import NonNegativeInt, PositiveInt
 
 from internal.src.core.animal.repository.animal import IAnimalRepository
-from internal.src.core.animal.schema.animal import AnimalSchema, AnimalSchemaCreate, AnimalSchemaUpdate, AnimalSchemaDelete
+from internal.src.core.animal.schema.animal import AnimalSchema, AnimalSchemaCreate, AnimalSchemaUpdate, \
+    AnimalSchemaDelete
 from internal.src.core.animal.service.animal import IAnimalService
 from internal.src.core.show.schema.animalshow import AnimalShowSchema
 from internal.src.core.show.schema.show import ShowStatus
 from internal.src.core.show.service.animalshow import IAnimalShowService
 from internal.src.core.show.service.show import IShowService
-from internal.src.core.utils.exceptions import NotFoundRepoError, AnimalServiceError, DeleteAnimalStartedShowError
+from internal.src.core.utils.exceptions import NotFoundRepoError, DeleteAnimalStartedShowError
 from internal.src.core.utils.types import ID
 
 

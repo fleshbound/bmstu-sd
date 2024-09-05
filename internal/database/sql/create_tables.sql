@@ -12,7 +12,7 @@ create table if not exists Animal (
     is_multicolor bool
 );
 
-create table if not exists "User" (
+create table if not exists "user" (
     id int,
     email text,
     hashed_password text,
@@ -60,7 +60,7 @@ create table if not exists Breed (
     species_id int
 );
 
-create table if not exists "Group" (
+create table if not exists "group" (
     id int,
     name text
 );

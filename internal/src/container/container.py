@@ -1,17 +1,17 @@
 from dependency_injector import containers, providers
 
-from internal.src.repository.sqlalchemy.animal import SqlAlchemyAnimalRepository
+from internal.src.config.config import configs
 from internal.src.core.animal.service.impl.animal import AnimalService
-from internal.src.repository.sqlalchemy.breed import SqlAlchemyBreedRepository
 from internal.src.core.breed.service.impl.breed import BreedService
-from internal.src.repository.sqlalchemy.group import SqlAlchemyGroupRepository
 from internal.src.core.group.service.impl.group import GroupService
-from internal.src.repository.sqlalchemy.species import SqlAlchemySpeciesRepository
 from internal.src.core.species.service.impl.species import SpeciesService
-from internal.src.repository.sqlalchemy.user import SqlAlchemyUserRepository
 from internal.src.core.user.service.impl.user import UserService
 from internal.src.database.database import SqlAlchemyDatabase
-from internal.src.config.config import configs
+from internal.src.repository.sqlalchemy.animal import SqlAlchemyAnimalRepository
+from internal.src.repository.sqlalchemy.breed import SqlAlchemyBreedRepository
+from internal.src.repository.sqlalchemy.group import SqlAlchemyGroupRepository
+from internal.src.repository.sqlalchemy.species import SqlAlchemySpeciesRepository
+from internal.src.repository.sqlalchemy.user import SqlAlchemyUserRepository
 
 
 class Container(containers.DeclarativeContainer):

@@ -1,7 +1,7 @@
 from internal.src.auth_provider.utils.exceptions import AuthProviderError
 from internal.src.core.auth.provider.auth import IAuthProvider
-from internal.src.core.auth.schema.auth import AuthPayload, Fingerprint, AuthDetails, Token
-from internal.src.core.utils.types import HashedPassword, ID
+from internal.src.core.auth.schema.auth import AuthPayload, AuthDetails
+from internal.src.core.utils.types import HashedPassword, ID, Token, Fingerprint
 
 
 class MockedAuthProvider(IAuthProvider):

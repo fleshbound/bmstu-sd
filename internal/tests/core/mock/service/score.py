@@ -2,12 +2,11 @@ from typing import List, Tuple
 
 from pydantic import NonNegativeInt
 
-from internal.src.core.show.schema.score import ScoreSchema, TotalScoreInfo, ScoreSchemaCreate, AnimalShowRankingInfo, \
-    Score
+from internal.src.core.show.schema.score import ScoreSchema, TotalScoreInfo, ScoreSchemaCreate, AnimalShowRankingInfo
 from internal.src.core.show.schema.show import ShowSchema
 from internal.src.core.show.service.score import IScoreService
 from internal.src.core.utils.exceptions import NotFoundRepoError
-from internal.src.core.utils.types import ID
+from internal.src.core.utils.types import ID, Score
 
 
 class MockedScoreService(IScoreService):

@@ -3,8 +3,8 @@ from sqlalchemy import ForeignKey, String, Float, Boolean
 from sqlalchemy.orm import Mapped, mapped_column
 
 from internal.src.core.standard.schema.standard import StandardSchema
-from internal.src.repository.sqlalchemy.model.base import Base
 from internal.src.core.utils.types import ID, Height, Weight, Country, Length
+from internal.src.repository.sqlalchemy.model.base import Base
 
 
 class StandardORM(Base):

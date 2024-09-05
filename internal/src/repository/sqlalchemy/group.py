@@ -10,9 +10,9 @@ from sqlalchemy.orm import Session
 
 from internal.src.core.group.repository.group import IGroupRepository
 from internal.src.core.group.schema.group import GroupSchema
-from internal.src.repository.sqlalchemy.model.group import GroupORM
 from internal.src.core.utils import types
 from internal.src.core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
+from internal.src.repository.sqlalchemy.model.group import GroupORM
 
 
 class SqlAlchemyGroupRepository(IGroupRepository):

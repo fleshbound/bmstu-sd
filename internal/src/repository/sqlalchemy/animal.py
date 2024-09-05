@@ -4,15 +4,15 @@ from typing import Callable, List, Type, cast
 
 from psycopg2.errors import UniqueViolation
 from pydantic import NonNegativeInt, BaseModel
-from sqlalchemy import update, insert
+from sqlalchemy import update, insert, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from internal.src.core.animal.repository.animal import IAnimalRepository
 from internal.src.core.animal.schema.animal import AnimalSchema
-from internal.src.repository.sqlalchemy.model.animal import AnimalORM
 from internal.src.core.utils import types
 from internal.src.core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
+from internal.src.repository.sqlalchemy.model.animal import AnimalORM
 
 
 class SqlAlchemyAnimalRepository(IAnimalRepository):
@@ -25,27 +25,30 @@ class SqlAlchemyAnimalRepository(IAnimalRepository):
 
     def get_by_user_id(self, user_id: NonNegativeInt) -> List[AnimalSchema]:
         with self.session_factory() as session:
-            res = session.query(self.model).filter_by(user_id=user_id).all()
+            query = select(AnimalORM).filter_by(user_id=user_id)
+            res = session.execute(query).scalars().all()
             if res is None:
-                raise NotFoundRepoError(detail=f"not found by user_id : {user_id}")
-            return [self.model.to_schema() for row in res]
+                raise NotFoundRepoError(detail=f"not found by user_id: {user_id}")
+            return [AnimalSchema.model_validate(row.to_schema(), from_attributes=True) for row in res]
 
     def get_all(self, skip: int = 0, limit: int = 100) -> List[AnimalSchema]:
         with self.session_factory() as session:
-            rows = session.query(self.model).offset(skip).limit(limit).all()
-            return [self.model.to_schema() for row in rows]
+            query = select(AnimalORM).offset(skip).limit(limit)
+            rows = session.execute(query).scalars().all()
+            return [AnimalSchema.model_validate(row.to_schema(), from_attributes=True) for row in rows]
 
     def get_by_id(self, id: NonNegativeInt) -> AnimalSchema:
         with self.session_factory() as session:
-            row = session.query(self.model).filter_by(id=id).first()
+            query = select(AnimalORM).filter_by(id=id)
+            row = session.execute(query).scalar()
             if row is None:
                 raise NotFoundRepoError(detail=f"not found id : {id}")
-            return self.model.to_schema()
+            return AnimalSchema.model_validate(row.to_schema(), from_attributes=True)
 
     def create(self, other: AnimalSchema) -> AnimalSchema:
         with self.session_factory() as session:
-            other_dict = self.get_dict(other)
-            stmt = insert(self.model).values(other_dict).returning(self.model.id)
+            other_dict = self.get_dict(other, exclude=['id'])
+            stmt = insert(AnimalORM).values(other_dict).returning(AnimalORM.id)
             try:
                 result = session.execute(stmt)
                 session.commit()
@@ -74,7 +77,7 @@ class SqlAlchemyAnimalRepository(IAnimalRepository):
     def update(self, other: AnimalSchema) -> AnimalSchema:
         with self.session_factory() as session:
             other_dict = self.get_dict(other, exclude=['id'])
-            stmt = update(self.model).where(cast("ColumnElement[bool]", other.id.eq_int(self.model.id))).values(other_dict).returning(self.model.id)
+            stmt = update(AnimalORM).where(cast("ColumnElement[bool]", other.id.eq_int(AnimalORM.id))).values(other_dict).returning(AnimalORM.id)
             try:
                 result = session.execute(stmt)
                 session.commit()
@@ -90,7 +93,8 @@ class SqlAlchemyAnimalRepository(IAnimalRepository):
 
     def delete(self, id: NonNegativeInt) -> None:
         with self.session_factory() as session:
-            row = session.query(self.model).filter_by(id=id).first()
+            query = select(AnimalORM).filter_by(id=id)
+            row = session.execute(query).scalar()
             if row is None:
                 raise NotFoundRepoError(detail=f"not found id : {id}")
             session.delete(row)

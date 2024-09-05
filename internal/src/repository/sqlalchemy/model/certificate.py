@@ -3,8 +3,8 @@ from sqlalchemy import Integer, ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped
 
 from internal.src.core.certificate.schema.certificate import CertificateSchema
-from internal.src.repository.sqlalchemy.model.base import Base
 from internal.src.core.utils.types import ID
+from internal.src.repository.sqlalchemy.model.base import Base
 
 
 class CertificateORM(Base):

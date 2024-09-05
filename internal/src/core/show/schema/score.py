@@ -1,52 +1,8 @@
-from dataclasses import dataclass, field
 from typing import Optional
 
 from pydantic import BaseModel, NonNegativeInt, NonNegativeFloat
 
-from internal.src.core.utils.types import ID, Datetime
-
-
-@dataclass(frozen=True)
-class ScoreValue:
-    value: NonNegativeInt
-    min: NonNegativeInt = field(init=False)
-    max: NonNegativeInt = field(init=False)
-
-    def __post_init__(self):
-        object.__setattr__(self, "min", 0)
-        object.__setattr__(self, "max", 5)
-
-        if self.value > self.max or self.value < self.min:
-            raise ValueError("Value of ScoreValue must be greater than " + str(self.min)
-                             + " and less than " + str(self.max))
-
-    @classmethod
-    def from_other(cls, other):
-        if not isinstance(other, ScoreValue):
-            raise ValueError("Parameter must be the instance of " + cls.__name__ + " class")
-        return cls(other.value)
-
-
-@dataclass(frozen=False)
-class Score:
-    value: NonNegativeInt
-
-    @classmethod
-    def from_scorevalue(cls, other: ScoreValue):
-        return cls(other.value)
-
-    def __add__(self, other):
-        return Score(self.value + other.value)
-
-    def __gt__(self, other) -> bool:
-        return self.value > other.value
-
-    def __le__(self, other) -> bool:
-        return self.value < other.value
-
-    @classmethod
-    def from_other(cls, other):
-        return Score(other.value)
+from internal.src.core.utils.types import ID, Datetime, ScoreValue, Score
 
 
 class TotalScoreInfo(BaseModel):

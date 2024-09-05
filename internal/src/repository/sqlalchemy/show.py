@@ -10,9 +10,9 @@ from sqlalchemy.orm import Session
 
 from internal.src.core.show.repository.show import IShowRepository
 from internal.src.core.show.schema.show import ShowSchema
-from internal.src.repository.sqlalchemy.model.show import ShowORM
 from internal.src.core.utils import types
 from internal.src.core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
+from internal.src.repository.sqlalchemy.model.show import ShowORM
 
 
 class SqlAlchemyShowRepository(IShowRepository):

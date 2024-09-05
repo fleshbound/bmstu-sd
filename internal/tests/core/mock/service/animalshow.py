@@ -1,8 +1,8 @@
 from typing import List
 
-from internal.src.core.utils.exceptions import NotFoundRepoError, AnimalShowServiceError, StartShowZeroRecordsError
 from internal.src.core.show.schema.animalshow import AnimalShowSchemaCreate, AnimalShowSchema, AnimalShowSchemaDeleted
 from internal.src.core.show.service.animalshow import IAnimalShowService
+from internal.src.core.utils.exceptions import NotFoundRepoError
 from internal.src.core.utils.types import ID
 
 

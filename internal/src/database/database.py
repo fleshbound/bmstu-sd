@@ -9,11 +9,7 @@ class SqlAlchemyDatabase:
     def __init__(self, db_url: str) -> None:
         self._engine = create_engine(db_url, echo=True)
         self._session_factory = orm.scoped_session(
-            orm.sessionmaker(
-                autocommit=False,
-                autoflush=False,
-                bind=self._engine,
-            )
+            orm.sessionmaker(autocommit=False, autoflush=False, bind=self._engine)
         )
 
     @contextmanager

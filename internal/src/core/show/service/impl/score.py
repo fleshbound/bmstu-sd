@@ -1,19 +1,17 @@
-from collections import OrderedDict
 from typing import List, Optional, Tuple
 
 from pydantic import NonNegativeInt, NonNegativeFloat
-from internal.src.core.utils.dict.impl.float import FloatKeyDictionary
 
-from internal.src.core.show.service.animalshow import IAnimalShowService
 from internal.src.core.show.repository.score import IScoreRepository
-from internal.src.core.show.service.usershow import IUserShowService
-from internal.src.core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, ScoreSchemaUpdate, Score, ScoreValue, \
+from internal.src.core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, ScoreSchemaUpdate, \
     AnimalShowRankingInfo
+from internal.src.core.show.service.animalshow import IAnimalShowService
 from internal.src.core.show.service.score import IScoreService
 from internal.src.core.show.service.show import IShowService
+from internal.src.core.show.service.usershow import IUserShowService
+from internal.src.core.utils.dict.impl.float import FloatKeyDictionary
 from internal.src.core.utils.exceptions import ScoreServiceError, NotFoundRepoError
-from internal.src.core.utils.types import ID
-
+from internal.src.core.utils.types import ID, Score
 
 DECIMALS = 4
 

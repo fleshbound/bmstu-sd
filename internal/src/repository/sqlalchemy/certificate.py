@@ -10,9 +10,9 @@ from sqlalchemy.orm import Session
 
 from internal.src.core.certificate.repository.certificate import ICertificateRepository
 from internal.src.core.certificate.schema.certificate import CertificateSchema
-from internal.src.repository.sqlalchemy.model.certificate import CertificateORM
 from internal.src.core.utils import types
 from internal.src.core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
+from internal.src.repository.sqlalchemy.model.certificate import CertificateORM
 
 
 class SqlAlchemyCertificateRepository(ICertificateRepository):

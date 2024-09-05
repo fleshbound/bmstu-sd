@@ -4,7 +4,8 @@ from typing import List
 from pydantic import PositiveInt, NonNegativeInt
 
 from internal.src.core.animal.schema.animal import AnimalSchema
-from internal.src.core.standard.schema.standard import StandardSchema, StandardSchemaCreate, StandardSchemaDeleteResponse
+from internal.src.core.standard.schema.standard import StandardSchema, StandardSchemaCreate, \
+    StandardSchemaDeleteResponse
 from internal.src.core.utils.types import ID
 
 

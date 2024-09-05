@@ -1,16 +1,15 @@
 from typing import List
 
 import pytest
-from fastapi import HTTPException
 from pydantic import NonNegativeInt
 
 from internal.src.core.utils.exceptions import SignInPasswordError, SignInNotFoundEmailError
 from internal.tests.core.mock.provider.auth import MockedAuthProvider
 from internal.tests.core.mock.service.user import MockedUserService
-from internal.src.core.auth.schema.auth import AuthSchemaSignIn, Fingerprint
+from internal.src.core.auth.schema.auth import AuthSchemaSignIn
 from internal.src.core.auth.service.impl.auth import AuthService
 from internal.src.core.user.schema.user import UserSchema, UserRole
-from internal.src.core.utils.types import UserName, HashedPassword, Email, ID
+from internal.src.core.utils.types import UserName, HashedPassword, Email, ID, Fingerprint
 
 
 def auth_service_create(users: List[UserSchema],
