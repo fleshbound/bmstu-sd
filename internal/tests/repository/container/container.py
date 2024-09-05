@@ -16,8 +16,8 @@ from internal.src.repository.sqlalchemy.usershow import SqlAlchemyUserShowReposi
 TEST_DATABASE_URL = f"postgresql://postgres:postgres@localhost:5432/test_postgres"
 
 
-class TestRepositoryContainer(containers.DeclarativeContainer):
-    db = providers.Singleton(SqlAlchemyDatabase, db_url=TEST_DATABASE_URL)
+class RepositoryContainer(containers.DeclarativeContainer):
+    db = providers.Singleton(SqlAlchemyDatabase, db_url=TEST_DATABASE_URL, echo=False)
 
     animal_repo = providers.Factory(SqlAlchemyAnimalRepository, session_factory=db.provided.session)
     user_repo = providers.Factory(SqlAlchemyUserRepository, session_factory=db.provided.session)
