@@ -91,10 +91,10 @@ class SqlAlchemyUserRepository(IUserRepository):
             session.delete(row)
             session.commit()
 
-    def get_by_email(self, email: str) -> List[UserSchema]:
+    def get_by_email(self, email: str) -> UserSchema:
         with self.session_factory() as session:
             query = select(UserORM).filter_by(email=email)
-            res = session.execute(query).scalars().all()
+            res = session.execute(query).scalar()
             if res is None:
                 raise NotFoundRepoError(detail=f"not found by email: {email}")
-            return [UserSchema.model_validate(row.to_schema(), from_attributes=True) for row in res]
+            return UserSchema.model_validate(res.to_schema(), from_attributes=True)

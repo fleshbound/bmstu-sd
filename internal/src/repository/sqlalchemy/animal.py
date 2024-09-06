@@ -1,6 +1,6 @@
 import inspect
 from contextlib import AbstractContextManager
-from typing import Callable, List, Type, cast
+from typing import Callable, List, Type, cast, Optional
 
 from psycopg2.errors import UniqueViolation
 from pydantic import NonNegativeInt, BaseModel
@@ -25,13 +25,16 @@ class SqlAlchemyAnimalRepository(IAnimalRepository):
         with self.session_factory() as session:
             query = select(AnimalORM).filter_by(user_id=user_id)
             res = session.execute(query).scalars().all()
-            if res is None:
+            if len(res) == 0:
                 raise NotFoundRepoError(detail=f"not found by user_id: {user_id}")
             return [AnimalSchema.model_validate(row.to_schema(), from_attributes=True) for row in res]
 
-    def get_all(self, skip: int = 0, limit: int = 100) -> List[AnimalSchema]:
+    def get_all(self, skip: int = 0, limit: Optional[int] = None) -> List[AnimalSchema]:
         with self.session_factory() as session:
-            query = select(AnimalORM).offset(skip).limit(limit)
+            if limit is None:
+                query = select(AnimalORM).offset(skip)
+            else:
+                query = select(AnimalORM).offset(skip).limit(limit)
             rows = session.execute(query).scalars().all()
             return [AnimalSchema.model_validate(row.to_schema(), from_attributes=True) for row in rows]
 
@@ -86,7 +89,6 @@ class SqlAlchemyAnimalRepository(IAnimalRepository):
             row = result.fetchone()
             if row is None:
                 raise NotFoundRepoError(detail=f"not found id : {id}")
-
             return self.get_by_id(row[0])
 
     def delete(self, id: NonNegativeInt) -> None:

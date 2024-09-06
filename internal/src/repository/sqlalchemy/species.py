@@ -91,14 +91,6 @@ class SqlAlchemySpeciesRepository(ISpeciesRepository):
             session.delete(row)
             session.commit()
 
-    def get_by_standard_id(self, standard_id: NonNegativeInt) -> List[SpeciesSchema]:
-        with self.session_factory() as session:
-            query = select(SpeciesORM).filter_by(standard_id=standard_id)
-            res = session.execute(query).scalars().all()
-            if res is None:
-                raise NotFoundRepoError(detail=f"not found by standard_id: {standard_id}")
-            return [SpeciesSchema.model_validate(row.to_schema(), from_attributes=True) for row in res]
-
     def get_by_group_id(self, group_id: NonNegativeInt) -> List[SpeciesSchema]:
         with self.session_factory() as session:
             query = select(SpeciesORM).filter_by(group_id=group_id)

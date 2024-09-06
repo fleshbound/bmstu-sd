@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from pydantic import NonNegativeInt
 
@@ -15,7 +15,7 @@ class MockedAnimalRepository(IAnimalRepository):
     def get_by_user_id(self, user_id: NonNegativeInt) -> List[AnimalSchema]:
         return self._animals
 
-    def get_all(self, skip: int = 0, limit: int = 100) -> List[AnimalSchema]:
+    def get_all(self, skip: int = 0, limit: Optional[int] = None) -> List[AnimalSchema]:
         return self._animals
 
     def get_by_id(self, id: NonNegativeInt) -> AnimalSchema:

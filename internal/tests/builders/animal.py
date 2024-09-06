@@ -88,6 +88,20 @@ class AnimalSchemaBuilder:
         self._has_defects = has_defects
         return self
 
+    def from_object(self, object: AnimalSchema):
+        self._id = object.id.value
+        self._user_id = object.user_id.value
+        self._breed_id = object.breed_id.value
+        self._name = object.name.value
+        self._birth_dt = object.birth_dt.value
+        self._sex = object.sex.value
+        self._weight = object.weight.value
+        self._height = object.height.value
+        self._length = object.length.value
+        self._has_defects = object.has_defects
+        self._is_multicolor = object.is_multicolor
+        return self
+
     def with_test_values(self):
         self._id = self.TEST_ANIMAL_ID
         self._user_id = self.TEST_USER_ID

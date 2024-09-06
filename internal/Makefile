@@ -1,8 +1,8 @@
 test_core:
-	pytest ./tests/core/ -q
+	pytest ./tests/core/ -v
 
 test_repo:
-	pytest ./tests/repository/ -q
+	pytest ./tests/repository/ -v
 
 set_test_db:
 	cd ./database/py &&	python3 setdb.py test info 2000

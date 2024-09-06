@@ -54,6 +54,9 @@ class UserSchema(BaseModel):
             name=other.name
         )
 
+    def __eq__(self, other):
+        return self.email == other.email
+
 
 class UserSchemaDeleted(BaseModel):
     id: ID

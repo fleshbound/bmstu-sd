@@ -76,7 +76,7 @@ class Email:
     value: EmailStr
 
     def __eq__(self, other) -> bool:
-        if not isinstance(other, UserName):
+        if not isinstance(other, Email):
             return False
         return other.value == self.value
 

@@ -1,5 +1,5 @@
 from abc import abstractmethod, ABC
-from typing import List
+from typing import List, Optional
 
 from pydantic import NonNegativeInt
 
@@ -12,7 +12,7 @@ class IAnimalRepository(ABC):
         raise NotImplementedError
                
     @abstractmethod
-    def get_all(self, skip: int = 0, limit: int = 100) -> List[AnimalSchema]:
+    def get_all(self, skip: int = 0, limit: Optional[int] = None) -> List[AnimalSchema]:
         raise NotImplementedError
 
     @abstractmethod

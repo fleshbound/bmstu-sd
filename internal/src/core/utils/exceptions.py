@@ -161,9 +161,19 @@ class AnimalServiceError(Exception):
         super().__init__(detail)
 
 
+class UserServiceError(Exception):
+    def __init__(self, detail: Any = None) -> None:
+        super().__init__(detail)
+
+
+class EmailAlreadyTakenError(UserServiceError):
+    def __init__(self, email: Email, detail: Any = None):
+        super().__init__(detail if detail else f'email\'s already taken: email={email.value}')
+
+
 class DeleteAnimalStartedShowError(AnimalServiceError):
     def __init__(self, animal_id: ID, detail: Any = None) -> None:
-        super().__init__(detail if detail else f'animal is registered to started shows: ' + f'animal_id={animal_id}')
+        super().__init__(detail if detail else f'animal is registered to started shows: animal_id={animal_id}')
 
 
 class AnimalShowServiceError(Exception):
