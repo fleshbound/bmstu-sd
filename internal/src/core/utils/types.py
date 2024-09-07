@@ -75,6 +75,9 @@ class ShowName:
 class Email:
     value: EmailStr
 
+    def __post_init__(self):
+        pass
+
     def __eq__(self, other) -> bool:
         if not isinstance(other, Email):
             return False

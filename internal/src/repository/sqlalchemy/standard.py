@@ -95,6 +95,6 @@ class SqlAlchemyStandardRepository(IStandardRepository):
         with self.session_factory() as session:
             query = select(StandardORM).filter_by(breed_id=breed_id)
             res = session.execute(query).scalars().all()
-            if res is None:
+            if len(res) == 0:
                 raise NotFoundRepoError(detail=f"not found by breed_id: {breed_id}")
             return [StandardSchema.model_validate(row.to_schema(), from_attributes=True) for row in res]

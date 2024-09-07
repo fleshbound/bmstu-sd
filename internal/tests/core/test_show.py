@@ -2,20 +2,26 @@ import datetime
 from typing import Optional, List
 
 import pytest
-from fastapi import HTTPException
 from pydantic import NonNegativeInt, PositiveFloat
 
+from internal.src.core.animal.schema.animal import AnimalSchema
 from internal.src.core.breed.schema.breed import BreedSchema
 from internal.src.core.certificate.schema.certificate import CertificateSchema
 from internal.src.core.show.schema.animalshow import AnimalShowSchema
+from internal.src.core.show.schema.score import ScoreSchema
+from internal.src.core.show.schema.show import ShowSchema, ShowStatus, ShowClass, ShowSchemaCreate, \
+    ShowRegisterAnimalStatus, ShowRegisterUserStatus
 from internal.src.core.show.schema.usershow import UserShowSchema
-from internal.src.core.species.schema.species import SpeciesSchema
+from internal.src.core.show.service.impl.show import ShowService
+from internal.src.core.standard.schema.standard import StandardSchema
 from internal.src.core.user.schema.user import UserSchema, UserRole
-from internal.src.core.utils.exceptions import CreateShowMultiBreedError, CreateShowSingleBreedError, \
+from internal.src.core.utils.exceptions import \
     StartShowStatusError, StartShowZeroRecordsError, StopShowStatusError, RegisterShowStatusError, \
     RegisterAnimalCheckError, RegisterUserRoleError, RegisterUserRegisteredError, UnregisterShowStatusError, \
     UnregisterAnimalNotRegisteredError, UnregisterUserNotRegisteredError, StopNotAllUsersScoredError, \
     RegisterAnimalRegisteredError
+from internal.src.core.utils.types import ID, Country, Weight, Height, Length, AnimalName, Datetime, Sex, ShowName, \
+    BreedName, Email, HashedPassword, UserName
 from internal.tests.core.mock.repo.show import MockedShowRepository
 from internal.tests.core.mock.service.animal import MockedAnimalService
 from internal.tests.core.mock.service.animalshow import MockedAnimalShowService
@@ -25,14 +31,6 @@ from internal.tests.core.mock.service.score import MockedScoreService
 from internal.tests.core.mock.service.standard import MockedStandardService
 from internal.tests.core.mock.service.user import MockedUserService
 from internal.tests.core.mock.service.usershow import MockedUserShowService
-from internal.src.core.show.schema.score import ScoreSchema
-from internal.src.core.standard.schema.standard import StandardSchema
-from internal.src.core.animal.schema.animal import AnimalSchema
-from internal.src.core.show.schema.show import ShowSchema, ShowStatus, ShowClass, ShowSchemaCreate, \
-    ShowRegisterAnimalStatus, ShowRegisterUserStatus
-from internal.src.core.utils.types import ID, Country, Weight, Height, Length, AnimalName, Datetime, Sex, ShowName, \
-    BreedName, Email, HashedPassword, UserName, SpeciesName
-from internal.src.core.show.service.impl.show import ShowService
 
 
 def mocked_standardschema(id: NonNegativeInt,
@@ -89,15 +87,21 @@ def mocked_showschema(id: NonNegativeInt = 0,
                       breed_id: Optional[NonNegativeInt] = 0,
                       standard_id: Optional[NonNegativeInt] = 0,
                       is_multi_breed: bool = False):
+    if not species_id is None:
+        species_id = ID(species_id)
+    if not breed_id is None:
+        breed_id = ID(breed_id)
+    if not standard_id is None:
+        standard_id = ID(standard_id)
     return ShowSchema(
         id=ID(id),
         status=status,
         name=ShowName('Cool Show Name'),
-        species_id=ID(species_id),
-        breed_id=ID(breed_id),
+        species_id=species_id,
+        breed_id=breed_id,
         country=Country('Russian Federation'),
         show_class=ShowClass.one,
-        standard_id=ID(standard_id),
+        standard_id=standard_id,
         is_multi_breed=is_multi_breed
     )
 
@@ -194,21 +198,21 @@ def mocked_userschema(id: NonNegativeInt, role: UserRole):
 def test_create_multibreed_yesbreed_error():
     create_show = mocked_showschemacreate(0, 0, None, True)
     show_service = show_service_create([], [], [], [], [], [], [], [], [])
-    with pytest.raises(CreateShowMultiBreedError) as e:
+    with pytest.raises(ValueError) as e:
         show_service.create(create_show)
 
 
 def test_create_multibreed_nospecies_error():
     create_show = mocked_showschemacreate(None, None, None, True)
     show_service = show_service_create([], [], [], [], [], [], [], [], [])
-    with pytest.raises(CreateShowMultiBreedError):
+    with pytest.raises(ValueError):
         show_service.create(create_show)
 
 
 def test_create_multibreed_yesstandard_error():
     create_show = mocked_showschemacreate(0, None, 0, True)
     show_service = show_service_create([], [], [], [], [], [], [], [], [])
-    with pytest.raises(CreateShowMultiBreedError):
+    with pytest.raises(ValueError):
         show_service.create(create_show)
 
 
@@ -221,21 +225,21 @@ def test_create_multibreed_ok():
 def test_create_singlebreed_nostandard_error():
     create_show = mocked_showschemacreate(None, 0, None, False)
     show_service = show_service_create([], [], [], [], [], [], [], [], [])
-    with pytest.raises(CreateShowSingleBreedError):
+    with pytest.raises(ValueError):
         show_service.create(create_show)
 
 
 def test_create_singlebreed_yesspecies_error():
     create_show = mocked_showschemacreate(0, 0, 0, False)
     show_service = show_service_create([], [], [], [], [], [], [], [], [])
-    with pytest.raises(CreateShowSingleBreedError):
+    with pytest.raises(ValueError):
         show_service.create(create_show)
 
 
 def test_create_singlebreed_nobreed_error():
     create_show = mocked_showschemacreate(None, None, 0, False)
     show_service = show_service_create([], [], [], [], [], [], [], [], [])
-    with pytest.raises(CreateShowSingleBreedError):
+    with pytest.raises(ValueError):
         show_service.create(create_show)
 
 

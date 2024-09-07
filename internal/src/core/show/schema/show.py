@@ -1,5 +1,5 @@
 import enum
-from typing import List, Optional
+from typing import List, Optional, Any
 
 from pydantic import BaseModel, NonNegativeInt
 
@@ -51,6 +51,22 @@ class ShowSchema(BaseModel):
     standard_id: Optional[ID]
     is_multi_breed: bool
 
+    def model_post_init(self, __context: Any) -> None:
+        if self.is_multi_breed:
+            if self.breed_id is not None:
+                raise ValueError(f'is_multi_breed=True; breed_id={self.breed_id}, must be None')
+            if self.species_id is None:
+                raise ValueError(f'is_multi_breed=True; species_id={self.species_id} must be not None')
+            if self.standard_id is not None:
+                raise ValueError(f'is_multi_breed=True; standard_id={self.standard_id}, must be None')
+        else:
+            if self.species_id is not None:
+                raise ValueError(f'is_multi_breed=False; species_id={self.species_id}, must be None')
+            if self.breed_id is None:
+                raise ValueError(f'is_multi_breed=False; breed_id={self.breed_id}, must be not None')
+            if self.standard_id is None:
+                raise ValueError(f'is_multi_breed=False; standard_id={self.standard_id}, must be not None')
+
     @classmethod
     def from_create(cls, create: ShowSchemaCreate):
         return cls(
@@ -75,7 +91,7 @@ class ShowSchema(BaseModel):
             country=self.country,
             show_class=self.show_class,
             standard_id=self.standard_id,
-            is_multi_breed=self.is_multibreed
+            is_multi_breed=self.is_multi_breed
         )
 
 

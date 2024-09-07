@@ -16,7 +16,7 @@ class StandardORM(Base):
     weight: Mapped[NonNegativeFloat] = mapped_column(Float, nullable=False)
     height: Mapped[NonNegativeFloat] = mapped_column(Float, nullable=False)
     has_defects: Mapped[bool] = mapped_column(Boolean, nullable=False)
-    is_multi_color: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    is_multicolor: Mapped[bool] = mapped_column(Boolean, nullable=False)
     length: Mapped[NonNegativeFloat] = mapped_column(Float, nullable=False)
     weight_delta_percent: Mapped[PositiveFloat] = mapped_column(Float, nullable=False)
     height_delta_percent: Mapped[PositiveFloat] = mapped_column(Float, nullable=False)
@@ -30,9 +30,9 @@ class StandardORM(Base):
             weight=Weight(self.weight),
             height=Height(self.height),
             has_defects=self.has_defects,
-            is_multi_color=self.is_multi_color,
+            is_multicolor=self.is_multicolor,
             length=Length(self.length),
-            weight_delta_percent=Weight(self.weight_delta_percent),
-            height_delta_percent=Height(self.height_delta_percent),
-            length_delta_percent=Length(self.length_delta_percent)
+            weight_delta_percent=self.weight_delta_percent,
+            height_delta_percent=self.height_delta_percent,
+            length_delta_percent=self.length_delta_percent
         )

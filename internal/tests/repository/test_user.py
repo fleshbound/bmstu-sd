@@ -1,43 +1,8 @@
 import pytest
 
+from internal.src.core.utils.exceptions import NotFoundRepoError, TooManyResultsRepoError
+from internal.src.core.utils.types import ID
 from internal.tests.builders.user import UserSchemaBuilder
-from internal.src.core.user.schema.user import UserSchema
-from internal.src.core.utils.exceptions import NotFoundRepoError
-from internal.src.core.utils.types import ID, Email
-from internal.tests.repository.container.container import RepositoryContainer
-
-
-@pytest.fixture
-def container():
-    return RepositoryContainer()
-
-
-@pytest.fixture
-def user_repository(container):
-    return container.user_repo()
-
-
-@pytest.fixture
-def userschema() -> UserSchema:
-    return UserSchemaBuilder().with_test_values().build()
-
-
-@pytest.fixture
-def user(user_repository, userschema):
-    user = user_repository.create(userschema)
-    yield user
-    user_repository.delete(user.id.value)
-
-
-@pytest.fixture
-def created_user(user_repository, userschema):
-    return user_repository.create(userschema)
-
-
-@pytest.fixture
-def invalid_user_id(user_repository, created_user):
-    user_repository.delete(created_user.id.value)
-    return created_user.id
 
 
 @pytest.fixture
@@ -64,7 +29,14 @@ def empty_user_repository(user_repository):
 
 
 @pytest.fixture
-def two_user_repository(empty_user_repository, userschema):
+def two_user_repository(empty_user_repository):
+    empty_user_repository.create(UserSchemaBuilder().with_test_values().with_email('cool@mail.ru').build())
+    empty_user_repository.create(UserSchemaBuilder().with_test_values().with_email('verycool@mail.ru').build())
+    return empty_user_repository
+
+
+@pytest.fixture
+def two_equal_user_repository(empty_user_repository, userschema):
     empty_user_repository.create(userschema)
     empty_user_repository.create(userschema)
     return empty_user_repository
@@ -133,11 +105,15 @@ class TestUpdate:
 
 
 class TestGetByEmail:
-    def test_ok(self, user_repository, user):
-        found = user_repository.get_by_email(user.email.value)
+    def test_ok(self, empty_user_repository, user):
+        found = empty_user_repository.get_by_email(user.email.value)
 
         assert found == user
 
     def test_notfound_error(self, empty_user_repository, userschema):
         with pytest.raises(NotFoundRepoError):
             empty_user_repository.get_by_email(userschema.email.value)
+
+    def test_two_results_error(self, two_equal_user_repository, userschema):
+        with pytest.raises(TooManyResultsRepoError):
+            two_equal_user_repository.get_by_email(userschema.email.value)

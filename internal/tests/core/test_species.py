@@ -1,9 +1,10 @@
 import pytest
-from internal.tests.core.mock.repo.species import MockedSpeciesRepository
 
-from internal.src.core.species.schema.species import SpeciesSchema, SpeciesDeleteStatus, SpeciesSchemaCreate, SpeciesSchemaUpdate
+from internal.src.core.species.schema.species import SpeciesSchema, SpeciesDeleteStatus, SpeciesSchemaCreate, \
+    SpeciesSchemaUpdate
 from internal.src.core.species.service.impl.species import SpeciesService
 from internal.src.core.utils.types import ID, SpeciesName
+from internal.tests.core.mock.repo.species import MockedSpeciesRepository
 
 
 @pytest.fixture

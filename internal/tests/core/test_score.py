@@ -4,11 +4,6 @@ from typing import List, Optional
 import pytest
 from pydantic import NonNegativeInt
 
-from internal.src.core.utils.exceptions import ScoreServiceError
-from internal.tests.core.mock.repo.score import MockedScoreRepository
-from internal.tests.core.mock.service.animalshow import MockedAnimalShowService
-from internal.tests.core.mock.service.show import MockedShowService
-from internal.tests.core.mock.service.usershow import MockedUserShowService
 from internal.src.core.animal.schema.animal import AnimalSchema
 from internal.src.core.show.schema.animalshow import AnimalShowSchema
 from internal.src.core.show.schema.score import ScoreSchema
@@ -16,7 +11,12 @@ from internal.src.core.show.schema.show import ShowSchema, ShowClass, ShowStatus
 from internal.src.core.show.schema.usershow import UserShowSchema
 from internal.src.core.show.service.impl.score import ScoreService
 from internal.src.core.user.schema.user import UserSchema, UserRole
+from internal.src.core.utils.exceptions import ScoreServiceError
 from internal.src.core.utils.types import ID, Datetime, ShowName, Country, HashedPassword, Email, UserName, ScoreValue
+from internal.tests.core.mock.repo.score import MockedScoreRepository
+from internal.tests.core.mock.service.animalshow import MockedAnimalShowService
+from internal.tests.core.mock.service.show import MockedShowService
+from internal.tests.core.mock.service.usershow import MockedUserShowService
 
 
 def score_service_create(scores: List[ScoreSchema],

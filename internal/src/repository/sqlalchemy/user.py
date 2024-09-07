@@ -1,6 +1,6 @@
 import inspect
 from contextlib import AbstractContextManager
-from typing import Callable, Type, List, cast
+from typing import Callable, List, cast
 
 from psycopg2.errors import UniqueViolation
 from pydantic import NonNegativeInt, BaseModel
@@ -11,7 +11,8 @@ from sqlalchemy.orm import Session
 from internal.src.core.user.repository.user import IUserRepository
 from internal.src.core.user.schema.user import UserSchema
 from internal.src.core.utils import types
-from internal.src.core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
+from internal.src.core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError, \
+    TooManyResultsRepoError
 from internal.src.repository.sqlalchemy.model.user import UserORM
 
 
@@ -94,7 +95,9 @@ class SqlAlchemyUserRepository(IUserRepository):
     def get_by_email(self, email: str) -> UserSchema:
         with self.session_factory() as session:
             query = select(UserORM).filter_by(email=email)
-            res = session.execute(query).scalar()
-            if res is None:
+            res = session.execute(query).scalars().all()
+            if len(res) == 0:
                 raise NotFoundRepoError(detail=f"not found by email: {email}")
-            return UserSchema.model_validate(res.to_schema(), from_attributes=True)
+            elif len(res) > 1:
+                raise TooManyResultsRepoError(detail=f'too many results for email={email} ({len(res)})')
+            return UserSchema.model_validate(res[0].to_schema(), from_attributes=True)

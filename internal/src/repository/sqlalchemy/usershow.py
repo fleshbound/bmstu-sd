@@ -1,6 +1,6 @@
 import inspect
 from contextlib import AbstractContextManager
-from typing import List, Callable, Type, cast
+from typing import List, Callable, cast
 
 from psycopg2.errors import UniqueViolation
 from pydantic import NonNegativeInt, BaseModel

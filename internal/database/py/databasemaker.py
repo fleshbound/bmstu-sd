@@ -1,7 +1,7 @@
 import os
-import psycopg2
-from urllib.parse import urlparse  # for python 3+ use: from urllib.parse import urlparse
 from typing import Any
+
+import psycopg2
 
 
 class ConfigSQL:

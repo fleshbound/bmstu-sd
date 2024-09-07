@@ -201,6 +201,11 @@ class NotFoundRepoError(Exception):
         super().__init__(detail)
 
 
+class TooManyResultsRepoError(Exception):
+    def __init__(self, detail: Any = None) -> None:
+        super().__init__(detail)
+
+
 class ValidationRepoError(Exception):
     def __init__(self, detail: Any = None) -> None:
         super().__init__(detail)

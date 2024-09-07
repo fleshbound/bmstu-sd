@@ -1,5 +1,6 @@
 from dependency_injector import containers, providers
 
+from internal.src.database.database import SqlAlchemyDatabase
 from internal.src.repository.sqlalchemy.animal import SqlAlchemyAnimalRepository
 from internal.src.repository.sqlalchemy.animalshow import SqlAlchemyAnimalShowRepository
 from internal.src.repository.sqlalchemy.breed import SqlAlchemyBreedRepository
@@ -10,7 +11,6 @@ from internal.src.repository.sqlalchemy.show import SqlAlchemyShowRepository
 from internal.src.repository.sqlalchemy.species import SqlAlchemySpeciesRepository
 from internal.src.repository.sqlalchemy.standard import SqlAlchemyStandardRepository
 from internal.src.repository.sqlalchemy.user import SqlAlchemyUserRepository
-from internal.src.database.database import SqlAlchemyDatabase
 from internal.src.repository.sqlalchemy.usershow import SqlAlchemyUserShowRepository
 
 TEST_DATABASE_URL = f"postgresql://postgres:postgres@localhost:5432/test_postgres"

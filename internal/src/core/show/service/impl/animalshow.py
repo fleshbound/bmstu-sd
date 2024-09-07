@@ -7,7 +7,6 @@ from internal.src.core.utils.exceptions import AnimalShowServiceError
 from internal.src.core.utils.types import ID
 
 
-
 class AnimalShowService(IAnimalShowService):
     animalshow_repo: IAnimalShowRepository
 

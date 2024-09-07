@@ -1,138 +1,12 @@
 import pytest
 
-from internal.src.core.animal.schema.animal import AnimalSchema
-from internal.src.core.group.schema.group import GroupSchema
-from internal.src.core.user.schema.user import UserSchema
 from internal.src.core.utils.exceptions import NotFoundRepoError, ValidationRepoError
 from internal.src.core.utils.types import ID
 from internal.tests.builders.animal import AnimalSchemaBuilder
-from internal.tests.builders.breed import BreedSchemaBuilder
-from internal.tests.builders.group import GroupSchemaBuilder
-from internal.tests.builders.species import SpeciesSchemaBuilder
-from internal.tests.builders.user import UserSchemaBuilder
-from internal.tests.repository.container.container import RepositoryContainer
 
 
 @pytest.fixture
-def container():
-    return RepositoryContainer()
-
-
-@pytest.fixture
-def animal_repository(container):
-    return container.animal_repo()
-
-
-@pytest.fixture
-def user_repository(container):
-    return container.user_repo()
-
-
-@pytest.fixture
-def species_repository(container):
-    return container.species_repo()
-
-
-@pytest.fixture
-def breed_repository(container):
-    return container.breed_repo()
-
-
-@pytest.fixture
-def group_repository(container):
-    return container.group_repo()
-
-
-@pytest.fixture
-def userschema() -> UserSchema:
-    return UserSchemaBuilder().with_test_values().build()
-
-
-@pytest.fixture
-def user(user_repository, userschema):
-    user = user_repository.create(userschema)
-    yield user
-    user_repository.delete(user.id.value)
-
-
-@pytest.fixture
-def created_user(user_repository, userschema):
-    return user_repository.create(userschema)
-
-
-@pytest.fixture
-def groupschema() -> GroupSchema:
-    return GroupSchemaBuilder().with_test_values().build()
-
-
-@pytest.fixture
-def group(group_repository, groupschema):
-    group = group_repository.create(groupschema)
-    yield group
-    group_repository.delete(group.id.value)
-
-
-@pytest.fixture
-def speciesschema(group):
-    return SpeciesSchemaBuilder().with_test_values().with_group_id(group.id.value).build()
-
-
-@pytest.fixture
-def species(species_repository, speciesschema):
-    species = species_repository.create(speciesschema)
-    yield species
-    species_repository.delete(species.id.value)
-
-
-@pytest.fixture
-def breedschema(species):
-    return BreedSchemaBuilder().with_test_values().with_species_id(species.id.value).build()
-
-
-@pytest.fixture
-def breed(breed_repository, breedschema):
-    breed = breed_repository.create(breedschema)
-    yield breed
-    breed_repository.delete(breed.id.value)
-    
-    
-@pytest.fixture
-def created_breed(breed_repository, breedschema):
-    return breed_repository.create(breedschema)
-
-
-@pytest.fixture
-def animalschema(user, breed) -> AnimalSchema:
-    return (
-        AnimalSchemaBuilder()
-        .with_test_values()
-        .with_user_id(user.id.value)
-        .with_breed_id(breed.id.value)
-        .build()
-    )
-
-
-@pytest.fixture
-def animal(animal_repository, animalschema) -> AnimalSchema:
-    res_animal = animal_repository.create(animalschema)
-    yield res_animal
-    animal_repository.delete(res_animal.id.value)
-
-
-@pytest.fixture
-def created_animal(animal_repository, animalschema) -> AnimalSchema:
-    res_animal = animal_repository.create(animalschema)
-    return res_animal
-
-
-@pytest.fixture
-def invalid_animal_id(animal_repository, created_animal) -> ID:
-    animal_repository.delete(created_animal.id.value)
-    return created_animal.id
-
-
-@pytest.fixture
-def user_id_no_animal(animal_repository, user, created_animal) -> ID:
+def user_id_no_animal(animal_repository, user) -> ID:
     for a in animal_repository.get_all():
         animal_repository.delete(a.id.value)
     yield user.id
@@ -202,18 +76,6 @@ def two_animal_repository(empty_animal_repository, animalschema):
     empty_animal_repository.create(animalschema)
     empty_animal_repository.create(animalschema)
     return empty_animal_repository
-
-
-@pytest.fixture
-def invalid_user_id(user_repository, created_user):
-    user_repository.delete(created_user.id.value)
-    return created_user.id
-
-
-@pytest.fixture
-def invalid_breed_id(breed_repository, created_breed):
-    breed_repository.delete(created_breed.id.value)
-    return created_breed.id
 
 
 @pytest.fixture

@@ -1,11 +1,10 @@
 import os
-import faker
-import faker_commerce
 import random
 
+import faker
+import faker_commerce
 from Cryptodome.Hash import SHA256
 from faker.providers import DynamicProvider
-
 
 show_status_provider = DynamicProvider(
     provider_name='show_status',

@@ -1,43 +1,8 @@
 import pytest
 
-from internal.tests.builders.group import GroupSchemaBuilder
-from internal.src.core.group.schema.group import GroupSchema
 from internal.src.core.utils.exceptions import NotFoundRepoError
 from internal.src.core.utils.types import ID
-from internal.tests.repository.container.container import RepositoryContainer
-
-
-@pytest.fixture
-def container():
-    return RepositoryContainer()
-
-
-@pytest.fixture
-def group_repository(container):
-    return container.group_repo()
-
-
-@pytest.fixture
-def groupschema() -> GroupSchema:
-    return GroupSchemaBuilder().with_test_values().build()
-
-
-@pytest.fixture
-def group(group_repository, groupschema):
-    group = group_repository.create(groupschema)
-    yield group
-    group_repository.delete(group.id.value)
-    
-
-@pytest.fixture
-def created_group(group_repository, groupschema):
-    return group_repository.create(groupschema)
-    
-
-@pytest.fixture
-def invalid_group_id(group_repository, created_group):
-    group_repository.delete(created_group.id.value)
-    return created_group.id
+from internal.tests.builders.group import GroupSchemaBuilder
 
 
 @pytest.fixture

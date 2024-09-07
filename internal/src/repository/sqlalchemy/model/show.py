@@ -5,7 +5,7 @@ from sqlalchemy import ForeignKey, String, Boolean
 from sqlalchemy.orm import Mapped, mapped_column
 
 from internal.src.core.show.schema.show import ShowSchema, ShowStatus, ShowClass
-from internal.src.core.utils.types import ID, ShowName
+from internal.src.core.utils.types import ID, ShowName, Country
 from internal.src.repository.sqlalchemy.model.base import Base
 
 
@@ -23,13 +23,17 @@ class ShowORM(Base):
     is_multi_breed: Mapped[bool] = mapped_column(Boolean, nullable=False)
 
     def to_schema(self) -> ShowSchema:
+        standard_id = self.standard_id if self.standard_id is None else ID(self.standard_id)
+        species_id = self.species_id if self.species_id is None else ID(self.species_id)
+        breed_id = self.breed_id if self.breed_id is None else ID(self.breed_id)
         return ShowSchema(
             id=ID(self.id),
-            species_id=ID(self.species_id),
-            breed_id=ID(self.breed_id),
+            species_id=species_id,
+            breed_id=breed_id,
+            country=Country(self.country),
             status=ShowStatus(self.status),
             show_class=ShowClass(self.show_class),
-            standard_id=ID(self.standard_id),
+            standard_id=standard_id,
             name=ShowName(self.name),
             is_multi_breed=self.is_multi_breed
         )

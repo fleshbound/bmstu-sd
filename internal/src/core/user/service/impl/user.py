@@ -5,7 +5,8 @@ from pydantic import NonNegativeInt, PositiveInt
 from internal.src.core.user.repository.user import IUserRepository
 from internal.src.core.user.schema.user import UserSchema, UserSchemaCreate, UserSchemaUpdate
 from internal.src.core.user.service.user import IUserService
-from internal.src.core.utils.exceptions import NotFoundRepoError, UserServiceError, EmailAlreadyTakenError
+from internal.src.core.utils.exceptions import EmailAlreadyTakenError, \
+    TooManyResultsRepoError
 from internal.src.core.utils.types import ID, Email
 
 
@@ -18,7 +19,7 @@ class UserService(IUserService):
     def is_email_taken(self, email: Email) -> bool:
         try:
             self.user_repo.get_by_email(email.value)
-        except NotFoundRepoError:
+        except TooManyResultsRepoError:
             return False
         return True
 

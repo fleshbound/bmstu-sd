@@ -1,6 +1,6 @@
 import inspect
 from contextlib import AbstractContextManager
-from typing import List, Callable, Type, cast
+from typing import List, Callable, cast
 
 from psycopg2.errors import UniqueViolation
 from pydantic import NonNegativeInt, BaseModel
@@ -95,7 +95,7 @@ class SqlAlchemyShowRepository(IShowRepository):
         with self.session_factory() as session:
             query = select(ShowORM).filter_by(standard_id=standard_id)
             res = session.execute(query).scalars().all()
-            if res is None:
+            if len(res) == 0:
                 raise NotFoundRepoError(detail=f"not found by standard_id: {standard_id}")
             return [ShowSchema.model_validate(row.to_schema(), from_attributes=True) for row in res]
 
@@ -103,6 +103,14 @@ class SqlAlchemyShowRepository(IShowRepository):
         with self.session_factory() as session:
             query = select(ShowORM).filter_by(breed_id=breed_id)
             res = session.execute(query).scalars().all()
-            if res is None:
+            if len(res) == 0:
                 raise NotFoundRepoError(detail=f"not found by breed_id: {breed_id}")
+            return [ShowSchema.model_validate(row.to_schema(), from_attributes=True) for row in res]
+
+    def get_by_species_id(self, species_id: NonNegativeInt) -> List[ShowSchema]:
+        with self.session_factory() as session:
+            query = select(ShowORM).filter_by(species_id=species_id)
+            res = session.execute(query).scalars().all()
+            if len(res) == 0:
+                raise NotFoundRepoError(detail=f"not found by species_id: {species_id}")
             return [ShowSchema.model_validate(row.to_schema(), from_attributes=True) for row in res]
