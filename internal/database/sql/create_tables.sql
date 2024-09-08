@@ -70,7 +70,8 @@ create table if not exists Score (
     usershow_id int,
     animalshow_id int,
     value int,
-    is_archived bool
+    is_archived bool,
+    dt_created timestamp
 );
 
 create table if not exists Certificate (

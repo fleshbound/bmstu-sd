@@ -95,7 +95,7 @@ class SqlAlchemyUserShowRepository(IUserShowRepository):
         with self.session_factory() as session:
             query = select(UserShowORM).filter_by(user_id=user_id)
             res = session.execute(query).scalars().all()
-            if res is None:
+            if len(res) == 0:
                 raise NotFoundRepoError(detail=f"not found by user_id: {user_id}")
             return [UserShowSchema.model_validate(row.to_schema(), from_attributes=True) for row in res]
 
@@ -103,7 +103,7 @@ class SqlAlchemyUserShowRepository(IUserShowRepository):
         with self.session_factory() as session:
             query = select(UserShowORM).filter_by(show_id=show_id)
             res = session.execute(query).scalars().all()
-            if res is None:
+            if len(res) == 0:
                 raise NotFoundRepoError(detail=f"not found by show_id: {show_id}")
             return [UserShowSchema.model_validate(row.to_schema(), from_attributes=True) for row in res]
 
@@ -111,6 +111,6 @@ class SqlAlchemyUserShowRepository(IUserShowRepository):
         with self.session_factory() as session:
             query = select(UserShowORM).filter_by(show_id=show_id, user_id=user_id)
             res = session.execute(query).scalars().all()
-            if res is None:
+            if len(res) == 0:
                 raise NotFoundRepoError(detail=f"not found by show_id: {show_id}, user_id: {user_id}")
             return [UserShowSchema.model_validate(row.to_schema(), from_attributes=True) for row in res]

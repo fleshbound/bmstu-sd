@@ -95,7 +95,7 @@ class SqlAlchemyAnimalShowRepository(IAnimalShowRepository):
         with self.session_factory() as session:
             query = select(AnimalShowORM).filter_by(animal_id=animal_id)
             res = session.execute(query).scalars().all()
-            if res is None:
+            if len(res) == 0:
                 raise NotFoundRepoError(detail=f"not found by animal_id: {animal_id}")
             return [AnimalShowSchema.model_validate(row.to_schema(), from_attributes=True) for row in res]
 
@@ -103,7 +103,7 @@ class SqlAlchemyAnimalShowRepository(IAnimalShowRepository):
         with self.session_factory() as session:
             query = select(AnimalShowORM).filter_by(show_id=show_id)
             res = session.execute(query).scalars().all()
-            if res is None:
+            if len(res) == 0:
                 raise NotFoundRepoError(detail=f"not found by show_id: {show_id}")
             return [AnimalShowSchema.model_validate(row.to_schema(), from_attributes=True) for row in res]
 
@@ -111,6 +111,6 @@ class SqlAlchemyAnimalShowRepository(IAnimalShowRepository):
         with self.session_factory() as session:
             query = select(AnimalShowORM).filter_by(show_id=show_id, animal_id=animal_id)
             res = session.execute(query).scalars().all()
-            if res is None:
+            if len(res) == 0:
                 raise NotFoundRepoError(detail=f"not found by show_id: {show_id}, animal_id: {animal_id}")
             return [AnimalShowSchema.model_validate(row.to_schema(), from_attributes=True) for row in res]

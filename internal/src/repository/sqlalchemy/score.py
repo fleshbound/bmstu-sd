@@ -95,7 +95,7 @@ class SqlAlchemyScoreRepository(IScoreRepository):
         with self.session_factory() as session:
             query = select(ScoreORM).filter_by(animalshow_id=animalshow_id)
             res = session.execute(query).scalars().all()
-            if res is None:
+            if len(res) == 0:
                 raise NotFoundRepoError(detail=f"not found by animalshow_id: {animalshow_id}")
             return [ScoreSchema.model_validate(row.to_schema(), from_attributes=True) for row in res]
 
@@ -103,6 +103,6 @@ class SqlAlchemyScoreRepository(IScoreRepository):
         with self.session_factory() as session:
             query = select(ScoreORM).filter_by(usershow_id=usershow_id)
             res = session.execute(query).scalars().all()
-            if res is None:
+            if len(res) == 0:
                 raise NotFoundRepoError(detail=f"not found by show_id: {usershow_id}")
             return [ScoreSchema.model_validate(row.to_schema(), from_attributes=True) for row in res]

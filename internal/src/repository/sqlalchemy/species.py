@@ -95,6 +95,6 @@ class SqlAlchemySpeciesRepository(ISpeciesRepository):
         with self.session_factory() as session:
             query = select(SpeciesORM).filter_by(group_id=group_id)
             res = session.execute(query).scalars().all()
-            if res is None:
+            if len(res) == 0:
                 raise NotFoundRepoError(detail=f"not found by group_id: {group_id}")
             return [SpeciesSchema.model_validate(row.to_schema(), from_attributes=True) for row in res]

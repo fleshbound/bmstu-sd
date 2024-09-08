@@ -95,7 +95,7 @@ class SqlAlchemyBreedRepository(IBreedRepository):
         with self.session_factory() as session:
             query = select(BreedORM).filter_by(standard_id=standard_id)
             res = session.execute(query).scalars().all()
-            if res is None:
+            if len(res) == 0:
                 raise NotFoundRepoError(detail=f"not found by standard_id: {standard_id}")
             return [BreedSchema.model_validate(row.to_schema(), from_attributes=True) for row in res]
 
@@ -103,6 +103,6 @@ class SqlAlchemyBreedRepository(IBreedRepository):
         with self.session_factory() as session:
             query = select(BreedORM).filter_by(species_id=species_id)
             res = session.execute(query).scalars().all()
-            if res is None:
+            if len(res) == 0:
                 raise NotFoundRepoError(detail=f"not found by species_id: {species_id}")
             return [BreedSchema.model_validate(row.to_schema(), from_attributes=True) for row in res]

@@ -134,7 +134,7 @@ class TestDelete:
 class TestGetByUserId:
     def test_no_animal_error(self, animal_repository, user_id_no_animal):
         with pytest.raises(NotFoundRepoError):
-            print(animal_repository.get_by_user_id(user_id_no_animal.value))
+            animal_repository.get_by_user_id(user_id_no_animal.value)
             
     def test_one_animal_ok(self, animal_repository, user_id_one_animal):
         res = animal_repository.get_by_user_id(user_id_one_animal.value)

@@ -145,4 +145,5 @@ alter table score
     alter column usershow_id set not null,
     alter column value set not null,
     alter column is_archived set not null,
+    alter column dt_created set not null,
     add check (value >= 0);

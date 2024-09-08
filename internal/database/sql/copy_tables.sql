@@ -48,3 +48,5 @@ copy Show (species_id, breed_id, standard_id, status, country, show_class, name,
 from '/home/sheglar/bmstu/petowo/ppo/internal/database/data/test_data/show.csv'
 delimiter ';'
 csv header;
+
+-- Score
