@@ -62,8 +62,9 @@ class ShowService(IShowService):
 
     def create(self, show_create: ShowSchemaCreate) -> ShowSchema:
         new_show = ShowSchema.from_create(show_create)
-        if self.standard_service.get_by_id(new_show.standard_id).breed_id != new_show.breed_id:
-            raise ShowServiceError('standard breed_id not equal show breed_id')
+        if not new_show.is_multi_breed:
+            if self.standard_service.get_by_id(new_show.standard_id).breed_id != new_show.breed_id:
+                raise ShowServiceError('standard breed_id not equal show breed_id')
         return self.show_repo.create(new_show)
 
     def get_usershow_count(self, show_id: ID) -> NonNegativeInt:

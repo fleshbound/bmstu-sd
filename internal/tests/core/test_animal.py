@@ -10,9 +10,9 @@ from internal.src.core.show.schema.animalshow import AnimalShowSchema
 from internal.src.core.show.schema.show import ShowStatus, ShowSchema, ShowClass
 from internal.src.core.utils.exceptions import DeleteAnimalStartedShowError
 from internal.src.core.utils.types import ID, AnimalName, Datetime, Sex, Weight, Height, Length, ShowName, Country
-from internal.tests.core.mock.repo.animal import MockedAnimalRepository
-from internal.tests.core.mock.service.animalshow import MockedAnimalShowService
-from internal.tests.core.mock.service.show import MockedShowService
+from internal.tests.core.mymock.repo.animal import MockedAnimalRepository
+from internal.tests.core.mymock.service.animalshow import MockedAnimalShowService
+from internal.tests.core.mymock.service.show import MockedShowService
 
 
 def mocked_animalschema(id: NonNegativeInt) -> AnimalSchema:
@@ -52,15 +52,18 @@ def mocked_showschema(id: NonNegativeInt = 0,
                       breed_id: Optional[NonNegativeInt] = 0,
                       standard_id: Optional[NonNegativeInt] = 0,
                       is_multi_breed: bool = False):
+    standard_id = standard_id if standard_id is None else ID(standard_id)
+    species_id = species_id if species_id is None else ID(species_id)
+    breed_id = breed_id if breed_id is None else ID(breed_id)
     return ShowSchema(
         id=ID(id),
         status=status,
         name=ShowName('Cool Show Name'),
-        species_id=ID(species_id),
-        breed_id=ID(breed_id),
+        species_id=species_id,
+        breed_id=breed_id,
         country=Country('Russian Federation'),
         show_class=ShowClass.one,
-        standard_id=ID(standard_id),
+        standard_id=standard_id,
         is_multi_breed=is_multi_breed
     )
 

@@ -4,7 +4,7 @@ from internal.src.core.species.schema.species import SpeciesSchema, SpeciesDelet
     SpeciesSchemaUpdate
 from internal.src.core.species.service.impl.species import SpeciesService
 from internal.src.core.utils.types import ID, SpeciesName
-from internal.tests.core.mock.repo.species import MockedSpeciesRepository
+from internal.tests.core.mymock.repo.species import MockedSpeciesRepository
 
 
 @pytest.fixture

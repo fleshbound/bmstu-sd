@@ -10,8 +10,8 @@ from internal.src.core.standard.schema.standard import StandardSchema
 from internal.src.core.standard.service.impl.standard import StandardService
 from internal.src.core.utils.exceptions import CheckAnimalStandardError, StandardInUseError, CheckAnimalBreedError
 from internal.src.core.utils.types import ID, Country, Weight, Height, Length, AnimalName, Datetime, Sex, ShowName
-from internal.tests.core.mock.repo.standard import MockedStandardRepository
-from internal.tests.core.mock.service.show import MockedShowService
+from internal.tests.core.mymock.repo.standard import MockedStandardRepository
+from internal.tests.core.mymock.service.show import MockedShowService
 
 
 def mocked_standardschema(breed_id: NonNegativeInt,
@@ -65,15 +65,18 @@ def mocked_showschema(id: NonNegativeInt = 0,
                       breed_id: Optional[NonNegativeInt] = 0,
                       standard_id: Optional[NonNegativeInt] = 0,
                       is_multi_breed: bool = False):
+    standard_id = standard_id if standard_id is None else ID(standard_id)
+    species_id = species_id if species_id is None else ID(species_id)
+    breed_id = breed_id if breed_id is None else ID(breed_id)
     return ShowSchema(
         id=ID(id),
         status=status,
         name=ShowName('Cool Show Name'),
-        species_id=ID(species_id),
-        breed_id=ID(breed_id),
+        species_id=species_id,
+        breed_id=breed_id,
         country=Country('Russian Federation'),
         show_class=ShowClass.one,
-        standard_id=ID(standard_id),
+        standard_id=standard_id,
         is_multi_breed=is_multi_breed
     )
 

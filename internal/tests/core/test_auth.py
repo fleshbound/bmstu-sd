@@ -8,8 +8,8 @@ from internal.src.core.auth.service.impl.auth import AuthService
 from internal.src.core.user.schema.user import UserSchema, UserRole
 from internal.src.core.utils.exceptions import SignInPasswordError, SignInNotFoundEmailError
 from internal.src.core.utils.types import UserName, HashedPassword, Email, ID, Fingerprint
-from internal.tests.core.mock.provider.auth import MockedAuthProvider
-from internal.tests.core.mock.service.user import MockedUserService
+from internal.tests.core.mymock.provider.auth import MockedAuthProvider
+from internal.tests.core.mymock.service.user import MockedUserService
 
 
 def auth_service_create(users: List[UserSchema],

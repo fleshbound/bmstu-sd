@@ -1,5 +1,3 @@
-import pytest
-
 pytest_plugins = [
     "internal.tests.fixtures.animal",
     "internal.tests.fixtures.breed",

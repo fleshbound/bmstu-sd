@@ -22,15 +22,15 @@ from internal.src.core.utils.exceptions import \
     RegisterAnimalRegisteredError
 from internal.src.core.utils.types import ID, Country, Weight, Height, Length, AnimalName, Datetime, Sex, ShowName, \
     BreedName, Email, HashedPassword, UserName
-from internal.tests.core.mock.repo.show import MockedShowRepository
-from internal.tests.core.mock.service.animal import MockedAnimalService
-from internal.tests.core.mock.service.animalshow import MockedAnimalShowService
-from internal.tests.core.mock.service.breed import MockedBreedService
-from internal.tests.core.mock.service.certificate import MockedCertificateService
-from internal.tests.core.mock.service.score import MockedScoreService
-from internal.tests.core.mock.service.standard import MockedStandardService
-from internal.tests.core.mock.service.user import MockedUserService
-from internal.tests.core.mock.service.usershow import MockedUserShowService
+from internal.tests.core.mymock.repo.show import MockedShowRepository
+from internal.tests.core.mymock.service.animal import MockedAnimalService
+from internal.tests.core.mymock.service.animalshow import MockedAnimalShowService
+from internal.tests.core.mymock.service.breed import MockedBreedService
+from internal.tests.core.mymock.service.certificate import MockedCertificateService
+from internal.tests.core.mymock.service.score import MockedScoreService
+from internal.tests.core.mymock.service.standard import MockedStandardService
+from internal.tests.core.mymock.service.user import MockedUserService
+from internal.tests.core.mymock.service.usershow import MockedUserShowService
 
 
 def mocked_standardschema(id: NonNegativeInt,
@@ -217,7 +217,7 @@ def test_create_multibreed_yesstandard_error():
 
 
 def test_create_multibreed_ok():
-    create_show = mocked_showschemacreate(0, None, None, True)
+    create_show = mocked_showschemacreate(1, None, None, True)
     show_service = show_service_create([], [], [], [], [], [], [], [], [])
     assert show_service.create(create_show).status == ShowStatus.created
 
@@ -245,7 +245,9 @@ def test_create_singlebreed_nobreed_error():
 
 def test_create_singlebreed_ok():
     create_show = mocked_showschemacreate(None, 0, 0, False)
-    show_service = show_service_create([], [], [], [], [], [], [], [], [])
+    breeds = [mocked_breedschema(id=0, species_id=1), mocked_breedschema(id=1, species_id=1)]
+    standards = [mocked_standardschema(0, 0, 100, 100, 100, False, False, 10, 10, 10)]
+    show_service = show_service_create([], [], [], [], [], [], [], breeds, standards)
     assert show_service.create(create_show).status == ShowStatus.created
 
 
