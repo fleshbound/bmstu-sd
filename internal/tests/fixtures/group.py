@@ -1,7 +1,7 @@
 import pytest
 
 from internal.src.core.group.schema.group import GroupSchema
-from internal.tests.builders.group import GroupSchemaBuilder
+from builders.schema.group import GroupSchemaBuilder
 
 
 @pytest.fixture

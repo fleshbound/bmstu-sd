@@ -2,7 +2,7 @@ import pytest
 
 from internal.src.core.show.schema.score import ScoreSchema
 from internal.src.core.utils.types import ID
-from internal.tests.builders.score import ScoreSchemaBuilder
+from builders.schema.score import ScoreSchemaBuilder
 
 
 @pytest.fixture

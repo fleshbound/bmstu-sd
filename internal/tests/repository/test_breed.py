@@ -2,7 +2,7 @@ import pytest
 
 from internal.src.core.utils.exceptions import NotFoundRepoError, ValidationRepoError
 from internal.src.core.utils.types import ID
-from internal.tests.builders.breed import BreedSchemaBuilder
+from builders.schema.breed import BreedSchemaBuilder
 
 
 @pytest.fixture

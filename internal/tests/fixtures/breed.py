@@ -1,7 +1,7 @@
 import pytest
 
 from internal.src.core.breed.schema.breed import BreedSchema
-from internal.tests.builders.breed import BreedSchemaBuilder
+from builders.schema.breed import BreedSchemaBuilder
 
 
 @pytest.fixture

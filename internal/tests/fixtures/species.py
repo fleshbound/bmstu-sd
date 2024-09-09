@@ -1,7 +1,7 @@
 import pytest
 
 from internal.src.core.species.schema.species import SpeciesSchema
-from internal.tests.builders.species import SpeciesSchemaBuilder
+from builders.schema.species import SpeciesSchemaBuilder
 
 
 @pytest.fixture

@@ -31,6 +31,11 @@ def mocked_animalschema(id: NonNegativeInt) -> AnimalSchema:
     )
 
 
+# @pytest.fixture
+# def animal_service():
+#     return AnimalService
+
+
 def animal_service_create(animals: List[AnimalSchema], animalshows: List[AnimalShowSchema], shows: List[ShowSchema]):
     return AnimalService(
         animal_repo=MockedAnimalRepository(animals=animals),
@@ -66,6 +71,13 @@ def mocked_showschema(id: NonNegativeInt = 0,
         standard_id=standard_id,
         is_multi_breed=is_multi_breed
     )
+
+    
+#
+#
+# class TestDelete:
+#     def test_no_animalshow_ok(self, ):
+#
 
 
 def test_delete_noanimalshow_ok():

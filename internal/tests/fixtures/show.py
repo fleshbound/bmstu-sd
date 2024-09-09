@@ -1,7 +1,7 @@
 import pytest
 
 from internal.src.core.show.schema.show import ShowSchema
-from internal.tests.builders.show import ShowSchemaBuilder
+from builders.schema.show import ShowSchemaBuilder
 
 
 @pytest.fixture

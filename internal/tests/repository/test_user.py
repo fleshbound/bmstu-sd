@@ -2,7 +2,7 @@ import pytest
 
 from internal.src.core.utils.exceptions import NotFoundRepoError, TooManyResultsRepoError
 from internal.src.core.utils.types import ID
-from internal.tests.builders.user import UserSchemaBuilder
+from builders.schema.user import UserSchemaBuilder
 
 
 @pytest.fixture
