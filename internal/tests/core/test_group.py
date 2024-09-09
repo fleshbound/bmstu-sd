@@ -1,9 +1,21 @@
 import pytest
 
+<<<<<<<< HEAD:internal/tests/core/test_group.py
 from internal.src.core.group.schema.group import GroupSchema, GroupDeleteStatus, GroupSchemaCreate, GroupSchemaUpdate
 from internal.src.core.group.service.impl.group import GroupService
 from internal.src.core.utils.types import ID, GroupName
 from internal.tests.core.mymock.repo.group import MockedGroupRepository
+|||||||| ac98b70:internal/app/tests/core/group/test_service.py
+from core.group.schema.group import GroupSchema, GroupDeleteStatus, GroupSchemaCreate, GroupSchemaUpdate
+from core.group.service.impl.group import GroupService
+from internal.app.tests.core.group.mock.repository import MockedGroupRepository
+from core.utils.types import ID, GroupName
+========
+from core.group.schema.group import GroupSchema, GroupDeleteStatus, GroupSchemaCreate, GroupSchemaUpdate
+from core.group.service.impl.group import GroupService
+from internal.petowo.tests.core.group.mock.repository import MockedGroupRepository
+from core.utils.types import ID, GroupName
+>>>>>>>> origin/lab5:internal/petowo/tests/core/group/test_service.py
 
 
 @pytest.fixture
