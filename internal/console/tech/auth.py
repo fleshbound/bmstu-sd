@@ -1,5 +1,5 @@
 from core.auth.schema.auth import Token
-from internal.petowo.console.tech.console import UserConsoleInfo
+from internal.console.tech.console import UserConsoleInfo
 
 
 class AuthHandler:

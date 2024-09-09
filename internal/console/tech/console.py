@@ -5,13 +5,13 @@ from pydantic import BaseModel
 from core.auth.schema.auth import AuthDetails
 from core.user.schema.user import UserRole
 from core.utils.types import ID, UserName, Email
-from internal.petowo.console.tech.animal import AnimalHandler
-from internal.petowo.console.tech.auth import AuthHandler
-from internal.petowo.console.tech.input import InputHandler
-from internal.petowo.console.tech.show import ShowHandler
-from internal.petowo.console.tech.user import UserHandler
-from internal.petowo.console.tech.utils.lang.langmodel import LanguageModel
-from internal.petowo.console.tech.utils.types import Menus, ConsoleMessage
+from internal.console.tech.animal import AnimalHandler
+from internal.console.tech.auth import AuthHandler
+from internal.console.tech.input import InputHandler
+from internal.console.tech.show import ShowHandler
+from internal.console.tech.user import UserHandler
+from internal.console.tech.utils.lang.langmodel import LanguageModel
+from internal.console.tech.utils.types import Menus, ConsoleMessage
 
 
 class UserConsoleInfo(BaseModel):
