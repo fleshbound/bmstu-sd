@@ -1,22 +1,10 @@
 import pytest
 
-<<<<<<<< HEAD:internal/tests/core/test_species.py
 from internal.src.core.species.schema.species import SpeciesSchema, SpeciesDeleteStatus, SpeciesSchemaCreate, \
     SpeciesSchemaUpdate
 from internal.src.core.species.service.impl.species import SpeciesService
 from internal.src.core.utils.types import ID, SpeciesName
 from internal.tests.core.mymock.repo.species import MockedSpeciesRepository
-|||||||| parent of a759adf (add console UI files):internal/app/tests/core/species/test_service.py
-from core.species.schema.species import SpeciesSchema, SpeciesDeleteStatus, SpeciesSchemaCreate, SpeciesSchemaUpdate
-from core.species.service.impl.species import SpeciesService
-from internal.app.tests.core.species.mock.repository import MockedSpeciesRepository
-from core.utils.types import ID, SpeciesName
-========
-from core.species.schema.species import SpeciesSchema, SpeciesDeleteStatus, SpeciesSchemaCreate, SpeciesSchemaUpdate
-from core.species.service.impl.species import SpeciesService
-from internal.petowo.tests.core.species.mock.repository import MockedSpeciesRepository
-from core.utils.types import ID, SpeciesName
->>>>>>>> a759adf (add console UI files):internal/petowo/tests/core/species/test_service.py
 
 
 @pytest.fixture
