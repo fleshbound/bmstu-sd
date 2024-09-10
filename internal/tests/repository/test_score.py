@@ -2,7 +2,7 @@ import pytest
 
 from internal.src.core.utils.exceptions import NotFoundRepoError, ValidationRepoError
 from internal.src.core.utils.types import ID
-from builders.schema.score import ScoreSchemaBuilder
+from internal.tests.builders.schema.score import ScoreSchemaBuilder
 
 
 @pytest.fixture
