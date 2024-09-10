@@ -84,6 +84,7 @@ class ConsoleHandler:
                 return 1
             else:
                 print(ConsoleMessage.input_invalid)
+
     def select_admin(self) -> Optional[int]:
         run = True
         while run:
@@ -139,7 +140,7 @@ class ConsoleHandler:
                 self.auth_handler.logout()
                 return 1
             elif option == '4':
-                self.animal_handler.get_animals_all()
+                self.animal_handler.get_animals_by_user_id(self.user.id)
                 return 1
             elif option == '5':
                 self.animal_handler.create_animal()
