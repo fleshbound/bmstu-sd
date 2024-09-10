@@ -2,7 +2,7 @@ import pytest
 
 from internal.src.core.utils.exceptions import NotFoundRepoError
 from internal.src.core.utils.types import ID
-from builders.schema.show import ShowSchemaBuilder
+from internal.tests.builders.schema.show import ShowSchemaBuilder
 
 
 @pytest.fixture

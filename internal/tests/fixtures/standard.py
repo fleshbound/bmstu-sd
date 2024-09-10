@@ -2,7 +2,7 @@ import pytest
 
 from internal.src.core.standard.schema.standard import StandardSchema
 from internal.src.core.utils.types import ID
-from builders.schema.standard import StandardSchemaBuilder
+from internal.tests.builders.schema.standard import StandardSchemaBuilder
 
 
 @pytest.fixture

@@ -1,7 +1,7 @@
 import pytest
 
 from internal.src.core.user.schema.user import UserSchema
-from builders.schema.user import UserSchemaBuilder
+from internal.tests.builders.schema.user import UserSchemaBuilder
 
 
 @pytest.fixture

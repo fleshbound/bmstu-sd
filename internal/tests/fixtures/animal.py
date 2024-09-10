@@ -2,7 +2,7 @@ import pytest
 
 from internal.src.core.animal.schema.animal import AnimalSchema
 from internal.src.core.utils.types import ID
-from builders.schema.animal import AnimalSchemaBuilder
+from internal.tests.builders.schema.animal import AnimalSchemaBuilder
 
 
 @pytest.fixture
