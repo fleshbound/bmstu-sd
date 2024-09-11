@@ -4,8 +4,39 @@ from pydantic import BaseModel
 class LanguageModel(BaseModel):
     no_empty_field: str
     yes: str
-    input_incorrect: str
+    input_invalid: str
     question_year: str
     question_month: str
     question_day: str
-
+    auth_token_expired: str
+    get_empty_result: str
+    question_name: str
+    out_question_name: str
+    question_breed_id: str
+    question_birth_dt: str
+    question_user_id: str
+    question_length: str
+    question_weight: str
+    question_height: str
+    question_sex: str
+    question_has_defects: str
+    question_is_multicolor: str
+    out_question_breed_id: str
+    cancel_input: str
+    out_id: str
+    out_animal_id: str
+    out_breed_id: str
+    out_name: str
+    out_birth_dt: str
+    out_user_id: str
+    out_length: str
+    out_weight: str
+    out_height: str
+    out_length_unit: str
+    out_weight_unit: str
+    out_height_unit: str
+    out_has_defects: str
+    out_is_multicolor: str
+    out_sex: str
+    out_sex_female: str
+    out_sex_male: str
