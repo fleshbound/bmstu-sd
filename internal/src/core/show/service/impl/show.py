@@ -2,31 +2,31 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from internal.src.core.animal.schema.animal import AnimalSchema
-from internal.src.core.animal.service.animal import IAnimalService
-from internal.src.core.breed.service.breed import IBreedService
-from internal.src.core.certificate.schema.certificate import CertificateSchemaCreate
-from internal.src.core.certificate.service.certificate import ICertificateService
-from internal.src.core.show.repository.show import IShowRepository
-from internal.src.core.show.schema.animalshow import AnimalShowSchemaCreate
-from internal.src.core.show.schema.show import ShowSchemaCreate, ShowSchema, ShowSchemaUpdate, ShowSchemaDetailed, \
+from core.animal.schema.animal import AnimalSchema
+from core.animal.service.animal import IAnimalService
+from core.breed.service.breed import IBreedService
+from core.certificate.schema.certificate import CertificateSchemaCreate
+from core.certificate.service.certificate import ICertificateService
+from core.show.repository.show import IShowRepository
+from core.show.schema.animalshow import AnimalShowSchemaCreate
+from core.show.schema.show import ShowSchemaCreate, ShowSchema, ShowSchemaUpdate, ShowSchemaDetailed, \
     ShowRegisterAnimalResult, ShowSchemaReport, ShowStatus, ShowRegisterAnimalStatus, ShowRegisterUserResult, \
     ShowRegisterUserStatus
-from internal.src.core.show.schema.usershow import UserShowSchemaCreate
-from internal.src.core.show.service.animalshow import IAnimalShowService
-from internal.src.core.show.service.score import IScoreService
-from internal.src.core.show.service.show import IShowService
-from internal.src.core.show.service.usershow import IUserShowService
-from internal.src.core.standard.service.standard import IStandardService
-from internal.src.core.user.schema.user import UserRole
-from internal.src.core.user.service.user import IUserService
-from internal.src.core.utils.exceptions import NotFoundRepoError, \
+from core.show.schema.usershow import UserShowSchemaCreate
+from core.show.service.animalshow import IAnimalShowService
+from core.show.service.score import IScoreService
+from core.show.service.show import IShowService
+from core.show.service.usershow import IUserShowService
+from core.standard.service.standard import IStandardService
+from core.user.schema.user import UserRole
+from core.user.service.user import IUserService
+from core.utils.exceptions import NotFoundRepoError, \
     RegisterAnimalCheckError, RegisterShowStatusError, RegisterAnimalRegisteredError, \
     RegisterUserRoleError, RegisterUserRegisteredError, UnregisterShowStatusError, UnregisterAnimalNotRegisteredError, \
     UnregisterUserNotRegisteredError, StartShowStatusError, \
     StartShowZeroRecordsError, AbortShowStatusError, StopShowStatusError, StopNotAllUsersScoredError, \
     UpdateShowStatusError, CheckAnimalStandardError, ShowServiceError
-from internal.src.core.utils.types import ID
+from core.utils.types import ID
 
 
 class ShowService(IShowService):
@@ -82,7 +82,7 @@ class ShowService(IShowService):
         return len(res)
 
     def start(self, show_id: ID) -> ShowSchema:
-        cur_show = self.show_repo.get_by_id(show_id)
+        cur_show = self.show_repo.get_by_id(show_id.value)
         if cur_show.status != ShowStatus.created:
             raise StartShowStatusError(show_id=show_id, show_status=cur_show.status)
 
@@ -96,7 +96,7 @@ class ShowService(IShowService):
         return self.show_repo.update(cur_show)
 
     def abort(self, show_id: ID) -> ShowSchema:
-        cur_show = self.show_repo.get_by_id(show_id)
+        cur_show = self.show_repo.get_by_id(show_id.value)
         if cur_show.status != ShowStatus.started:
             raise AbortShowStatusError(show_id=show_id, show_status=cur_show.status)
         cur_show.status = ShowStatus.aborted
@@ -107,7 +107,7 @@ class ShowService(IShowService):
         return self.show_repo.update(cur_show)
 
     def stop(self, show_id: ID) -> ShowSchemaReport:
-        cur_show = self.show_repo.get_by_id(show_id)
+        cur_show = self.show_repo.get_by_id(show_id.value)
 
         if cur_show.status != ShowStatus.started:
             raise StopShowStatusError(show_id=show_id, show_status=cur_show.status)
@@ -118,15 +118,27 @@ class ShowService(IShowService):
         cur_show.status = ShowStatus.stopped
         self.show_repo.update(cur_show)
 
-        rank_count, ranking_info = self.score_service.get_show_ranking_info(show_id)
-        for record in ranking_info:
+        report = self.get_result_existing_show(show_id)
+        for record in report.ranking_info:
             cert = CertificateSchemaCreate(animalshow_id=record.total_info.record_id, rank=record.rank)
             self.certificate_service.create(cert)
             self.animalshow_service.archive(record.total_info.record_id)
 
         self.archive_users(show_id)
 
+        return report
+
+    def get_result_existing_show(self, show_id: ID) -> ShowSchemaReport:
+        rank_count, ranking_info = self.score_service.get_show_ranking_info(show_id)
         return ShowSchemaReport(ranking_info=ranking_info, rank_count=rank_count)
+
+    def get_result_by_id(self, show_id: ID) -> ShowSchemaReport:
+        cur_show = self.show_repo.get_by_id(show_id.value)
+
+        if cur_show.status != ShowStatus.started:
+            raise StopShowStatusError(show_id=show_id, show_status=cur_show.status)
+
+        return self.get_result_existing_show(show_id)
 
     def archive_users(self, show_id: ID):
         usershow_records = self.usershow_service.get_by_show_id(show_id)
@@ -140,7 +152,7 @@ class ShowService(IShowService):
 
     def update(self, show_update: ShowSchemaUpdate) -> ShowSchema:
         show_id = show_update.id
-        cur_show = self.show_repo.get_by_id(show_id)
+        cur_show = self.show_repo.get_by_id(show_id.value)
         if cur_show.status != ShowStatus.started:
             raise UpdateShowStatusError(show_id=show_id, show_status=cur_show.status)
         new_show = cur_show.from_update(show_update)
@@ -159,14 +171,14 @@ class ShowService(IShowService):
         usershow_records = self.usershow_service.get_by_user_id(user_id)
         res = []
         for record in usershow_records:
-            res.append(self.show_repo.get_by_id(record.show_id))
+            res.append(self.show_repo.get_by_id(record.show_id.value))
         return res
 
     def get_by_animal_id(self, animal_id: ID) -> List[ShowSchema]:
         animalshow_records = self.animalshow_service.get_by_animal_id(animal_id)
         res = []
         for record in animalshow_records:
-            res.append(self.show_repo.get_by_id(record.show_id))
+            res.append(self.show_repo.get_by_id(record.show_id.value))
         return res
 
     def get_by_id_detailed(self, show_id: ID) -> ShowSchemaDetailed:
@@ -205,7 +217,7 @@ class ShowService(IShowService):
         return True
 
     def register_animal(self, animal_id: ID, show_id: ID) -> ShowRegisterAnimalResult:
-        cur_show = self.show_repo.get_by_id(show_id)
+        cur_show = self.show_repo.get_by_id(show_id.value)
         if cur_show.status != ShowStatus.created:
             raise RegisterShowStatusError(show_id=show_id, show_status=cur_show.status)
 
@@ -226,7 +238,7 @@ class ShowService(IShowService):
         return True
 
     def register_user(self, user_id: ID, show_id: ID) -> ShowRegisterUserResult:
-        cur_show = self.show_repo.get_by_id(show_id)
+        cur_show = self.show_repo.get_by_id(show_id.value)
         if cur_show.status != ShowStatus.created:
             raise RegisterShowStatusError(show_id=show_id, show_status=cur_show.status)
 
@@ -241,7 +253,7 @@ class ShowService(IShowService):
         return ShowRegisterUserResult(record_id=usershow_record.id, status=ShowRegisterUserStatus.register_ok)
 
     def unregister_animal(self, animal_id: ID, show_id: ID) -> ShowRegisterAnimalResult:
-        cur_show = self.show_repo.get_by_id(show_id)
+        cur_show = self.show_repo.get_by_id(show_id.value)
         if cur_show.status != ShowStatus.created:
             raise UnregisterShowStatusError(show_id=show_id, show_status=cur_show.status)
 
@@ -252,7 +264,7 @@ class ShowService(IShowService):
         return ShowRegisterAnimalResult(record_id=res.id, status=ShowRegisterAnimalStatus.unregister_ok)
 
     def unregister_user(self, user_id: ID, show_id: ID) -> ShowRegisterUserResult:
-        cur_show = self.show_repo.get_by_id(show_id)
+        cur_show = self.show_repo.get_by_id(show_id.value)
         if cur_show.status != ShowStatus.created:
             raise UnregisterShowStatusError(show_id=show_id, show_status=cur_show.status)
 

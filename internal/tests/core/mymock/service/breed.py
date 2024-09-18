@@ -2,10 +2,10 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from internal.src.core.breed.schema.breed import BreedSchema, BreedSchemaDelete, BreedSchemaCreate, BreedSchemaUpdate
-from internal.src.core.breed.service.breed import IBreedService
-from internal.src.core.utils.exceptions import NotFoundRepoError
-from internal.src.core.utils.types import ID
+from core.breed.schema.breed import BreedSchema, BreedSchemaDelete, BreedSchemaCreate, BreedSchemaUpdate
+from core.breed.service.breed import IBreedService
+from core.utils.exceptions import NotFoundRepoError
+from core.utils.types import ID
 
 
 class MockedBreedService(IBreedService):

@@ -3,11 +3,11 @@ from typing import List
 import pytest
 from pydantic import NonNegativeInt
 
-from internal.src.core.auth.schema.auth import AuthSchemaSignIn
-from internal.src.core.auth.service.impl.auth import AuthService
-from internal.src.core.user.schema.user import UserSchema, UserRole
-from internal.src.core.utils.exceptions import SignInPasswordError, SignInNotFoundEmailError
-from internal.src.core.utils.types import UserName, HashedPassword, Email, ID, Fingerprint
+from core.auth.schema.auth import AuthSchemaSignIn
+from core.auth.service.impl.auth import AuthService
+from core.user.schema.user import UserSchema, UserRole
+from core.utils.exceptions import SignInPasswordError, SignInNotFoundEmailError
+from core.utils.types import UserName, HashedPassword, Email, ID, Fingerprint
 from internal.tests.core.mymock.provider.auth import MockedAuthProvider
 from internal.tests.core.mymock.service.user import MockedUserService
 

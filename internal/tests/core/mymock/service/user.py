@@ -2,10 +2,10 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from internal.src.core.user.schema.user import UserSchema, UserSchemaCreate, UserSchemaUpdate
-from internal.src.core.user.service.user import IUserService
-from internal.src.core.utils.exceptions import NotFoundRepoError
-from internal.src.core.utils.types import Email, ID
+from core.user.schema.user import UserSchema, UserSchemaCreate, UserSchemaUpdate
+from core.user.service.user import IUserService
+from core.utils.exceptions import NotFoundRepoError
+from core.utils.types import Email, ID
 
 
 class MockedUserService(IUserService):

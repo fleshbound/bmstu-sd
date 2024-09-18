@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from internal.src.core.utils.types import ID, AnimalName, Sex, Datetime, Length, Height, Weight
+from core.utils.types import ID, AnimalName, Sex, Datetime, Length, Height, Weight
 
 
 class AnimalSchemaCreate(BaseModel):

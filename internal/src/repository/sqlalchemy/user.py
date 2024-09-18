@@ -8,12 +8,12 @@ from sqlalchemy import insert, update, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from internal.src.core.user.repository.user import IUserRepository
-from internal.src.core.user.schema.user import UserSchema
-from internal.src.core.utils import types
-from internal.src.core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError, \
+from core.user.repository.user import IUserRepository
+from core.user.schema.user import UserSchema
+from core.utils import types
+from core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError, \
     TooManyResultsRepoError
-from internal.src.repository.sqlalchemy.model.user import UserORM
+from repository.sqlalchemy.model.user import UserORM
 
 
 class SqlAlchemyUserRepository(IUserRepository):

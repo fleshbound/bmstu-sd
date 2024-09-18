@@ -1,7 +1,7 @@
 import pytest
 
-from internal.src.core.animal.schema.animal import AnimalSchema
-from internal.src.core.utils.types import ID
+from core.animal.schema.animal import AnimalSchema
+from core.utils.types import ID
 from internal.tests.builders.schema.animal import AnimalSchemaBuilder
 
 

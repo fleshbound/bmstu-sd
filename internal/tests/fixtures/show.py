@@ -1,6 +1,6 @@
 import pytest
 
-from internal.src.core.show.schema.show import ShowSchema
+from core.show.schema.show import ShowSchema
 from internal.tests.builders.schema.show import ShowSchemaBuilder
 
 

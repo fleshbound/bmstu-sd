@@ -3,7 +3,7 @@ from typing import List
 
 from pydantic import NonNegativeInt
 
-from internal.src.core.show.schema.score import ScoreSchema
+from core.show.schema.score import ScoreSchema
 
 
 class IScoreRepository(ABC):

@@ -2,28 +2,30 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from internal.src.core.animal.repository.animal import IAnimalRepository
-from internal.src.core.animal.schema.animal import AnimalSchema, AnimalSchemaCreate, AnimalSchemaUpdate, \
+from core.animal.repository.animal import IAnimalRepository
+from core.animal.schema.animal import AnimalSchema, AnimalSchemaCreate, AnimalSchemaUpdate, \
     AnimalSchemaDelete
-from internal.src.core.animal.service.animal import IAnimalService
-from internal.src.core.show.schema.animalshow import AnimalShowSchema
-from internal.src.core.show.schema.show import ShowStatus
-from internal.src.core.show.service.animalshow import IAnimalShowService
-from internal.src.core.show.service.show import IShowService
-from internal.src.core.utils.exceptions import NotFoundRepoError, DeleteAnimalStartedShowError
-from internal.src.core.utils.types import ID
+from core.animal.service.animal import IAnimalService
+from core.show.schema.animalshow import AnimalShowSchema
+from core.show.schema.show import ShowStatus
+from core.show.service.animalshow import IAnimalShowService
+from core.show.service.show import IShowService
+from core.utils.exceptions import NotFoundRepoError, DeleteAnimalStartedShowError
+from core.utils.types import ID
+
+from core.show.repository.show import IShowRepository
 
 
 class AnimalService(IAnimalService):
     animal_repo: IAnimalRepository
     animalshow_service: IAnimalShowService
-    show_service: IShowService
+    show_repo: IShowRepository
 
     def __init__(self, animal_repo: IAnimalRepository, animalshow_service: IAnimalShowService,
-                 show_service: IShowService):
+                 show_repo: IShowRepository):
         self.animal_repo = animal_repo
         self.animalshow_service = animalshow_service
-        self.show_service = show_service
+        self.show_repo = show_repo
 
     def get_animal_registration_records(self, animal_id: ID) -> List[AnimalShowSchema]:
         try:
@@ -39,16 +41,13 @@ class AnimalService(IAnimalService):
 
         shows = []
         for record in animal_registration_records:
-            cur_show = self.show_service.get_by_id(record.show_id)
+            cur_show = self.show_repo.get_by_id(record.show_id)
             if cur_show.status == ShowStatus.started:
                 raise DeleteAnimalStartedShowError(animal_id=animal_id)
             shows.append(cur_show)
 
         for i, show in enumerate(shows):
-            if show.status == ShowStatus.created:
-                self.show_service.unregister_animal(animal_id, show.id)
-            else:
-                self.animalshow_service.archive(animal_registration_records[i].id)
+            self.animalshow_service.archive(animal_registration_records[i].id)
 
         self.animal_repo.delete(animal_id)
         return AnimalSchemaDelete(id=animal_id)

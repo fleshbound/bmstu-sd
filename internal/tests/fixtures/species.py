@@ -1,6 +1,6 @@
 import pytest
 
-from internal.src.core.species.schema.species import SpeciesSchema
+from core.species.schema.species import SpeciesSchema
 from internal.tests.builders.schema.species import SpeciesSchemaBuilder
 
 

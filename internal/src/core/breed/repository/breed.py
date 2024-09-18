@@ -3,7 +3,7 @@ from typing import List
 
 from pydantic import NonNegativeInt
 
-from internal.src.core.breed.schema.breed import BreedSchema
+from core.breed.schema.breed import BreedSchema
 
 
 class IBreedRepository(ABC):

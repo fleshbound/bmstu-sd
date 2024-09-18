@@ -5,11 +5,11 @@ import jwt
 from Cryptodome.Hash import SHA256
 from pydantic import BaseModel
 
-from internal.src.auth_provider.storage.auth import ISessionStorage, AuthSession
-from internal.src.auth_provider.utils.exceptions import AuthProviderError
-from internal.src.core.auth.provider.auth import IAuthProvider
-from internal.src.core.auth.schema.auth import AuthDetails, AuthPayload
-from internal.src.core.utils.types import HashedPassword, ID, Token, Fingerprint
+from auth_provider.storage.auth import ISessionStorage, AuthSession
+from auth_provider.utils.exceptions import AuthProviderError
+from core.auth.provider.auth import IAuthProvider
+from core.auth.schema.auth import AuthDetails, AuthPayload
+from core.utils.types import HashedPassword, ID, Token, Fingerprint
 
 
 class AuthConfig(BaseModel):

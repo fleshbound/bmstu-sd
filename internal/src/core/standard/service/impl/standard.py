@@ -1,25 +1,19 @@
 from typing import List
 
+from core.animal.schema.animal import AnimalSchema
+from core.standard.repository.standard import IStandardRepository
+from core.standard.schema.standard import StandardSchema, StandardSchemaCreate
+from core.standard.service.standard import IStandardService
+from core.utils.exceptions import CheckAnimalStandardError, CheckAnimalBreedError
+from core.utils.types import ID, Weight
 from pydantic import NonNegativeInt, PositiveInt
-
-from internal.src.core.animal.schema.animal import AnimalSchema
-from internal.src.core.show.service.show import IShowService
-from internal.src.core.standard.repository.standard import IStandardRepository
-from internal.src.core.standard.schema.standard import StandardSchema, StandardSchemaCreate, \
-    StandardSchemaDeleteResponse
-from internal.src.core.standard.service.standard import IStandardService
-from internal.src.core.utils.exceptions import CheckAnimalStandardError, CheckAnimalBreedError, \
-    NotFoundRepoError, StandardInUseError
-from internal.src.core.utils.types import ID, Weight
 
 
 class StandardService(IStandardService):
     standard_repo: IStandardRepository
-    show_service: IShowService
 
-    def __init__(self, standard_repo: IStandardRepository, show_service: IShowService):
+    def __init__(self, standard_repo: IStandardRepository):
         self.standard_repo = standard_repo
-        self.show_service = show_service
 
     def get_by_breed_id(self, breed_id: ID) -> List[StandardSchema]:
         return self.standard_repo.get_by_breed_id(breed_id.value)
@@ -34,19 +28,19 @@ class StandardService(IStandardService):
         new_standard = StandardSchema.from_create(standard_create)
         return self.standard_repo.create(new_standard)
 
-    def is_standard_used(self, id: ID) -> bool:
-        try:
-            self.show_service.get_by_standard_id(id)
-        except NotFoundRepoError:
-            return False
-        return True
+    # def is_standard_used(self, id: ID) -> bool:
+    #     try:
+    #         self.show_service.get_by_standard_id(id)
+    #     except NotFoundRepoError:
+    #         return False
+    #     return True
 
-    def delete(self, id: ID) -> StandardSchemaDeleteResponse:
-        if self.is_standard_used(id):
-            raise StandardInUseError(standard_id=id)
-
-        self.standard_repo.delete(id)
-        return StandardSchemaDeleteResponse(id=id)
+    # def delete(self, id: ID) -> StandardSchemaDeleteResponse:
+    #     if self.is_standard_used(id):
+    #         raise StandardInUseError(standard_id=id)
+    #
+    #     self.standard_repo.delete(id)
+    #     return StandardSchemaDeleteResponse(id=id)
 
     @staticmethod
     def check_animal_weight(animal: AnimalSchema, standard: StandardSchema):
@@ -70,7 +64,7 @@ class StandardService(IStandardService):
             raise CheckAnimalStandardError(animal_id=animal.id, standard_id=standard.id, property_name='height')
 
     def check_animal_by_standard(self, standard_id: ID, animal: AnimalSchema):
-        cur_standard = self.standard_repo.get_by_id(standard_id)
+        cur_standard = self.standard_repo.get_by_id(standard_id.value)
 
         if cur_standard.breed_id != animal.breed_id:
             raise CheckAnimalBreedError(animal_id=animal.id, standard_id=standard_id)

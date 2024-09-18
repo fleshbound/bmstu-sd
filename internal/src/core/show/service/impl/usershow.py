@@ -1,10 +1,10 @@
 from typing import List
 
-from internal.src.core.show.repository.usershow import IUserShowRepository
-from internal.src.core.show.schema.usershow import UserShowSchemaCreate, UserShowSchema, UserShowSchemaDeleted
-from internal.src.core.show.service.usershow import IUserShowService
-from internal.src.core.utils.exceptions import UserShowServiceError
-from internal.src.core.utils.types import ID
+from core.show.repository.usershow import IUserShowRepository
+from core.show.schema.usershow import UserShowSchemaCreate, UserShowSchema, UserShowSchemaDeleted
+from core.show.service.usershow import IUserShowService
+from core.utils.exceptions import UserShowServiceError
+from core.utils.types import ID
 
 
 class UserShowService(IUserShowService):
@@ -23,7 +23,7 @@ class UserShowService(IUserShowService):
         return self.usershow_repo.update(cur_usershow)
 
     def delete(self, usershow_id: ID) -> UserShowSchemaDeleted:
-        self.usershow_repo.delete(usershow_id)
+        self.usershow_repo.delete(usershow_id.value)
         return UserShowSchemaDeleted(id=usershow_id)
 
     def get_by_id(self, id: ID) -> UserShowSchema:

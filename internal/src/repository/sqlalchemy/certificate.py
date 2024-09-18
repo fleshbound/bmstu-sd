@@ -1,18 +1,18 @@
 import inspect
 from contextlib import AbstractContextManager
-from typing import List, Callable, Type, cast
+from typing import List, Callable, Type, cast, Optional
 
 from psycopg2.errors import UniqueViolation
 from pydantic import NonNegativeInt, BaseModel
-from sqlalchemy import insert, update
+from sqlalchemy import insert, update, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from internal.src.core.certificate.repository.certificate import ICertificateRepository
-from internal.src.core.certificate.schema.certificate import CertificateSchema
-from internal.src.core.utils import types
-from internal.src.core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
-from internal.src.repository.sqlalchemy.model.certificate import CertificateORM
+from core.certificate.repository.certificate import ICertificateRepository
+from core.certificate.schema.certificate import CertificateSchema
+from core.utils import types
+from core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
+from repository.sqlalchemy.model.certificate import CertificateORM
 
 
 class SqlAlchemyCertificateRepository(ICertificateRepository):
@@ -23,22 +23,27 @@ class SqlAlchemyCertificateRepository(ICertificateRepository):
     def __init__(self, session_factory: Callable[..., AbstractContextManager[Session]]):
         self.session_factory = session_factory
 
-    def get_all(self, skip: int = 0, limit: int = 100) -> List[CertificateSchema]:
+    def get_all(self, skip: int = 0, limit: Optional[int] = None) -> List[CertificateSchema]:
         with self.session_factory() as session:
-            rows = session.query(self.model).offset(skip).limit(limit).all()
-            return [self.model.to_schema() for row in rows]
+            if limit is None:
+                query = select(CertificateORM).offset(skip)
+            else:
+                query = select(CertificateORM).offset(skip).limit(limit)
+            rows = session.execute(query).scalars().all()
+            return [CertificateSchema.model_validate(row.to_schema(), from_attributes=True) for row in rows]
 
     def get_by_id(self, id: NonNegativeInt) -> CertificateSchema:
         with self.session_factory() as session:
-            row = session.query(self.model).filter_by(id=id).first()
+            query = select(CertificateORM).filter_by(id=id)
+            row = session.execute(query).scalar()
             if row is None:
                 raise NotFoundRepoError(detail=f"not found id : {id}")
-            return self.model.to_schema()
+            return CertificateSchema.model_validate(row.to_schema(), from_attributes=True)
 
     def create(self, other: CertificateSchema) -> CertificateSchema:
         with self.session_factory() as session:
-            other_dict = self.get_dict(other)
-            stmt = insert(self.model).values(other_dict).returning(self.model.id)
+            other_dict = self.get_dict(other, exclude=['id'])
+            stmt = insert(CertificateORM).values(other_dict).returning(CertificateORM.id)
             try:
                 result = session.execute(stmt)
                 session.commit()
@@ -65,10 +70,8 @@ class SqlAlchemyCertificateRepository(ICertificateRepository):
     def update(self, other: CertificateSchema) -> CertificateSchema:
         with self.session_factory() as session:
             other_dict = self.get_dict(other, exclude=['id'])
-            stmt = update(self.model
-                          ).where(cast("ColumnElement[bool]", other.id.eq_int(self.model.id))
-                                  ).values(other_dict
-                                           ).returning(self.model.id)
+            stmt = update(CertificateORM).where(cast("ColumnElement[bool]", other.id.eq_int(CertificateORM.id))).values(
+                other_dict).returning(CertificateORM.id)
             try:
                 result = session.execute(stmt)
                 session.commit()
@@ -79,12 +82,12 @@ class SqlAlchemyCertificateRepository(ICertificateRepository):
             row = result.fetchone()
             if row is None:
                 raise NotFoundRepoError(detail=f"not found id : {id}")
-
             return self.get_by_id(row[0])
 
     def delete(self, id: NonNegativeInt) -> None:
         with self.session_factory() as session:
-            row = session.query(self.model).filter_by(id=id).first()
+            query = select(CertificateORM).filter_by(id=id)
+            row = session.execute(query).scalar()
             if row is None:
                 raise NotFoundRepoError(detail=f"not found id : {id}")
             session.delete(row)

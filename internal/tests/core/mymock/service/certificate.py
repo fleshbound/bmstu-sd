@@ -2,10 +2,10 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from internal.src.core.certificate.schema.certificate import CertificateSchema, CertificateSchemaCreate
-from internal.src.core.certificate.service.certificate import ICertificateService
-from internal.src.core.utils.exceptions import NotFoundRepoError
-from internal.src.core.utils.types import ID
+from core.certificate.schema.certificate import CertificateSchema, CertificateSchemaCreate
+from core.certificate.service.certificate import ICertificateService
+from core.utils.exceptions import NotFoundRepoError
+from core.utils.types import ID
 
 
 class MockedCertificateService(ICertificateService):

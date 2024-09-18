@@ -1,7 +1,7 @@
 import pytest
 
-from internal.src.core.show.schema.usershow import UserShowSchema
-from internal.src.core.utils.types import ID
+from core.show.schema.usershow import UserShowSchema
+from core.utils.types import ID
 from internal.tests.builders.schema.usershow import UserShowSchemaBuilder
 
 

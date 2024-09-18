@@ -1,6 +1,6 @@
 import pytest
 
-from internal.src.core.breed.schema.breed import BreedSchema
+from core.breed.schema.breed import BreedSchema
 from internal.tests.builders.schema.breed import BreedSchemaBuilder
 
 

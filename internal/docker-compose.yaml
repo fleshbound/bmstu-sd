@@ -1,0 +1,81 @@
+version: '3.9'
+
+services:
+  postgres:
+    image: library/postgres:14-bullseye
+    container_name: postgres-app
+    restart: on-failure
+    environment:
+      - POSTGRES_DB
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    networks:
+      - backend
+
+  pg_admin:
+    container_name: pgadmin4-app
+    image: dpage/pgadmin4
+    restart: on-failure
+    environment:
+      - PGADMIN_DEFAULT_EMAIL
+      - PGADMIN_DEFAULT_PASSWORD
+    ports:
+      - "5050:80"
+    networks:
+      - backend
+
+  app:
+    container_name: petowo-app
+    restart: on-failure
+    environment:
+      - DB_NAME
+      - DB_USER
+      - DB_PWD
+      - DB_PORT
+      - APP_PORT
+    build:
+        context: .
+        dockerfile: Dockerfile
+    command: ["/app/docker/app.sh"]
+    depends_on:
+        postgres:
+          condition: service_healthy
+    volumes:
+      - migrations-data:/app/migrations/versions
+    ports:
+      - "${APP_PORT}:${APP_PORT}"
+    networks:
+      - backend
+
+  redis:
+    image: redis
+    container_name: 'redis'
+    command: redis-server --save 60 1 --loglevel warning
+    volumes:
+      - ./.data/redis:/var/lib/redis
+      - ./.data/redis-config:/usr/local/etc/storage/redis.conf
+    environment:
+      - REDIS_PORT
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
+    networks:
+      - backend
+
+volumes:
+  db-data:
+  migrations-data:
+
+
+networks:
+  backend:
+    name: "backend"
+    driver: bridge

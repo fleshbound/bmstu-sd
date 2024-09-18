@@ -1,4 +1,4 @@
-from internal.src.core.utils.dict.dict import KeyTransformDictionaryBase
+from core.utils.dict.dict import KeyTransformDictionaryBase
 
 
 class FloatKeyDictionary(KeyTransformDictionaryBase):

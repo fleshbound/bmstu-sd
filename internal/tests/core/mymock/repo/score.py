@@ -2,9 +2,9 @@ from typing import List
 
 from pydantic import NonNegativeInt
 
-from internal.src.core.show.repository.score import IScoreRepository
-from internal.src.core.show.schema.score import ScoreSchema
-from internal.src.core.utils.exceptions import NotFoundRepoError
+from core.show.repository.score import IScoreRepository
+from core.show.schema.score import ScoreSchema
+from core.utils.exceptions import NotFoundRepoError
 
 
 class MockedScoreRepository(IScoreRepository):

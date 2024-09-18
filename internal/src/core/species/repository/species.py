@@ -3,7 +3,7 @@ from typing import List
 
 from pydantic import NonNegativeInt
 
-from internal.src.core.species.schema.species import SpeciesSchema
+from core.species.schema.species import SpeciesSchema
 
 
 class ISpeciesRepository(ABC):

@@ -1,7 +1,7 @@
 import datetime
 
-from internal.src.core.show.schema.score import ScoreSchema
-from internal.src.core.utils.types import ID, ScoreValue, Datetime
+from core.show.schema.score import ScoreSchema
+from core.utils.types import ID, ScoreValue, Datetime
 
 
 class ScoreSchemaBuilder:

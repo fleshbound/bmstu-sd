@@ -2,8 +2,8 @@ from typing import List, Optional
 
 from pydantic import NonNegativeInt
 
-from internal.src.core.animal.repository.animal import IAnimalRepository
-from internal.src.core.animal.schema.animal import AnimalSchema
+from core.animal.repository.animal import IAnimalRepository
+from core.animal.schema.animal import AnimalSchema
 
 
 class MockedAnimalRepository(IAnimalRepository):

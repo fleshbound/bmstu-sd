@@ -9,7 +9,6 @@ alter table "user"
     alter column hashed_password set not null,
     add check (name != ''),
     add check (email != ''),
-    add check (role != ''),
     add check (hashed_password != '');
 
 create sequence group_id_seq owned by "group".id;
@@ -43,7 +42,7 @@ alter table Breed
 create sequence animal_id_seq owned by Animal.id;
 alter table Animal
     add primary key (id),
-    add foreign key (user_id) references "user"(id) on delete cascade,
+    add foreign key (user_id) references "user"(id),
     add foreign key (breed_id) references Breed(id) on delete cascade,
     alter column id set not null,
     alter column id set default nextval('animal_id_seq'),
@@ -99,8 +98,6 @@ alter table Show
     alter column show_class set not null,
     alter column is_multi_breed set not null,
     add check (name != ''),
-    add check (country != ''),
-    add check (status != ''),
     add check (show_class != '');
 
 create sequence usershow_id_seq owned by UserShow.id;

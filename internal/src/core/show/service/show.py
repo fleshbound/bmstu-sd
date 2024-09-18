@@ -3,9 +3,9 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from internal.src.core.show.schema.show import ShowSchemaCreate, ShowSchema, ShowSchemaUpdate, ShowSchemaDetailed, \
-    ShowRegisterAnimalResult, ShowRegisterUserResult
-from internal.src.core.utils.types import ID
+from core.show.schema.show import ShowSchemaCreate, ShowSchema, ShowSchemaUpdate, ShowSchemaDetailed, \
+    ShowRegisterAnimalResult, ShowRegisterUserResult, ShowSchemaReport
+from core.utils.types import ID
 
 
 class IShowService(ABC):
@@ -22,7 +22,11 @@ class IShowService(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def stop(self, show_id: ID) -> ShowSchema:
+    def stop(self, show_id: ID) -> ShowSchemaReport:
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_result_by_id(self, show_id: ID) -> ShowSchemaReport:
         raise NotImplementedError
 
     @abstractmethod

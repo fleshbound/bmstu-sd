@@ -2,12 +2,14 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from internal.src.core.user.repository.user import IUserRepository
-from internal.src.core.user.schema.user import UserSchema, UserSchemaCreate, UserSchemaUpdate
-from internal.src.core.user.service.user import IUserService
-from internal.src.core.utils.exceptions import EmailAlreadyTakenError, \
+from core.user.repository.user import IUserRepository
+from core.user.schema.user import UserSchema, UserSchemaCreate, UserSchemaUpdate
+from core.user.service.user import IUserService
+from core.utils.exceptions import EmailAlreadyTakenError, \
     TooManyResultsRepoError
-from internal.src.core.utils.types import ID, Email
+from core.utils.types import ID, Email
+
+from core.utils.exceptions import NotFoundRepoError
 
 
 class UserService(IUserService):
@@ -20,8 +22,10 @@ class UserService(IUserService):
         try:
             self.user_repo.get_by_email(email.value)
         except TooManyResultsRepoError:
+            return True
+        except NotFoundRepoError:
             return False
-        return True
+        return False
 
     def create(self, create_user: UserSchemaCreate) -> UserSchema:
         if self.is_email_taken(create_user.email):
@@ -31,7 +35,7 @@ class UserService(IUserService):
 
     def update(self,
                update_user: UserSchemaUpdate) -> UserSchema:
-        cur_user = self.user_repo.get_by_id(update_user.id)
+        cur_user = self.user_repo.get_by_id(update_user.id.value)
         cur_user = cur_user.from_update(update_user)
         return self.user_repo.update(cur_user)
 

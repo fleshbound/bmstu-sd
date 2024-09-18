@@ -1,6 +1,6 @@
 import pytest
 
-from internal.src.core.user.schema.user import UserSchema
+from core.user.schema.user import UserSchema
 from internal.tests.builders.schema.user import UserSchemaBuilder
 
 

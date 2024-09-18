@@ -4,12 +4,12 @@ from typing import Optional, List
 import pytest
 from pydantic import NonNegativeInt
 
-from internal.src.core.animal.schema.animal import AnimalSchema
-from internal.src.core.animal.service.impl.animal import AnimalService
-from internal.src.core.show.schema.animalshow import AnimalShowSchema
-from internal.src.core.show.schema.show import ShowStatus, ShowSchema, ShowClass
-from internal.src.core.utils.exceptions import DeleteAnimalStartedShowError
-from internal.src.core.utils.types import ID, AnimalName, Datetime, Sex, Weight, Height, Length, ShowName, Country
+from core.animal.schema.animal import AnimalSchema
+from core.animal.service.impl.animal import AnimalService
+from core.show.schema.animalshow import AnimalShowSchema
+from core.show.schema.show import ShowStatus, ShowSchema, ShowClass
+from core.utils.exceptions import DeleteAnimalStartedShowError
+from core.utils.types import ID, AnimalName, Datetime, Sex, Weight, Height, Length, ShowName, Country
 from internal.tests.core.mymock.repo.animal import MockedAnimalRepository
 from internal.tests.core.mymock.service.animalshow import MockedAnimalShowService
 from internal.tests.core.mymock.service.show import MockedShowService

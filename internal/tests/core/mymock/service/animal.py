@@ -2,11 +2,11 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from internal.src.core.animal.schema.animal import AnimalSchema, AnimalSchemaDelete, AnimalSchemaCreate, \
+from core.animal.schema.animal import AnimalSchema, AnimalSchemaDelete, AnimalSchemaCreate, \
     AnimalSchemaUpdate
-from internal.src.core.animal.service.animal import IAnimalService
-from internal.src.core.utils.exceptions import NotFoundRepoError
-from internal.src.core.utils.types import ID
+from core.animal.service.animal import IAnimalService
+from core.utils.exceptions import NotFoundRepoError
+from core.utils.types import ID
 
 
 class MockedAnimalService(IAnimalService):

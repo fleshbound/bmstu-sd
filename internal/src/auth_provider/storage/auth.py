@@ -3,8 +3,8 @@ from abc import ABC, abstractmethod
 
 from pydantic import BaseModel
 
-from internal.src.core.auth.schema.auth import AuthPayload
-from internal.src.core.utils.types import Token
+from core.auth.schema.auth import AuthPayload
+from core.utils.types import Token
 
 
 class AuthSession(BaseModel):

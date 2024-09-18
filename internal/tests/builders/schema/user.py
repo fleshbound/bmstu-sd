@@ -1,5 +1,5 @@
-from internal.src.core.user.schema.user import UserSchema, UserRole
-from internal.src.core.utils.types import Email, ID, HashedPassword, UserName
+from core.user.schema.user import UserSchema, UserRole
+from core.utils.types import Email, ID, HashedPassword, UserName
 
 
 class UserSchemaBuilder:

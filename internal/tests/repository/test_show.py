@@ -1,7 +1,7 @@
 import pytest
 
-from internal.src.core.utils.exceptions import NotFoundRepoError
-from internal.src.core.utils.types import ID
+from core.utils.exceptions import NotFoundRepoError
+from core.utils.types import ID
 from internal.tests.builders.schema.show import ShowSchemaBuilder
 
 

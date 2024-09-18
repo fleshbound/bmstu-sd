@@ -1,6 +1,6 @@
 import pytest
 
-from internal.src.core.group.schema.group import GroupSchema
+from core.group.schema.group import GroupSchema
 from internal.tests.builders.schema.group import GroupSchemaBuilder
 
 

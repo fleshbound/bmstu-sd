@@ -1,10 +1,10 @@
 from typing import List
 
-from internal.src.core.show.repository.animalshow import IAnimalShowRepository
-from internal.src.core.show.schema.animalshow import AnimalShowSchemaCreate, AnimalShowSchema, AnimalShowSchemaDeleted
-from internal.src.core.show.service.animalshow import IAnimalShowService
-from internal.src.core.utils.exceptions import AnimalShowServiceError
-from internal.src.core.utils.types import ID
+from core.show.repository.animalshow import IAnimalShowRepository
+from core.show.schema.animalshow import AnimalShowSchemaCreate, AnimalShowSchema, AnimalShowSchemaDeleted
+from core.show.service.animalshow import IAnimalShowService
+from core.utils.exceptions import AnimalShowServiceError
+from core.utils.types import ID
 
 
 class AnimalShowService(IAnimalShowService):
@@ -23,7 +23,7 @@ class AnimalShowService(IAnimalShowService):
         return self.animalshow_repo.update(cur_animalshow)
 
     def delete(self, animalshow_id: ID) -> AnimalShowSchemaDeleted:
-        self.animalshow_repo.delete(animalshow_id)
+        self.animalshow_repo.delete(animalshow_id.value)
         return AnimalShowSchemaDeleted(id=animalshow_id)
     
     def get_by_id(self, id: ID) -> AnimalShowSchema:

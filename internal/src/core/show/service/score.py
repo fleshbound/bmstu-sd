@@ -3,8 +3,8 @@ from typing import List, Tuple
 
 from pydantic import NonNegativeInt
 
-from internal.src.core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, AnimalShowRankingInfo
-from internal.src.core.utils.types import ID
+from core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, AnimalShowRankingInfo
+from core.utils.types import ID
 
 
 class IScoreService(ABC):
