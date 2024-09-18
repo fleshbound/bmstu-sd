@@ -1,5 +1,5 @@
-from internal.src.core.show.schema.animalshow import AnimalShowSchema
-from internal.src.core.utils.types import ID
+from core.show.schema.animalshow import AnimalShowSchema
+from core.utils.types import ID
 
 
 class AnimalShowSchemaBuilder:

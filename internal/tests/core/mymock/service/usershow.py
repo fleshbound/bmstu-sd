@@ -1,9 +1,9 @@
 from typing import List
 
-from internal.src.core.show.schema.usershow import UserShowSchemaCreate, UserShowSchema, UserShowSchemaDeleted
-from internal.src.core.show.service.usershow import IUserShowService
-from internal.src.core.utils.exceptions import NotFoundRepoError
-from internal.src.core.utils.types import ID
+from core.show.schema.usershow import UserShowSchemaCreate, UserShowSchema, UserShowSchemaDeleted
+from core.show.service.usershow import IUserShowService
+from core.utils.exceptions import NotFoundRepoError
+from core.utils.types import ID
 
 
 class MockedUserShowService(IUserShowService):

@@ -8,11 +8,11 @@ from sqlalchemy import insert, update, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from internal.src.core.show.repository.animalshow import IAnimalShowRepository
-from internal.src.core.show.schema.animalshow import AnimalShowSchema
-from internal.src.core.utils import types
-from internal.src.core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
-from internal.src.repository.sqlalchemy.model.animalshow import AnimalShowORM
+from core.show.repository.animalshow import IAnimalShowRepository
+from core.show.schema.animalshow import AnimalShowSchema
+from core.utils import types
+from core.utils.exceptions import DuplicatedRepoError, NotFoundRepoError, ValidationRepoError
+from repository.sqlalchemy.model.animalshow import AnimalShowORM
 
 
 class SqlAlchemyAnimalShowRepository(IAnimalShowRepository):

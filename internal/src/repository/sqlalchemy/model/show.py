@@ -4,9 +4,9 @@ from pydantic import NonNegativeInt
 from sqlalchemy import ForeignKey, String, Boolean
 from sqlalchemy.orm import Mapped, mapped_column
 
-from internal.src.core.show.schema.show import ShowSchema, ShowStatus, ShowClass
-from internal.src.core.utils.types import ID, ShowName, Country
-from internal.src.repository.sqlalchemy.model.base import Base
+from core.show.schema.show import ShowSchema, ShowStatus, ShowClass
+from core.utils.types import ID, ShowName, Country
+from repository.sqlalchemy.model.base import Base
 
 
 class ShowORM(Base):

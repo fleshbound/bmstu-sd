@@ -1,5 +1,5 @@
-from internal.src.core.species.schema.species import SpeciesSchema
-from internal.src.core.utils.types import ID, SpeciesName
+from core.species.schema.species import SpeciesSchema
+from core.utils.types import ID, SpeciesName
 
 
 class SpeciesSchemaBuilder:

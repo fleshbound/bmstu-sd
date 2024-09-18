@@ -3,10 +3,10 @@ from typing import List, Optional, Any
 
 from pydantic import BaseModel, NonNegativeInt
 
-from internal.src.core.animal.schema.animal import AnimalSchema
-from internal.src.core.show.schema.score import AnimalShowRankingInfo
-from internal.src.core.user.schema.user import UserSchema
-from internal.src.core.utils.types import Country, ShowName, ID
+from core.animal.schema.animal import AnimalSchema
+from core.show.schema.score import AnimalShowRankingInfo
+from core.user.schema.user import UserSchema
+from core.utils.types import Country, ShowName, ID
 
 
 @enum.unique
@@ -162,8 +162,8 @@ class ShowRegisterAnimalResult(BaseModel):
 
 @enum.unique
 class ShowRegisterUserStatus(str, enum.Enum):
-    register_ok = "regok"
-    register_error = "regerror"
+    register_ok = "ok"
+    register_error = "error"
     unregister_ok = "unregok"
     unregister_error = "unregerror"
 

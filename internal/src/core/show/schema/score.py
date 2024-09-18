@@ -2,7 +2,7 @@ from typing import Optional
 
 from pydantic import BaseModel, NonNegativeInt, NonNegativeFloat
 
-from internal.src.core.utils.types import ID, Datetime, ScoreValue, Score
+from core.utils.types import ID, Datetime, ScoreValue, Score
 
 
 class TotalScoreInfo(BaseModel):

@@ -2,8 +2,8 @@ from typing import List
 
 from pydantic import NonNegativeInt
 
-from internal.src.core.show.repository.show import IShowRepository
-from internal.src.core.show.schema.show import ShowSchema
+from core.show.repository.show import IShowRepository
+from core.show.schema.show import ShowSchema
 
 
 class MockedShowRepository(IShowRepository):

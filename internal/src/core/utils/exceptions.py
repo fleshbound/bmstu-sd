@@ -2,9 +2,9 @@ from typing import Any
 
 from pydantic import NonNegativeInt
 
-from internal.src.core.show.schema.show import ShowStatus
-from internal.src.core.user.schema.user import UserRole
-from internal.src.core.utils.types import ID, Email
+from core.show.schema.show import ShowStatus
+from core.user.schema.user import UserRole
+from core.utils.types import ID, Email
 
 
 class ShowServiceError(Exception):

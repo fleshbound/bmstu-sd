@@ -1,5 +1,5 @@
-from internal.src.core.standard.schema.standard import StandardSchema
-from internal.src.core.utils.types import Weight, ID, Length, Height, Country
+from core.standard.schema.standard import StandardSchema
+from core.utils.types import Weight, ID, Length, Height, Country
 
 
 class StandardSchemaBuilder:

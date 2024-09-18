@@ -2,12 +2,12 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from internal.src.core.animal.schema.animal import AnimalSchema
-from internal.src.core.standard.schema.standard import StandardSchema, StandardSchemaCreate, \
+from core.animal.schema.animal import AnimalSchema
+from core.standard.schema.standard import StandardSchema, StandardSchemaCreate, \
     StandardSchemaDeleteResponse
-from internal.src.core.standard.service.standard import IStandardService
-from internal.src.core.utils.exceptions import NotFoundRepoError, CheckAnimalStandardError
-from internal.src.core.utils.types import ID
+from core.standard.service.standard import IStandardService
+from core.utils.exceptions import NotFoundRepoError, CheckAnimalStandardError
+from core.utils.types import ID
 
 
 class MockedStandardService(IStandardService):

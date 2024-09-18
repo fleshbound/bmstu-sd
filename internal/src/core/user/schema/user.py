@@ -2,7 +2,7 @@ import enum
 
 from pydantic import BaseModel
 
-from internal.src.core.utils.types import ID, UserName, HashedPassword, Email
+from core.utils.types import ID, UserName, HashedPassword, Email
 
 
 @enum.unique

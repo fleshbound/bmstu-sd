@@ -4,12 +4,12 @@ from typing import List, Optional
 import pytest
 from pydantic import NonNegativeInt, PositiveFloat
 
-from internal.src.core.animal.schema.animal import AnimalSchema
-from internal.src.core.show.schema.show import ShowStatus, ShowSchema, ShowClass
-from internal.src.core.standard.schema.standard import StandardSchema
-from internal.src.core.standard.service.impl.standard import StandardService
-from internal.src.core.utils.exceptions import CheckAnimalStandardError, StandardInUseError, CheckAnimalBreedError
-from internal.src.core.utils.types import ID, Country, Weight, Height, Length, AnimalName, Datetime, Sex, ShowName
+from core.animal.schema.animal import AnimalSchema
+from core.show.schema.show import ShowStatus, ShowSchema, ShowClass
+from core.standard.schema.standard import StandardSchema
+from core.standard.service.impl.standard import StandardService
+from core.utils.exceptions import CheckAnimalStandardError, StandardInUseError, CheckAnimalBreedError
+from core.utils.types import ID, Country, Weight, Height, Length, AnimalName, Datetime, Sex, ShowName
 from internal.tests.core.mymock.repo.standard import MockedStandardRepository
 from internal.tests.core.mymock.service.show import MockedShowService
 

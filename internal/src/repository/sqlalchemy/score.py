@@ -8,11 +8,11 @@ from sqlalchemy import update, insert, select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from internal.src.core.show.repository.score import IScoreRepository
-from internal.src.core.show.schema.score import ScoreSchema
-from internal.src.core.utils import types
-from internal.src.core.utils.exceptions import NotFoundRepoError, DuplicatedRepoError, ValidationRepoError
-from internal.src.repository.sqlalchemy.model.score import ScoreORM
+from core.show.repository.score import IScoreRepository
+from core.show.schema.score import ScoreSchema
+from core.utils import types
+from core.utils.exceptions import NotFoundRepoError, DuplicatedRepoError, ValidationRepoError
+from repository.sqlalchemy.model.score import ScoreORM
 
 
 class SqlAlchemyScoreRepository(IScoreRepository):

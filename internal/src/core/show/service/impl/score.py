@@ -2,33 +2,35 @@ from typing import List, Optional, Tuple
 
 from pydantic import NonNegativeInt, NonNegativeFloat
 
-from internal.src.core.show.repository.score import IScoreRepository
-from internal.src.core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, ScoreSchemaUpdate, \
+from core.animal.schema.animal import AnimalSchema
+from core.animal.service.animal import IAnimalService
+from core.show.repository.score import IScoreRepository
+from core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreate, ScoreSchemaUpdate, \
     AnimalShowRankingInfo
-from internal.src.core.show.service.animalshow import IAnimalShowService
-from internal.src.core.show.service.score import IScoreService
-from internal.src.core.show.service.show import IShowService
-from internal.src.core.show.service.usershow import IUserShowService
-from internal.src.core.utils.dict.impl.float import FloatKeyDictionary
-from internal.src.core.utils.exceptions import ScoreServiceError, NotFoundRepoError
-from internal.src.core.utils.types import ID, Score
+from core.show.service.animalshow import IAnimalShowService
+from core.show.service.score import IScoreService
+from core.show.service.show import IShowService
+from core.show.service.usershow import IUserShowService
+from core.utils.dict.impl.float import FloatKeyDictionary
+from core.utils.exceptions import ScoreServiceError, NotFoundRepoError
+from core.utils.types import ID, Score
 
 DECIMALS = 4
 
 
 class ScoreService(IScoreService):
-    show_service: IShowService
+    animal_service: IAnimalService
     score_repo: IScoreRepository
     animalshow_service: IAnimalShowService
     usershow_service: IUserShowService
 
     def __init__(self,
-                 show_service: IShowService,
+                 animal_service: IAnimalService,
                  score_repo: IScoreRepository,
                  animalshow_service: IAnimalShowService,
                  usershow_service: IUserShowService):
         self.score_repo = score_repo
-        self.show_service = show_service
+        self.animal_service = animal_service
         self.animalshow_service = animalshow_service
         self.usershow_service = usershow_service
 
@@ -61,21 +63,21 @@ class ScoreService(IScoreService):
 
     def get_total_by_animalshow_id(self, animalshow_id: ID) -> TotalScoreInfo:
         try:
-            scores = self.score_repo.get_by_animalshow_id(animalshow_id)
+            scores = self.score_repo.get_by_animalshow_id(animalshow_id.value)
         except NotFoundRepoError:
             raise ScoreServiceError('no animalshow scores found')
         return self.calc_total(animalshow_id, scores)
 
     def get_total_by_usershow_id(self, usershow_id: ID) -> TotalScoreInfo:
         try:
-            scores = self.score_repo.get_by_usershow_id(usershow_id)
+            scores = self.score_repo.get_by_usershow_id(usershow_id.value)
         except NotFoundRepoError:
             raise ScoreServiceError('no usershow scores found')
         return self.calc_total(usershow_id, scores)
 
     def get_count_by_usershow_id(self, usershow_id: ID) -> NonNegativeInt:
         try:
-            scores = self.score_repo.get_by_usershow_id(usershow_id)
+            scores = self.score_repo.get_by_usershow_id(usershow_id.value)
         except NotFoundRepoError:
             raise ScoreServiceError('no usershow scores found')
         return len(scores)
@@ -104,9 +106,16 @@ class ScoreService(IScoreService):
         return TotalScoreInfo(record_id=id, total=total, count=count, average=avg,
                               min_score=min_score, max_score=max_score)
 
+    def get_animals_by_show_id(self, show_id: ID) -> List[AnimalSchema]:
+        animalshow_records = self.animalshow_service.get_by_show_id(show_id)
+        animals = []
+        for record in animalshow_records:
+            animals.append(self.animal_service.get_by_id(record.animal_id))
+        return animals
+
     def all_users_scored(self, show_id: ID) -> bool:
         usershows = self.usershow_service.get_by_show_id(show_id)
-        show_animal_count = len(self.show_service.get_by_id_detailed(show_id).animals)
+        show_animal_count = len(self.get_animals_by_show_id(show_id))
         for us in usershows:
             if self.get_count_by_usershow_id(us.id) != show_animal_count:
                 return False
@@ -114,7 +123,7 @@ class ScoreService(IScoreService):
 
     def get_users_scored_count(self, show_id: ID) -> NonNegativeInt:
         usershows = self.usershow_service.get_by_show_id(show_id)
-        show_animal_count = len(self.show_service.get_by_id_detailed(show_id).animals)
+        show_animal_count = len(self.get_animals_by_show_id(show_id))
         count = 0
         for us in usershows:
             if self.get_count_by_usershow_id(us.id) == show_animal_count:
@@ -125,18 +134,14 @@ class ScoreService(IScoreService):
         new_score = ScoreSchema.from_create(score_create)
         new_score = self.score_repo.create(new_score)
 
-        cur_show_id = self.usershow_service.get_by_id(new_score.usershow_id.value).show_id
-        if self.all_users_scored(cur_show_id):
-            self.show_service.stop(cur_show_id)
-
         return new_score
 
     def archive(self, id: ID) -> ScoreSchema:
         update_score_param = ScoreSchemaUpdate(id=id, is_archived=True)
-        cur_score = self.score_repo.get_by_id(id)
+        cur_score = self.score_repo.get_by_id(id.value)
         new_score = ScoreSchema.from_update(cur_score, update_score_param)
         self.score_repo.update(new_score)
         return new_score
 
     def get_by_id(self, id: ID) -> ScoreSchema:
-        return self.score_repo.get_by_id(id)
+        return self.score_repo.get_by_id(id.value)

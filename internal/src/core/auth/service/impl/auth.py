@@ -1,11 +1,11 @@
-from internal.src.core.auth.provider.auth import IAuthProvider
-from internal.src.core.auth.schema.auth import AuthSchemaSignIn, AuthSchemaSignUp, AuthPayload, AuthDetails
-from internal.src.core.auth.service.auth import IAuthService
-from internal.src.core.user.schema.user import UserSchemaCreate
-from internal.src.core.user.service.user import IUserService
-from internal.src.core.utils.exceptions import NotFoundRepoError, SignInNotFoundEmailError, \
+from core.auth.provider.auth import IAuthProvider
+from core.auth.schema.auth import AuthSchemaSignIn, AuthSchemaSignUp, AuthPayload, AuthDetails
+from core.auth.service.auth import IAuthService
+from core.user.schema.user import UserSchemaCreate
+from core.user.service.user import IUserService
+from core.utils.exceptions import NotFoundRepoError, SignInNotFoundEmailError, \
     SignInPasswordError
-from internal.src.core.utils.types import Token, Fingerprint
+from core.utils.types import Token, Fingerprint
 
 
 class AuthService(IAuthService):

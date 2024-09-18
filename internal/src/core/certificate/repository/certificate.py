@@ -3,7 +3,7 @@ from typing import List
 
 from pydantic import NonNegativeInt
 
-from internal.src.core.certificate.schema.certificate import CertificateSchema
+from core.certificate.schema.certificate import CertificateSchema
 
 
 class ICertificateRepository(ABC):

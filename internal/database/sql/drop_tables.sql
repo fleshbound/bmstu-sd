@@ -12,3 +12,10 @@ drop table if exists Standard cascade;
 drop table if exists Species cascade;
 drop table if exists "group" cascade;
 drop table if exists Breed cascade;
+
+drop type if exists country;
+drop type if exists show_status;
+drop type if exists sex;
+drop type if exists user_role;
+
+

@@ -1,17 +1,17 @@
 from dependency_injector import containers, providers
 
-from internal.src.database.database import SqlAlchemyDatabase
-from internal.src.repository.sqlalchemy.animal import SqlAlchemyAnimalRepository
-from internal.src.repository.sqlalchemy.animalshow import SqlAlchemyAnimalShowRepository
-from internal.src.repository.sqlalchemy.breed import SqlAlchemyBreedRepository
-from internal.src.repository.sqlalchemy.certificate import SqlAlchemyCertificateRepository
-from internal.src.repository.sqlalchemy.group import SqlAlchemyGroupRepository
-from internal.src.repository.sqlalchemy.score import SqlAlchemyScoreRepository
-from internal.src.repository.sqlalchemy.show import SqlAlchemyShowRepository
-from internal.src.repository.sqlalchemy.species import SqlAlchemySpeciesRepository
-from internal.src.repository.sqlalchemy.standard import SqlAlchemyStandardRepository
-from internal.src.repository.sqlalchemy.user import SqlAlchemyUserRepository
-from internal.src.repository.sqlalchemy.usershow import SqlAlchemyUserShowRepository
+from database.database import SqlAlchemyDatabase
+from repository.sqlalchemy.animal import SqlAlchemyAnimalRepository
+from repository.sqlalchemy.animalshow import SqlAlchemyAnimalShowRepository
+from repository.sqlalchemy.breed import SqlAlchemyBreedRepository
+from repository.sqlalchemy.certificate import SqlAlchemyCertificateRepository
+from repository.sqlalchemy.group import SqlAlchemyGroupRepository
+from repository.sqlalchemy.score import SqlAlchemyScoreRepository
+from repository.sqlalchemy.show import SqlAlchemyShowRepository
+from repository.sqlalchemy.species import SqlAlchemySpeciesRepository
+from repository.sqlalchemy.standard import SqlAlchemyStandardRepository
+from repository.sqlalchemy.user import SqlAlchemyUserRepository
+from repository.sqlalchemy.usershow import SqlAlchemyUserShowRepository
 
 TEST_DATABASE_URL = f"postgresql://postgres:postgres@localhost:5432/test_postgres"
 

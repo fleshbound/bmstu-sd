@@ -3,7 +3,7 @@ from typing import List
 
 from pydantic import NonNegativeInt
 
-from internal.src.core.standard.schema.standard import StandardSchema
+from core.standard.schema.standard import StandardSchema
 
 
 class IStandardRepository(ABC):

@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from internal.src.core.utils.types import ID
+from core.utils.types import ID
 
 
 class UserShowSchemaCreate(BaseModel):

@@ -9,3 +9,12 @@ set_test_db:
 
 set_test_db_empty:
 	cd ./database/py &&	python3 setdb.py test
+
+main:
+	cd ./database/py &&	python3 setdb.py main
+
+all:
+	cd ./database/py &&	python3 setdb.py all
+
+test_user_data:
+	cd ./database/py &&	python3 setdb.py

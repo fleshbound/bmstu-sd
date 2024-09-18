@@ -3,8 +3,8 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from internal.src.core.user.schema.user import UserSchema, UserSchemaCreate, UserSchemaUpdate
-from internal.src.core.utils.types import ID, Email
+from core.user.schema.user import UserSchema, UserSchemaCreate, UserSchemaUpdate
+from core.utils.types import ID, Email
 
 
 class IUserService(ABC):

@@ -4,23 +4,23 @@ from typing import Optional, List
 import pytest
 from pydantic import NonNegativeInt, PositiveFloat
 
-from internal.src.core.animal.schema.animal import AnimalSchema
-from internal.src.core.breed.schema.breed import BreedSchema
-from internal.src.core.certificate.schema.certificate import CertificateSchema
-from internal.src.core.show.schema.animalshow import AnimalShowSchema
-from internal.src.core.show.schema.score import ScoreSchema
-from internal.src.core.show.schema.show import ShowSchema, ShowStatus, ShowClass, ShowSchemaCreate, \
+from core.animal.schema.animal import AnimalSchema
+from core.breed.schema.breed import BreedSchema
+from core.certificate.schema.certificate import CertificateSchema
+from core.show.schema.animalshow import AnimalShowSchema
+from core.show.schema.score import ScoreSchema
+from core.show.schema.show import ShowSchema, ShowStatus, ShowClass, ShowSchemaCreate, \
     ShowRegisterAnimalStatus, ShowRegisterUserStatus
-from internal.src.core.show.schema.usershow import UserShowSchema
-from internal.src.core.show.service.impl.show import ShowService
-from internal.src.core.standard.schema.standard import StandardSchema
-from internal.src.core.user.schema.user import UserSchema, UserRole
-from internal.src.core.utils.exceptions import \
+from core.show.schema.usershow import UserShowSchema
+from core.show.service.impl.show import ShowService
+from core.standard.schema.standard import StandardSchema
+from core.user.schema.user import UserSchema, UserRole
+from core.utils.exceptions import \
     StartShowStatusError, StartShowZeroRecordsError, StopShowStatusError, RegisterShowStatusError, \
     RegisterAnimalCheckError, RegisterUserRoleError, RegisterUserRegisteredError, UnregisterShowStatusError, \
     UnregisterAnimalNotRegisteredError, UnregisterUserNotRegisteredError, StopNotAllUsersScoredError, \
     RegisterAnimalRegisteredError
-from internal.src.core.utils.types import ID, Country, Weight, Height, Length, AnimalName, Datetime, Sex, ShowName, \
+from core.utils.types import ID, Country, Weight, Height, Length, AnimalName, Datetime, Sex, ShowName, \
     BreedName, Email, HashedPassword, UserName
 from internal.tests.core.mymock.repo.show import MockedShowRepository
 from internal.tests.core.mymock.service.animal import MockedAnimalService

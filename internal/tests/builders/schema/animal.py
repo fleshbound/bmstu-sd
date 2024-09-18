@@ -1,7 +1,7 @@
 import datetime
 
-from internal.src.core.animal.schema.animal import AnimalSchema
-from internal.src.core.utils.types import Weight, Sex, ID, Length, Height, Datetime, AnimalName
+from core.animal.schema.animal import AnimalSchema
+from core.utils.types import Weight, Sex, ID, Length, Height, Datetime, AnimalName
 
 
 class AnimalSchemaBuilder:

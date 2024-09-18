@@ -2,16 +2,16 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from internal.src.core.animal.schema.animal import AnimalSchema
-from internal.src.core.show.schema.animalshow import AnimalShowSchema
-from internal.src.core.show.schema.show import ShowSchemaCreate, ShowSchema, ShowSchemaUpdate, ShowSchemaDetailed, \
+from core.animal.schema.animal import AnimalSchema
+from core.show.schema.animalshow import AnimalShowSchema
+from core.show.schema.show import ShowSchemaCreate, ShowSchema, ShowSchemaUpdate, ShowSchemaDetailed, \
     ShowRegisterAnimalResult, ShowRegisterUserResult, ShowStatus, ShowClass, ShowRegisterAnimalStatus, \
     ShowRegisterUserStatus
-from internal.src.core.show.schema.usershow import UserShowSchema
-from internal.src.core.show.service.show import IShowService
-from internal.src.core.user.schema.user import UserSchema
-from internal.src.core.utils.exceptions import NotFoundRepoError
-from internal.src.core.utils.types import ID, ShowName, Country
+from core.show.schema.usershow import UserShowSchema
+from core.show.service.show import IShowService
+from core.user.schema.user import UserSchema
+from core.utils.exceptions import NotFoundRepoError
+from core.utils.types import ID, ShowName, Country
 
 
 class MockedShowService(IShowService):

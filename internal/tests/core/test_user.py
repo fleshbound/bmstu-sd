@@ -1,8 +1,8 @@
 import pytest
 
-from internal.src.core.breed.schema.breed import BreedSchema, BreedDeleteStatus, BreedSchemaCreate, BreedSchemaUpdate
-from internal.src.core.breed.service.impl.breed import BreedService
-from internal.src.core.utils.types import ID, BreedName
+from core.breed.schema.breed import BreedSchema, BreedDeleteStatus, BreedSchemaCreate, BreedSchemaUpdate
+from core.breed.service.impl.breed import BreedService
+from core.utils.types import ID, BreedName
 from internal.tests.core.mymock.repo.breed import MockedBreedRepository
 
 

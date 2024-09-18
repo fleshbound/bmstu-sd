@@ -1,5 +1,5 @@
-from internal.src.core.group.schema.group import GroupSchema
-from internal.src.core.utils.types import ID, GroupName
+from core.group.schema.group import GroupSchema
+from core.utils.types import ID, GroupName
 
 
 class GroupSchemaBuilder:

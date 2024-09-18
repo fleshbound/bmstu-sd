@@ -1,7 +1,7 @@
 from typing import Optional
 
-from internal.src.core.show.schema.show import ShowSchema, ShowClass, ShowStatus
-from internal.src.core.utils.types import ID, Country, ShowName
+from core.show.schema.show import ShowSchema, ShowClass, ShowStatus
+from core.utils.types import ID, Country, ShowName
 
 
 class ShowSchemaBuilder:

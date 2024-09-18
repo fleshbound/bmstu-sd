@@ -1,7 +1,7 @@
 import pytest
 
-from internal.src.core.show.schema.score import ScoreSchema
-from internal.src.core.utils.types import ID
+from core.show.schema.score import ScoreSchema
+from core.utils.types import ID
 from internal.tests.builders.schema.score import ScoreSchemaBuilder
 
 

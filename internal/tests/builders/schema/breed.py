@@ -1,5 +1,5 @@
-from internal.src.core.breed.schema.breed import BreedSchema
-from internal.src.core.utils.types import ID, BreedName
+from core.breed.schema.breed import BreedSchema
+from core.utils.types import ID, BreedName
 
 
 class BreedSchemaBuilder:

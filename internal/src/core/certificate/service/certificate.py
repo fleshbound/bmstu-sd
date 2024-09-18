@@ -3,8 +3,8 @@ from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
 
-from internal.src.core.certificate.schema.certificate import CertificateSchemaCreate, CertificateSchema
-from internal.src.core.utils.types import ID
+from core.certificate.schema.certificate import CertificateSchemaCreate, CertificateSchema
+from core.utils.types import ID
 
 
 class ICertificateService(ABC):
