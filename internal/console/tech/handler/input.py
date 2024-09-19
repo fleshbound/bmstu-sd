@@ -3,7 +3,7 @@ from typing import Optional
 
 from pydantic import PositiveInt
 
-from internal.console.tech.utils.lang.langmodel import LanguageModel
+from console.tech.utils.lang.langmodel import LanguageModel
 
 
 class InputHandler:
