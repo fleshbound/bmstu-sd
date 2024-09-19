@@ -2,16 +2,16 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from internal.src.core.auth.schema.auth import AuthDetails
-from internal.src.core.user.schema.user import UserRole
-from internal.src.core.utils.types import ID, UserName, Email
-from internal.console.tech.handler.animal import AnimalHandler
-from internal.console.tech.handler.auth import AuthHandler
-from internal.console.tech.handler.input import InputHandler
-from internal.console.tech.handler.show import ShowHandler
-from internal.console.tech.handler.user import UserHandler
-from internal.console.tech.utils.lang.langmodel import LanguageModel
-from internal.console.tech.utils.types import Menus, ConsoleMessage
+from core.auth.schema.auth import AuthDetails
+from core.user.schema.user import UserRole
+from core.utils.types import ID, UserName, Email
+from console.tech.handler.animal import AnimalHandler
+from console.tech.handler.auth import AuthHandler
+from console.tech.handler.input import InputHandler
+from console.tech.handler.show import ShowHandler
+from console.tech.handler.user import UserHandler
+from console.tech.utils.lang.langmodel import LanguageModel
+from console.tech.utils.types import Menus, ConsoleMessage
 
 
 class UserConsoleInfo(BaseModel):
@@ -67,20 +67,20 @@ class ConsoleHandler:
             option = self.input_handler.ask_question(self.menus.judge_menu)
             if option == '0':
                 return 0
-            elif option == '1':
+            elif option == '1':  #
                 self.show_handler.get_shows_all()
                 return 1
-            elif option == '2':
+            elif option == '2':  #
                 self.show_handler.get_show_result()
                 return 1
             elif option == '3':
-                self.auth_handler.logout()
-                return 1
-            elif option == '4':
+                # self.auth_handler.logout()
+                return 0
+            elif option == '4':  #
                 self.show_handler.get_animals_by_show()
                 return 1
-            elif option == '5':
-                self.show_handler.score_animal()
+            elif option == '5':  #
+                self.show_handler.score_animal(self.user.id.value)
                 return 1
             else:
                 print(ConsoleMessage.input_invalid)
@@ -94,28 +94,28 @@ class ConsoleHandler:
             option = self.input_handler.ask_question(self.menus.admin_menu)
             if option == '0':
                 return 0
-            elif option == '1':
+            elif option == '1':  #
                 self.show_handler.get_shows_all()
                 return 1
-            elif option == '2':
+            elif option == '2':  #
                 self.show_handler.get_show_result()
                 return 1
             elif option == '3':
-                self.auth_handler.logout()
-                return 1
-            elif option == '4':
+                # self.auth_handler.logout()
+                return 0
+            elif option == '4':  #
                 self.show_handler.create_show()
                 return 1
-            elif option == '5':
+            elif option == '5':  #
                 self.show_handler.start_show()
                 return 1
-            elif option == '6':
+            elif option == '6':  #
                 self.show_handler.stop_show()
                 return 1
-            elif option == '7':
+            elif option == '7':  #
                 self.show_handler.register_user()
                 return 1
-            elif option == '8':
+            elif option == '8':  #
                 self.show_handler.unregister_user()
                 return 1
             else:
@@ -130,28 +130,28 @@ class ConsoleHandler:
             option = self.input_handler.ask_question(self.menus.breeder_menu)
             if option == '0':
                 return 0
-            elif option == '1':
+            elif option == '1':  #
                 self.show_handler.get_shows_all()
                 return 1
-            elif option == '2':
+            elif option == '2':  #
                 self.show_handler.get_show_result()
                 return 1
             elif option == '3':
-                self.auth_handler.logout()
+                # self.auth_handler.logout()
+                return 0
+            elif option == '4':  #
+                self.animal_handler.get_animals_by_user_id(self.user.id.value)
                 return 1
-            elif option == '4':
-                self.animal_handler.get_animals_by_user_id(self.user.id)
+            elif option == '5':  #
+                self.animal_handler.create_animal(self.user.id.value)
                 return 1
-            elif option == '5':
-                self.animal_handler.create_animal()
-                return 1
-            elif option == '6':
+            elif option == '6':  #
                 self.animal_handler.delete_animal()
                 return 1
-            elif option == '7':
+            elif option == '7':  #
                 self.show_handler.register_animal()
                 return 1
-            elif option == '8':
+            elif option == '8':  #
                 self.show_handler.unregister_animal()
                 return 1
             else:
@@ -177,19 +177,35 @@ class ConsoleHandler:
             option = self.input_handler.ask_question(self.menus.guest_menu)
             if option == '0':
                 return 0
-            elif option == '1':
+            elif option == '1':  #
                 self.show_handler.get_shows_all()
                 return 1
-            elif option == '2':
+            elif option == '2':  #
                 self.show_handler.get_show_result()
                 return 1
             elif option == '3':
                 res_user = self.auth_handler.signin()
-                if not res_user is None:
+                if res_user is not None:
                     self.set_user(res_user)
-                    return 1
+                return 1
             elif option == '4':
                 self.auth_handler.signup()
                 return 1
             else:
                 print(ConsoleMessage.input_invalid)
+
+    def run(self):
+        stop = False
+        while not stop:
+            code = 1
+            if self.user is None:
+                code = self.select_guest()
+            elif self.user.role == UserRole.breeder:
+                code = self.select_breeder()
+            elif self.user.role == UserRole.judge:
+                code = self.select_judge()
+            elif self.user.role == UserRole.admin:
+                code = self.select_admin()
+
+            if code == 0:
+                stop = True
