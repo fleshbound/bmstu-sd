@@ -1,26 +1,10 @@
 from pydantic import BaseModel
 
 
-class LanguageModel:
-    not_owner_error: str
-    not_judge_error: str
-    animal_not_found: str
-    show_not_found: str
-    foreign_keys_error: str
-    duplicate_error: str
-    show_result_status_error: str
-    question_status: str
+class LanguageModel(BaseModel):
     no_empty_field: str
-    invalid_password: str
-    animal_standard_error: str
-    out_password: str
     yes: str
     no: str
-    role_register_error: str
-    show_unregister_status_error: str
-    not_registered_error: str
-    already_registered_error: str
-    show_register_status_error: str
     user_not_found: str
     input_invalid: str
     question_year: str
@@ -41,7 +25,6 @@ class LanguageModel:
     unregister_animal_success: str
     score_create_success: str
     register_animal_success: str
-    out_login: str
     unregister_user_success: str
     register_user_success: str
     show_stop_error_status: str

@@ -2,22 +2,22 @@ from typing import Optional
 
 from pydantic import BaseModel
 
-from tech.handlers.input import InputHandler
+from tech.handler.input import InputHandler
 from tech.utils.exceptions import CancelInput, InvalidBooleanInput
 from tech.utils.lang.langmodel import LanguageModel
 from core.show.schema.show import ShowSchemaCreate, ShowSchema, ShowClass, ShowStatus
 from core.utils.types import ID, ShowName, Country
 
 
-class ShowDTO:
+class ShowDTO(BaseModel):
     id: int
-    species_id: Optional[int] = None
-    breed_id: Optional[int] = None
+    species_id: Optional[int]
+    breed_id: Optional[int]
     status: str
     country: str
     show_class: str
     name: str
-    standard_id: Optional[int] = None
+    standard_id: Optional[int]
     is_multi_breed: bool
     input_handler: InputHandler
     lm: LanguageModel
@@ -25,7 +25,7 @@ class ShowDTO:
     def print(self):
         print("_______________________")
         print(f"{self.lm.out_id}:  {self.id}")
-        print(f"{self.lm.out_show_name}: {self.name}")
+        print(f"{self.lm.out_name}: {self.name}")
         print(f"{self.lm.out_status}: {self.status}")
         print(f"{self.lm.out_show_class}: {self.show_class}")
         print(f"{self.lm.out_country}: {self.country}")
@@ -33,31 +33,6 @@ class ShowDTO:
         print(f"{self.lm.out_breed_id}: {'-' if self.breed_id is None else self.breed_id}")
         print(f"{self.lm.out_standard_id}: {'-' if self.standard_id is None else self.standard_id}")
         print(f"{self.lm.out_species_id}: {'-' if self.species_id is None else self.species_id}")
-
-    def __init__(self, input_handler: Optional[InputHandler] = None,
-        id: Optional[int] = None,
-        species_id: Optional[int] = None,
-        breed_id: Optional[int] = None,
-        status: Optional[str] = None,
-        country: Optional[str] = None,
-        show_class: Optional[str] = None,
-        name: Optional[str] = None,
-        standard_id: Optional[int] = None,
-        is_multi_breed: Optional[bool] = None
-    ):
-        if input_handler is not None:
-            self.input_handler = input_handler
-            self.lm = self.input_handler.lang_model
-        if id is not None: self.id = id
-        if species_id is not None: self.species_id = species_id
-        if breed_id is not None: self.breed_id = breed_id
-        if status is not None: self.status = status
-        if country is not None: self.country = country
-        if show_class is not None: self.show_class = show_class
-        if name is not None: self.name = name
-        if standard_id is not None: self.standard_id = standard_id
-        if is_multi_breed is not None: self.is_multi_breed = is_multi_breed
-
 
     def input_id(self):
         id = self.input_handler.wait_positive_int(
@@ -71,7 +46,6 @@ class ShowDTO:
 
     def input_delete(self):
         self.input_id()
-        return self
 
     def input_create(self):
         self.id = 0
@@ -189,10 +163,10 @@ class ShowDTO:
         )
 
     @classmethod
-    def from_schema(cls, other: ShowSchema, input_handler: InputHandler):
-        standard_id = other.standard_id if other.standard_id is None else other.standard_id.value
-        species_id = other.species_id if other.species_id is None else other.species_id.value
-        breed_id = other.breed_id if other.breed_id is None else other.breed_id.value
+    def from_schema(cls, other: ShowSchema):
+        standard_id = other.standard_id if other.standard_id is None else ID(other.standard_id)
+        species_id = other.species_id if other.species_id is None else ID(other.species_id)
+        breed_id = other.breed_id if other.breed_id is None else ID(other.breed_id)
         return cls(
             id=other.id.value,
             species_id=species_id,
@@ -202,6 +176,5 @@ class ShowDTO:
             status=other.status.value,
             name=other.name.value,
             standard_id=standard_id,
-            is_multi_breed=other.is_multi_breed,
-            input_handler=input_handler
+            is_multi_breed=other.is_multi_breed
         )
