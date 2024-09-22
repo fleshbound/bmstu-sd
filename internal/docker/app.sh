@@ -5,4 +5,4 @@
 cd /app/database/py && python3 setdb.py main
 
 cd /app/src || exit 1
-uvicorn app:app --host 0.0.0.0 --port ${APP_PORT}
+uvicorn app:app --host localhost --port ${APP_PORT}
