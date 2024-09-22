@@ -1,0 +1,2 @@
+class UserHandler:
+    pass
