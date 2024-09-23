@@ -71,6 +71,7 @@ class ShowDTO:
 
     def input_delete(self):
         self.input_id()
+        return self
 
     def input_create(self):
         self.id = 0

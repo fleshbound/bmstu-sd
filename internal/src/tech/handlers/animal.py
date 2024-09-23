@@ -39,7 +39,7 @@ class AnimalHandler:
         except InputException:
             return
 
-        existing_dto = self.animal_service.get_by_id(ID(dto.id))
+        existing_dto = AnimalDTO.from_schema(self.animal_service.get_by_id(ID(dto.id)), input_handler=self.input_handler)
         if existing_dto.user_id != user_id:
             print(self.lm.not_owner_error)
             return
