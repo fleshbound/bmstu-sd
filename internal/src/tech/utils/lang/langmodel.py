@@ -1,7 +1,9 @@
 from pydantic import BaseModel
 
 
-class LanguageModel(BaseModel):
+class LanguageModel:
+    show_result_status_error: str
+    question_status: str
     no_empty_field: str
     yes: str
     no: str

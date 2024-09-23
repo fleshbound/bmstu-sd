@@ -2,14 +2,14 @@ import datetime
 
 from pydantic import BaseModel
 
-from tech.handler.input import InputHandler
+from tech.handlers.input import InputHandler
 from tech.utils.exceptions import CancelInput, InvalidFloatInput, InvalidSexInput, InvalidBooleanInput
 from tech.utils.lang.langmodel import LanguageModel
 from core.animal.schema.animal import AnimalSchemaCreate, AnimalSchema
 from core.utils.types import Sex, ID, AnimalName, Datetime, Weight, Height, Length
 
 
-class AnimalDTO(BaseModel):
+class AnimalDTO:
     id: int
     user_id: int
     breed_id: int
@@ -185,7 +185,7 @@ class AnimalDTO(BaseModel):
         )
 
     @classmethod
-    def from_schema(cls, other: AnimalSchema):
+    def from_schema(cls, other: AnimalSchema, input_handler: InputHandler):
         return cls(
             id=other.id.value,
             user_id=other.user_id.value,
@@ -197,5 +197,7 @@ class AnimalDTO(BaseModel):
             height=other.height.value,
             length=other.length.value,
             has_defects=other.has_defects,
-            is_multicolor=other.is_multicolor
+            is_multicolor=other.is_multicolor,
+            input_handler=input_handler,
+            lm=input_handler.lang_model
         )

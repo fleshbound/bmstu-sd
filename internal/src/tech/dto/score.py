@@ -1,6 +1,6 @@
 import datetime
 
-from tech.handler.input import InputHandler
+from tech.handlers.input import InputHandler
 from tech.utils.exceptions import CancelInput, InvalidScoreInput
 from tech.utils.lang.langmodel import LanguageModel
 from core.show.schema.score import ScoreSchemaCreate
@@ -16,6 +16,9 @@ class ScoreDTO:
     dt_created: datetime.datetime
     input_handler: InputHandler
     lm: LanguageModel
+
+    def __init__(self):
+        self.input_handler
 
     def input_id(self):
         id = self.input_handler.wait_positive_int(

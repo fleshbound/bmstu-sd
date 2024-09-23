@@ -2,6 +2,7 @@ from tech.utils.lang.langmodel import LanguageModel
 
 
 class RuLanguageModel(LanguageModel):
+    show_result_status_error = 'Нельзя посмотреть результаты: выставка не завершена'
     no_empty_field = 'Ввод не может быть пустым'
     yes = 'Да'
     no = 'Нет'
@@ -53,6 +54,7 @@ class RuLanguageModel(LanguageModel):
     question_length = 'Введите длину (см): '
     question_weight = 'Введите вес (кг): '
     question_height = 'Введите высоту (см): '
+    question_status = 'Введите статус: '
     question_sex = 'Введите пол: '
     question_has_defects = 'Введите признак наличия дефектов (да/нет): '
     question_is_multicolor = 'Введите признак многоцветности (да/нет): '

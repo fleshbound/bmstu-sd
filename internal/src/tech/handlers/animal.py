@@ -1,4 +1,4 @@
-from tech.handler.input import InputHandler
+from tech.handlers.input import InputHandler
 from tech.utils.lang.langmodel import LanguageModel
 from core.animal.service.animal import IAnimalService
 from core.show.service.show import IShowService
@@ -12,6 +12,7 @@ from core.utils.types import ID
 class AnimalHandler:
     animal_service: IAnimalService
     show_service: IShowService
+    input_handler: InputHandler
     lm: LanguageModel
 
     def __init__(self,
@@ -20,7 +21,8 @@ class AnimalHandler:
                  input_handler: InputHandler):
         self.animal_service = animal_service
         self.show_service = show_service
-        self.lm = input_handler.lang_model
+        self.input_handler = input_handler
+        self.lm = self.input_handler.lang_model
 
     def get_animals_by_user_id(self, user_id: int) -> None:
         try:
@@ -29,7 +31,7 @@ class AnimalHandler:
             print(self.lm.get_empty_result)
             return
         for animal in res:
-            AnimalDTO.from_schema(animal).print()
+            AnimalDTO.from_schema(animal, self.input_handler).print()
 
     def delete_animal(self) -> None:
         try:
@@ -51,7 +53,7 @@ class AnimalHandler:
             print(e)
             return
         created = self.animal_service.create(dto.to_schema_create())
-        AnimalDTO.from_schema(created).print()
+        AnimalDTO.from_schema(created, self.input_handler).print()
         # todo: try except integrity error (wrong fk)
     #
     # def get_animals_all(self) -> None:
