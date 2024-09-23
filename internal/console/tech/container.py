@@ -42,11 +42,6 @@ def redis_client():
 
 
 class Container(containers.DeclarativeContainer):
-    # wiring_config = containers.WiringConfiguration(
-    #     modules=[
-    #         "console.tech.app"
-    #     ]
-    # )
     db = providers.Singleton(SqlAlchemyDatabase, db_url=configs.DATABASE_URL, echo=False)
 
     user_repo = providers.Factory(SqlAlchemyUserRepository, session_factory=db.provided.session)
