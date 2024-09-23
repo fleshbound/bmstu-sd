@@ -71,7 +71,7 @@ class ConsoleHandler:
                 self.show_handler.score_animal(self.user.id.value)
                 return 1
             else:
-                print(ConsoleMessage.input_invalid)
+                print(ConsoleMessage.input_invalid.value)
 
     def select_admin(self) -> Optional[int]:
         run = True
@@ -107,7 +107,7 @@ class ConsoleHandler:
                 self.show_handler.unregister_user()
                 return 1
             else:
-                print(ConsoleMessage.input_invalid)
+                print(ConsoleMessage.input_invalid.value)
 
     def select_breeder(self) -> Optional[int]:
         run = True
@@ -143,7 +143,7 @@ class ConsoleHandler:
                 self.show_handler.unregister_animal()
                 return 1
             else:
-                print(ConsoleMessage.input_invalid)
+                print(ConsoleMessage.input_invalid.value)
 
     def set_user(self, new_user: UserConsoleInfo) -> None:
         self.user.id = new_user.id
@@ -180,7 +180,7 @@ class ConsoleHandler:
                 self.auth_handler.signup()
                 return 1
             else:
-                print(ConsoleMessage.input_invalid)
+                print(ConsoleMessage.input_invalid.value)
 
     def run(self):
         stop = False
