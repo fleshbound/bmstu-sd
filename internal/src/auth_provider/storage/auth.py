@@ -4,13 +4,13 @@ from abc import ABC, abstractmethod
 from pydantic import BaseModel
 
 from core.auth.schema.auth import AuthPayload
-from core.utils.types import Token
+from core.utils.types import Token, Fingerprint
 
 
 class AuthSession(BaseModel):
     refresh_token: Token
     refresh_expire_dt: datetime.datetime
-    fingerprint: Token
+    fingerprint: Fingerprint
     payload: AuthPayload
 
 
