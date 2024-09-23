@@ -7,7 +7,7 @@ from core.show.service.usershow import IUserShowService
 from core.utils.exceptions import NotFoundRepoError, StartShowStatusError, StartShowZeroRecordsError, \
     StopShowStatusError, StopNotAllUsersScoredError, ShowServiceError, UserShowServiceError, RegisterShowStatusError, \
     RegisterAnimalRegisteredError, RegisterUserRoleError, RegisterUserRegisteredError, UnregisterShowStatusError, \
-    UnregisterUserNotRegisteredError, UnregisterAnimalNotRegisteredError
+    UnregisterUserNotRegisteredError, UnregisterAnimalNotRegisteredError, RegisterAnimalCheckError
 from core.utils.types import ID
 from tech.dto.animal import AnimalDTO
 from tech.dto.score import ScoreDTO
@@ -129,6 +129,9 @@ class ShowHandler:
         except RegisterAnimalRegisteredError:
             print(self.lm.already_registered_error)
             return
+        except RegisterAnimalCheckError:
+            print(self.lm.animal_standard_error)
+            return
 
         print(self.lm.register_animal_success)
 
@@ -210,10 +213,12 @@ class ShowHandler:
         except ShowServiceError:
             print(self.lm.show_result_status_error)
             return
-        print(f'{self.lm.out_rank}: {self.lm.out_animal_id}')
+        print('\n------РЕЗУЛЬТАТЫ------')
+        print(f'[{self.lm.out_rank} : {self.lm.out_animal_id}]')
         for rank_info in res.ranking_info:
             cur_animal_id = self.animalshow_service.get_by_id(rank_info.total_info.record_id).animal_id.value
             print(f'{self.lm.out_rank} {rank_info.rank}: {cur_animal_id}')
+        print('----------------------')
 
     def get_animals_by_show(self):
         show_id = self.input_handler.wait_positive_int(self.lm.question_show_id, self.lm.out_question_show_id)

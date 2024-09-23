@@ -74,10 +74,11 @@ class ScoreDTO:
         if value is None:
             print(self.lm.cancel_input)
             raise CancelInput('show value input cancel')
-        if value > MAX_SCORE_VALUE or value < 1:
+        int_value = int(value)
+        if int_value > MAX_SCORE_VALUE or int_value < 1:
             print(self.lm.input_invalid)
             raise InvalidScoreInput('show value invalid input (must be from 1 to 5)')
-        self.value = value
+        self.value = int_value
 
     def input_create(self, usershow_id: int):
         self.usershow_id = usershow_id
