@@ -132,7 +132,7 @@ class ShowService(IShowService):
     def get_result_by_id(self, show_id: ID) -> ShowSchemaReport:
         cur_show = self.show_repo.get_by_id(show_id.value)
 
-        if cur_show.status != ShowStatus.started:
+        if cur_show.status != ShowStatus.stopped:
             raise StopShowStatusError(show_id=show_id, show_status=cur_show.status)
 
         rank_count, ranking_info = self.score_service.get_show_ranking_info(show_id)
