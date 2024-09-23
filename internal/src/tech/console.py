@@ -62,8 +62,9 @@ class ConsoleHandler:
                 self.show_handler.get_show_result()
                 return 1
             elif option == '3':
-                # self.auth_handler.logout()
-                return 0
+                self.auth_handler.logout(self.user.auth_details.access_token)
+                self.user = None
+                return 1
             elif option == '4':  #
                 self.show_handler.get_animals_by_show()
                 return 1
@@ -89,8 +90,9 @@ class ConsoleHandler:
                 self.show_handler.get_show_result()
                 return 1
             elif option == '3':
-                # self.auth_handler.logout()
-                return 0
+                self.auth_handler.logout(self.user.auth_details.access_token)
+                self.user = None
+                return 1
             elif option == '4':  #
                 self.show_handler.create_show()
                 return 1
@@ -125,8 +127,9 @@ class ConsoleHandler:
                 self.show_handler.get_show_result()
                 return 1
             elif option == '3':
-                # self.auth_handler.logout()
-                return 0
+                self.auth_handler.logout(self.user.auth_details.access_token)
+                self.user = None
+                return 1
             elif option == '4':  #
                 self.animal_handler.get_animals_by_user_id(self.user.id.value)
                 return 1
@@ -146,6 +149,9 @@ class ConsoleHandler:
                 print(ConsoleMessage.input_invalid.value)
 
     def set_user(self, new_user: UserConsoleInfo) -> None:
+        if self.user is None:
+            self.user = new_user
+            return
         self.user.id = new_user.id
         self.user.email = new_user.email
         self.user.role = new_user.role

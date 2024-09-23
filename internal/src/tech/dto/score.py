@@ -1,4 +1,5 @@
 import datetime
+from typing import Optional
 
 from tech.handlers.input import InputHandler
 from tech.utils.exceptions import CancelInput, InvalidScoreInput
@@ -17,8 +18,23 @@ class ScoreDTO:
     input_handler: InputHandler
     lm: LanguageModel
 
-    def __init__(self):
-        self.input_handler
+    def __init__(self,
+                 id: Optional[int] = None,
+                 usershow_id: Optional[int] = None,
+                 animalshow_id: Optional[int] = None,
+                 dt_created: Optional[datetime.datetime] = None,
+                 value: Optional[int] = None,
+                 is_archived: Optional[bool] = None,
+                 input_handler: Optional[InputHandler] = None):
+        if input_handler is not None:
+            self.input_handler = input_handler
+            self.lm = self.input_handler.lang_model
+        if id is not None: self.id = id
+        if usershow_id is not None: self.usershow_id = usershow_id
+        if animalshow_id is not None: self.animalshow_id = animalshow_id
+        if dt_created is not None: self.dt_created = dt_created
+        if value is not None: self.value = value
+        if is_archived is not None: self.is_archived = is_archived
 
     def input_id(self):
         id = self.input_handler.wait_positive_int(

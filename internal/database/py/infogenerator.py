@@ -37,7 +37,7 @@ class InfoGenerator:
     species_max_id: int
     breed_max_id: int
 
-    def __init__(self, rows: int = 1000):
+    def __init__(self, rows: int):
         self.PATH = os.getenv("DATA_PATH")
 
         # PATH = "/app/database/data"
@@ -241,7 +241,7 @@ class InfoGenerator:
                 breed_id = i - self.ROWS
                 standard_id = i
                 species_id = ''
-                status = self.fake.show_status()
+                status = 'created' #  self.fake.show_status()
                 country = self.fake.mycountry()
                 show_class = self.fake.show_class()
                 name = self.fake.company()
