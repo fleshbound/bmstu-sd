@@ -79,6 +79,7 @@ class AnimalDTO:
 
     def input_delete(self):
         self.input_id()
+        return self
 
     def input_create(self, user_id: int):
         self.id = 0
@@ -92,6 +93,7 @@ class AnimalDTO:
         self.input_has_defects()
         self.input_is_multicolor()
         self.with_user_id(user_id)
+        return self
 
     def input_birth_dt(self):
         birth_dt = self.input_handler.date_input(
