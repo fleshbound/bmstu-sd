@@ -2,8 +2,8 @@ import datetime
 from typing import Optional
 
 from core.auth.schema.auth import Token
-from tech.console import UserConsoleInfo
-from tech.handler.input import InputHandler
+from tech.utils.types import UserConsoleInfo
+from tech.handlers.input import InputHandler
 from tech.utils.lang.langmodel import LanguageModel
 from auth_provider.utils.exceptions import AuthProviderError
 from core.auth.schema.auth import AuthSchemaSignIn, AuthDetails
@@ -45,7 +45,7 @@ class AuthHandler:
 
             try:
                 res: AuthDetails = self.auth_service.signin(AuthSchemaSignIn(email=Email(email), password=password,
-                                                          fingerprint=Fingerprint(value=str(datetime.datetime.now()))))
+                                                          fingerprint=Token(value=str(datetime.datetime.now()))))
             except AuthServiceError as e:
                 print(e)
                 return None

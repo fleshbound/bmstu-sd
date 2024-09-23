@@ -9,9 +9,12 @@ from tech.utils.lang.langmodel import LanguageModel
 class InputHandler:
     lang_model: LanguageModel
 
+    def __init__(self, lang_model: LanguageModel):
+        self.lang_model = lang_model
+
     @staticmethod
     def ask_question(query: str) -> str:
-        print(query)
+        print(query, end='')
         return input('')
 
     def wait_input(self, question: str, out_question: str) -> Optional[str]:
@@ -42,7 +45,7 @@ class InputHandler:
                 input = False
         return None
 
-    def date_input(self, out_question: str) -> Optional[datetime]:
+    def date_input(self, out_question: str) -> Optional[datetime.datetime]:
         input = True
         while input:
             day = self.ask_question(self.lang_model.question_day)

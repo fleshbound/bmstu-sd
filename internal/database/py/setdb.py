@@ -38,7 +38,7 @@ def generate_all():
 
 
 if __name__ == "__main__":
-    load_dotenv("/home/sheglar/bmstu/petowo/db/internal/.env")
+    load_dotenv("/home/sheglar/bmstu/petowo/ppo/internal/.env")
     args = sys.argv
 
     if len(args) == 1:

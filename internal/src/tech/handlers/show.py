@@ -1,7 +1,7 @@
 from tech.dto.animal import AnimalDTO
 from tech.dto.score import ScoreDTO
 from tech.dto.show import ShowDTO
-from tech.handler.input import InputHandler
+from tech.handlers.input import InputHandler
 from tech.utils.exceptions import InputException
 from tech.utils.lang.langmodel import LanguageModel
 from core.show.schema.show import ShowSchemaReport
@@ -59,7 +59,7 @@ class ShowHandler:
             print(e)
             return
         created = self.show_service.create(dto.to_schema_create())
-        ShowDTO.from_schema(created).print()
+        ShowDTO.from_schema(created, self.input_handler).print()
         # todo: try except integrity error (wrong fk)
 
     def start_show(self):
@@ -155,7 +155,7 @@ class ShowHandler:
             print(self.lm.get_empty_result)
             return
         for show in res:
-            ShowDTO.from_schema(show).print()
+            ShowDTO.from_schema(show, self.input_handler).print()
 
     def get_show_result(self):
         show_id = self.input_handler.wait_positive_int(self.lm.question_show_id, self.lm.out_question_show_id)
@@ -164,7 +164,7 @@ class ShowHandler:
         try:
             res: ShowSchemaReport = self.show_service.get_result_by_id(ID(show_id))
         except ShowServiceError as e:
-            print(e)
+            print(self.lm.show_result_status_error)
             return
         print(f'{self.lm.out_rank}: {self.lm.out_animal_id}')
         for rank_info in res.ranking_info:
@@ -184,5 +184,5 @@ class ShowHandler:
             print(self.lm.get_empty_result)
             return
         for animal in res.animals:
-            AnimalDTO.from_schema(animal).print()
+            AnimalDTO.from_schema(animal, self.input_handler).print()
     

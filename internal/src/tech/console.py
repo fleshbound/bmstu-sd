@@ -1,34 +1,21 @@
-from typing import Optional
+from typing import Optional, Type
 
-from pydantic import BaseModel
-
-from core.auth.schema.auth import AuthDetails
 from core.user.schema.user import UserRole
-from core.utils.types import ID, UserName, Email
-from tech.handler.animal import AnimalHandler
-from tech.handler.auth import AuthHandler
-from tech.handler.input import InputHandler
-from tech.handler.show import ShowHandler
-from tech.handler.user import UserHandler
+from tech.handlers.animal import AnimalHandler
+from tech.handlers.auth import AuthHandler
+from tech.handlers.input import InputHandler
+from tech.handlers.show import ShowHandler
+from tech.handlers.user import UserHandler
 from tech.utils.lang.langmodel import LanguageModel
-from tech.utils.types import Menus, ConsoleMessage
-
-
-class UserConsoleInfo(BaseModel):
-    id: Optional[ID]
-    email: Optional[Email]
-    role: Optional[UserRole]
-    name: Optional[UserName]
-    auth_details: Optional[AuthDetails]
+from tech.utils.types import Menus, ConsoleMessage, UserConsoleInfo
 
 
 class ConsoleHandler:
-    user: UserConsoleInfo
+    user: Optional[UserConsoleInfo]
     animal_handler: AnimalHandler
     user_handler: UserHandler
     show_handler: ShowHandler
     auth_handler: AuthHandler
-    menus: Menus
     input_handler: InputHandler
     lang_model: LanguageModel
 
@@ -44,6 +31,7 @@ class ConsoleHandler:
         self.auth_handler = auth_handler
         self.input_handler = input_handler
         self.lang_model = self.input_handler.lang_model
+        self.user = None
 
     def check_token(self) -> bool:
         if not self.auth_handler.verify_token(self.user.auth_details.access_token):
@@ -64,7 +52,7 @@ class ConsoleHandler:
             if not self.check_token():
                 return None
 
-            option = self.input_handler.ask_question(self.menus.judge_menu)
+            option = self.input_handler.ask_question(Menus.judge_menu.value)
             if option == '0':
                 return 0
             elif option == '1':  #
@@ -91,7 +79,7 @@ class ConsoleHandler:
             if not self.check_token():
                 return None
 
-            option = self.input_handler.ask_question(self.menus.admin_menu)
+            option = self.input_handler.ask_question(Menus.admin_menu.value)
             if option == '0':
                 return 0
             elif option == '1':  #
@@ -127,7 +115,7 @@ class ConsoleHandler:
             if not self.check_token():
                 return None
 
-            option = self.input_handler.ask_question(self.menus.breeder_menu)
+            option = self.input_handler.ask_question(Menus.breeder_menu.value)
             if option == '0':
                 return 0
             elif option == '1':  #
@@ -174,7 +162,7 @@ class ConsoleHandler:
     def select_guest(self) -> int:
         run = True
         while run:
-            option = self.input_handler.ask_question(self.menus.guest_menu)
+            option = self.input_handler.ask_question(Menus.guest_menu.value)
             if option == '0':
                 return 0
             elif option == '1':  #

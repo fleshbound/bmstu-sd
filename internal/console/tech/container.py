@@ -29,11 +29,11 @@ from auth_provider.storage.redis.auth import SessionStorage
 from console.tech.config import configs
 from database import SqlAlchemyDatabase
 from tech.console import ConsoleHandler
-from tech.handler.animal import AnimalHandler
-from tech.handler.auth import AuthHandler
-from tech.handler.input import InputHandler
-from tech.handler.show import ShowHandler
-from tech.handler.user import UserHandler
+from tech.handlers.animal import AnimalHandler
+from tech.handlers.auth import AuthHandler
+from tech.handlers.input import InputHandler
+from tech.handlers.show import ShowHandler
+from tech.handlers.user import UserHandler
 from tech.utils.lang.impl.rulang import RuLanguageModel
 
 
@@ -42,12 +42,12 @@ def redis_client():
 
 
 class Container(containers.DeclarativeContainer):
-    wiring_config = containers.WiringConfiguration(
-        modules=[
-            "console.tech.app"
-        ]
-    )
-    db = providers.Singleton(SqlAlchemyDatabase, db_url=configs.DATABASE_URL)
+    # wiring_config = containers.WiringConfiguration(
+    #     modules=[
+    #         "console.tech.app"
+    #     ]
+    # )
+    db = providers.Singleton(SqlAlchemyDatabase, db_url=configs.DATABASE_URL, echo=False)
 
     user_repo = providers.Factory(SqlAlchemyUserRepository, session_factory=db.provided.session)
     user_service = providers.Factory(UserService, user_repo=user_repo)
