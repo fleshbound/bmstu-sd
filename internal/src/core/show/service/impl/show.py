@@ -118,7 +118,8 @@ class ShowService(IShowService):
         cur_show.status = ShowStatus.stopped
         self.show_repo.update(cur_show)
 
-        report = self.get_result_existing_show(show_id)
+        rank_count, ranking_info = self.score_service.get_show_ranking_info(show_id)
+        report = ShowSchemaReport(ranking_info=ranking_info, rank_count=rank_count)
         for record in report.ranking_info:
             cert = CertificateSchemaCreate(animalshow_id=record.total_info.record_id, rank=record.rank)
             self.certificate_service.create(cert)
@@ -128,17 +129,14 @@ class ShowService(IShowService):
 
         return report
 
-    def get_result_existing_show(self, show_id: ID) -> ShowSchemaReport:
-        rank_count, ranking_info = self.score_service.get_show_ranking_info(show_id)
-        return ShowSchemaReport(ranking_info=ranking_info, rank_count=rank_count)
-
     def get_result_by_id(self, show_id: ID) -> ShowSchemaReport:
         cur_show = self.show_repo.get_by_id(show_id.value)
 
         if cur_show.status != ShowStatus.started:
             raise StopShowStatusError(show_id=show_id, show_status=cur_show.status)
 
-        return self.get_result_existing_show(show_id)
+        rank_count, ranking_info = self.score_service.get_show_ranking_info(show_id)
+        return ShowSchemaReport(ranking_info=ranking_info, rank_count=rank_count)
 
     def archive_users(self, show_id: ID):
         usershow_records = self.usershow_service.get_by_show_id(show_id)
