@@ -37,6 +37,6 @@ class AnimalShowService(IAnimalShowService):
 
     def get_by_animal_show_id(self, animal_id: ID, show_id: ID) -> AnimalShowSchema:
         res = self.animalshow_repo.get_by_animal_show_id(animal_id.value, show_id.value)
-        if len(res) > 0:
+        if len(res) > 1:
             raise AnimalShowServiceError(detail='More than one animalshow record')
         return res[0]
