@@ -69,5 +69,5 @@ class AuthHandler:
     def signup(self):
         return None
 
-    # def logout(self):
-    #     raise NotImplementedError
+    def logout(self, token: Token) -> None:
+        self.auth_service.logout(token)

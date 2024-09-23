@@ -1,4 +1,5 @@
 import datetime
+from typing import Optional
 
 from pydantic import BaseModel
 
@@ -24,13 +25,41 @@ class AnimalDTO:
     input_handler: InputHandler
     lm: LanguageModel
 
+    def __init__(self,
+                 id: Optional[int] = None,
+                 user_id: Optional[int] = None,
+                 breed_id: Optional[int] = None,
+                 name: Optional[str] = None,
+                 birth_dt: Optional[datetime.datetime] = None,
+                 sex: Optional[str] = None,
+                 weight: Optional[float] = None,
+                 height: Optional[float] = None,
+                 length: Optional[float] = None,
+                 has_defects: Optional[bool] = None,
+                 is_multicolor: Optional[bool] = None,
+                 input_handler: Optional[InputHandler] = None):
+        if input_handler is not None:
+            self.input_handler = input_handler
+            self.lm = self.input_handler.lang_model
+        if id is not None: self.id = id
+        if user_id is not None: self.user_id = user_id
+        if breed_id is not None: self.breed_id = breed_id
+        if birth_dt is not None: self.birth_dt = birth_dt
+        if sex is not None: self.sex = sex
+        if weight is not None: self.weight = weight
+        if height is not None: self.height = height
+        if length is not None: self.length = length
+        if has_defects is not None: self.has_defects = has_defects
+        if is_multicolor is not None: self.is_multicolor = is_multicolor
+        if name is not None: self.name = name
+
     def print(self):
         print("_______________________")
         print(f"{self.lm.out_id}:  {self.id}")
         print(f"{self.lm.out_name}: {self.name}")
         print(f"{self.lm.out_breed_id}: {self.breed_id}")
         print(f"{self.lm.out_user_id}: {self.user_id}")
-        print(f"{self.lm.out_birth_dt}: {str(self.birth_dt.date())}")
+        print(f"{self.lm.out_birth_dt}: {str(self.birth_dt)}")
         print(f"{self.lm.out_sex}: {self.lm.out_sex_male if self.sex == Sex.male else self.lm.out_sex_female}")
         print(f"{self.lm.out_weight}: {self.weight:5.3f} {self.lm.out_weight_unit}")
         print(f"{self.lm.out_height}: {self.height:5.1f} {self.lm.out_height_unit}")
@@ -198,6 +227,5 @@ class AnimalDTO:
             length=other.length.value,
             has_defects=other.has_defects,
             is_multicolor=other.is_multicolor,
-            input_handler=input_handler,
-            lm=input_handler.lang_model
+            input_handler=input_handler
         )

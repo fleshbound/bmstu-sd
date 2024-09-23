@@ -25,7 +25,7 @@ class ShowDTO:
     def print(self):
         print("_______________________")
         print(f"{self.lm.out_id}:  {self.id}")
-        print(f"{self.lm.out_name}: {self.name}")
+        print(f"{self.lm.out_show_name}: {self.name}")
         print(f"{self.lm.out_status}: {self.status}")
         print(f"{self.lm.out_show_class}: {self.show_class}")
         print(f"{self.lm.out_country}: {self.country}")
