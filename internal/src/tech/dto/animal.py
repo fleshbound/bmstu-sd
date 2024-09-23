@@ -136,6 +136,7 @@ class AnimalDTO:
         try:
             self.weight = float(weight)
         except ValueError:
+            print(self.lm.input_invalid + f'({self.lm.out_weight.lower()})')
             raise InvalidFloatInput('weight')
 
     def input_length(self):
@@ -149,6 +150,7 @@ class AnimalDTO:
         try:
             self.length = float(length)
         except ValueError:
+            print(self.lm.input_invalid + f'({self.lm.out_length.lower()})')
             raise InvalidFloatInput('length')
 
     def input_height(self):
@@ -162,6 +164,7 @@ class AnimalDTO:
         try:
             self.height = float(height)
         except ValueError:
+            print(self.lm.input_invalid + f'({self.lm.out_height.lower()})')
             raise InvalidFloatInput('height')
 
     def input_sex(self):
@@ -174,6 +177,7 @@ class AnimalDTO:
             raise CancelInput('animal sex input cancel')
         if (sex.upper() != self.lm.out_sex_male.upper() and sex.upper() != self.lm.out_sex_male_short.upper() and
             sex.upper() != self.lm.out_sex_female.upper() and sex.upper() != self.lm.out_sex_female_short.upper()):
+            print(self.lm.input_invalid + f'({self.lm.out_sex.lower()})')
             raise InvalidSexInput()
         self.sex = sex
 
@@ -184,7 +188,7 @@ class AnimalDTO:
             print(self.lm.cancel_input)
             raise CancelInput('animal has_defects input cancel')
         if has_defects.upper() != self.lm.yes.upper() and has_defects.upper() != self.lm.no.upper():
-            print(self.lm.cancel_input)
+            print(self.lm.input_invalid + f'({self.lm.out_has_defects.lower()})')
             raise InvalidBooleanInput('has_defects')
         self.has_defects = True if has_defects.upper() == self.lm.yes.upper() else False
 
@@ -195,7 +199,7 @@ class AnimalDTO:
             print(self.lm.cancel_input)
             raise CancelInput('animal is_multicolor input cancel')
         if is_multicolor.upper() != self.lm.yes.upper() and is_multicolor.upper() != self.lm.no.upper():
-            print(self.lm.cancel_input)
+            print(self.lm.input_invalid + f'({self.lm.out_is_multicolor.lower()})')
             raise InvalidBooleanInput('is_multicolor')
         self.is_multicolor = True if is_multicolor.upper() == self.lm.yes.upper() else False
 

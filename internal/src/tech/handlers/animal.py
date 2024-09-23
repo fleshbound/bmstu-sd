@@ -5,7 +5,7 @@ from core.show.service.show import IShowService
 
 from tech.dto.animal import AnimalDTO
 from tech.utils.exceptions import InputException
-from core.utils.exceptions import DeleteAnimalStartedShowError, NotFoundRepoError
+from core.utils.exceptions import DeleteAnimalStartedShowError, NotFoundRepoError, ValidationRepoError
 from core.utils.types import ID
 
 
@@ -33,12 +33,17 @@ class AnimalHandler:
         for animal in res:
             AnimalDTO.from_schema(animal, self.input_handler).print()
 
-    def delete_animal(self) -> None:
+    def delete_animal(self, user_id: int) -> None:
         try:
-            dto: AnimalDTO = AnimalDTO().input_delete()
-        except InputException as e:
-            print(e)
+            dto: AnimalDTO = AnimalDTO(input_handler=self.input_handler).input_delete()
+        except InputException:
             return
+
+        existing_dto = self.animal_service.get_by_id(ID(dto.id))
+        if existing_dto.user_id != user_id:
+            print(self.lm.not_owner_error)
+            return
+
         try:
             res = self.animal_service.delete(ID(dto.id))
         except DeleteAnimalStartedShowError:
@@ -48,18 +53,12 @@ class AnimalHandler:
 
     def create_animal(self, user_id: int) -> None:
         try:
-            dto: AnimalDTO = AnimalDTO().input_create(user_id)
-        except InputException as e:
-            print(e)
+            dto: AnimalDTO = AnimalDTO(input_handler=self.input_handler).input_create(user_id)
+        except InputException :
             return
-        created = self.animal_service.create(dto.to_schema_create())
+        try:
+            created = self.animal_service.create(dto.to_schema_create())
+        except ValidationRepoError:
+            print(self.lm.foreign_keys_error)
+            return
         AnimalDTO.from_schema(created, self.input_handler).print()
-        # todo: try except integrity error (wrong fk)
-    #
-    # def get_animals_all(self) -> None:
-    #     res = self.animal_service.get_all()
-    #     if len(res) == 0:
-    #         print(self.lm.get_empty_result)
-    #         return
-    #     for animal in res:
-    #         AnimalDTO.from_schema(animal).print()

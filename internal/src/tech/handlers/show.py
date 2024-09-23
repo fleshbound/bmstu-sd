@@ -1,21 +1,26 @@
-from tech.dto.animal import AnimalDTO
-from tech.dto.score import ScoreDTO
-from tech.dto.show import ShowDTO
-from tech.handlers.input import InputHandler
-from tech.utils.exceptions import InputException
-from tech.utils.lang.langmodel import LanguageModel
+from core.animal.service.animal import IAnimalService
 from core.show.schema.show import ShowSchemaReport
 from core.show.service.animalshow import IAnimalShowService
 from core.show.service.score import IScoreService
 from core.show.service.show import IShowService
 from core.show.service.usershow import IUserShowService
 from core.utils.exceptions import NotFoundRepoError, StartShowStatusError, StartShowZeroRecordsError, \
-    StopShowStatusError, StopNotAllUsersScoredError, ShowServiceError, UserShowServiceError
+    StopShowStatusError, StopNotAllUsersScoredError, ShowServiceError, UserShowServiceError, RegisterShowStatusError, \
+    RegisterAnimalRegisteredError, RegisterUserRoleError, RegisterUserRegisteredError, UnregisterShowStatusError, \
+    UnregisterUserNotRegisteredError, UnregisterAnimalNotRegisteredError
 from core.utils.types import ID
+from tech.dto.animal import AnimalDTO
+from tech.dto.score import ScoreDTO
+from tech.dto.show import ShowDTO
+from tech.handlers.input import InputHandler
+from tech.utils.exceptions import InputException
+from tech.utils.lang.langmodel import LanguageModel
+from utils.exceptions import ValidationRepoError
 
 
 class ShowHandler:
     lm: LanguageModel
+    animal_service: IAnimalService
     show_service: IShowService
     usershow_service: IUserShowService
     score_service: IScoreService
@@ -27,13 +32,15 @@ class ShowHandler:
                  usershow_service: IUserShowService,
                  score_service: IScoreService,
                  input_handler: InputHandler,
-                 animalshow_service: IAnimalShowService):
+                 animalshow_service: IAnimalShowService,
+                 animal_service: IAnimalService):
         self.show_service = show_service
         self.usershow_service = usershow_service
         self.score_service = score_service
         self.input_handler = input_handler
         self.animalshow_service = animalshow_service
         self.lm = input_handler.lang_model
+        self.animal_service = animal_service
 
     def score_animal(self, user_id: int):
         show_id = self.input_handler.wait_positive_int(self.lm.question_show_id, self.lm.out_question_show_id)
@@ -41,26 +48,33 @@ class ShowHandler:
             return
         try:
             record = self.usershow_service.get_by_user_show_id(ID(user_id), ID(show_id))
-        except UserShowServiceError as e:
-            print(e)
+        except UserShowServiceError:
+            print(self.lm.duplicate_error)
             return
+        except NotFoundRepoError:
+            print(self.lm.not_judge_error)
+            return
+        
         try:
-            dto = ScoreDTO().input_create(record.id.value)
-        except InputException as e:
-            print(e)
+            dto = ScoreDTO(input_handler=self.input_handler).input_create(record.id.value)
+        except InputException:
             return
         self.score_service.create(dto.to_schema_create())
         print(self.lm.score_create_success)
 
     def create_show(self):
         try:
-            dto: ShowDTO = ShowDTO().input_create()
-        except InputException as e:
-            print(e)
+            dto: ShowDTO = ShowDTO(input_handler=self.input_handler).input_create()
+        except InputException:
             return
-        created = self.show_service.create(dto.to_schema_create())
+        
+        try:
+            created = self.show_service.create(dto.to_schema_create())
+        except ValidationRepoError:
+            print(self.lm.foreign_keys_error)
+            return
+        
         ShowDTO.from_schema(created, self.input_handler).print()
-        # todo: try except integrity error (wrong fk)
 
     def start_show(self):
         show_id = self.input_handler.wait_positive_int(self.lm.question_show_id, self.lm.out_question_show_id)
@@ -93,31 +107,52 @@ class ShowHandler:
             return
         print(self.lm.show_stop_success)
 
-    def register_animal(self):
+    def register_animal(self, user_id: int):
         show_id = self.input_handler.wait_positive_int(self.lm.question_show_id, self.lm.out_question_show_id)
         if show_id is None:
             return
+
         animal_id = self.input_handler.wait_positive_int(self.lm.question_animal_id, self.lm.out_question_animal_id)
         if animal_id is None:
             return
+
+        animal_dto = AnimalDTO.from_schema(self.animal_service.get_by_id(ID(animal_id)), self.input_handler)
+        if animal_dto.user_id != user_id:
+            print(self.lm.not_owner_error)
+            return
+
         try:
             self.show_service.register_animal(ID(animal_id), ID(show_id))
-        except ShowServiceError as e:
-            print(e)
+        except RegisterShowStatusError:
+            print(self.lm.show_register_status_error)
             return
+        except RegisterAnimalRegisteredError:
+            print(self.lm.already_registered_error)
+            return
+
         print(self.lm.register_animal_success)
 
-    def unregister_animal(self):
+    def unregister_animal(self, user_id: int):
         show_id = self.input_handler.wait_positive_int(self.lm.question_show_id, self.lm.out_question_show_id)
         if show_id is None:
             return
+
         animal_id = self.input_handler.wait_positive_int(self.lm.question_animal_id, self.lm.out_question_animal_id)
         if animal_id is None:
             return
+
+        animal_dto = AnimalDTO.from_schema(self.animal_service.get_by_id(ID(animal_id)), self.input_handler)
+        if animal_dto.user_id != user_id:
+            print(self.lm.not_owner_error)
+            return
+
         try:
             self.show_service.unregister_animal(ID(animal_id), ID(show_id))
-        except ShowServiceError as e:
-            print(e)
+        except UnregisterShowStatusError:
+            print(self.lm.show_unregister_status_error)
+            return
+        except UnregisterAnimalNotRegisteredError:
+            print(self.lm.not_registered_error)
             return
         print(self.lm.unregister_animal_success)
 
@@ -130,8 +165,14 @@ class ShowHandler:
             return
         try:
             self.show_service.register_user(ID(user_id), ID(show_id))
-        except ShowServiceError as e:
-            print(e)
+        except RegisterShowStatusError:
+            print(self.lm.show_register_status_error)
+            return
+        except RegisterUserRoleError:
+            print(self.lm.role_register_error)
+            return
+        except RegisterUserRegisteredError:
+            print(self.lm.already_registered_error)
             return
         print(self.lm.register_user_success)
 
@@ -144,8 +185,11 @@ class ShowHandler:
             return
         try:
             self.show_service.unregister_user(ID(user_id), ID(show_id))
-        except ShowServiceError as e:
-            print(e)
+        except UnregisterShowStatusError:
+            print(self.lm.show_unregister_status_error)
+            return
+        except UnregisterUserNotRegisteredError:
+            print(self.lm.not_registered_error)
             return
         print(self.lm.unregister_user_success)
 
@@ -163,7 +207,7 @@ class ShowHandler:
             return
         try:
             res: ShowSchemaReport = self.show_service.get_result_by_id(ID(show_id))
-        except ShowServiceError as e:
+        except ShowServiceError:
             print(self.lm.show_result_status_error)
             return
         print(f'{self.lm.out_rank}: {self.lm.out_animal_id}')

@@ -109,7 +109,8 @@ class Container(containers.DeclarativeContainer):
                                      usershow_service=usershow_service,
                                      score_service=score_service,
                                      input_handler=input_handler,
-                                     animalshow_service=animalshow_service)
+                                     animalshow_service=animalshow_service,
+                                     animal_service=animal_service)
     auth_handler = providers.Factory(AuthHandler, auth_service=auth_service, user_service=user_service,
                                      input_handler=input_handler)
     console_handler = providers.Factory(ConsoleHandler, animal_handler=animal_handler,

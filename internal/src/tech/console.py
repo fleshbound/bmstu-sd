@@ -137,13 +137,13 @@ class ConsoleHandler:
                 self.animal_handler.create_animal(self.user.id.value)
                 return 1
             elif option == '6':  #
-                self.animal_handler.delete_animal()
+                self.animal_handler.delete_animal(self.user.id.value)
                 return 1
             elif option == '7':  #
-                self.show_handler.register_animal()
+                self.show_handler.register_animal(self.user.id.value)
                 return 1
             elif option == '8':  #
-                self.show_handler.unregister_animal()
+                self.show_handler.unregister_animal(self.user.id.value)
                 return 1
             else:
                 print(ConsoleMessage.input_invalid.value)
@@ -181,9 +181,6 @@ class ConsoleHandler:
                 res_user = self.auth_handler.signin()
                 if res_user is not None:
                     self.set_user(res_user)
-                return 1
-            elif option == '4':
-                self.auth_handler.signup()
                 return 1
             else:
                 print(ConsoleMessage.input_invalid.value)

@@ -9,7 +9,7 @@ from auth_provider.utils.exceptions import AuthProviderError
 from core.auth.schema.auth import AuthSchemaSignIn, AuthDetails
 from core.auth.service.auth import IAuthService
 from core.user.service.user import IUserService
-from core.utils.exceptions import NotFoundRepoError, AuthServiceError
+from core.utils.exceptions import NotFoundRepoError, AuthServiceError, SignInNotFoundEmailError, SignInPasswordError
 from core.utils.types import Email, Fingerprint
 
 
@@ -18,11 +18,6 @@ class AuthHandler:
     lm: LanguageModel
     input_handler: InputHandler
     user_service: IUserService
-    # def verify_auth_role(self):
-    #     raise NotImplementedError
-
-    # def verify_auth(self):
-    #     raise NotImplementedError
 
     def __init__(self, auth_service: IAuthService,
                  user_service: IUserService,
@@ -34,8 +29,15 @@ class AuthHandler:
 
     def signin(self) -> Optional[UserConsoleInfo]:
         while True:
-            email = self.input_handler.ask_question('Логин (почта): ')
-            password = self.input_handler.ask_question('Пароль: ')
+            email = self.input_handler.ask_question(self.lm.out_login)
+
+            try:
+                Email(email)
+            except ValueError:
+                print(self.lm.input_invalid)
+                return None
+
+            password = self.input_handler.ask_question(self.lm.out_password)
 
             try:
                 res_user = self.user_service.get_by_email(Email(email))
@@ -46,8 +48,11 @@ class AuthHandler:
             try:
                 res: AuthDetails = self.auth_service.signin(AuthSchemaSignIn(email=Email(email), password=password,
                                                           fingerprint=Fingerprint(value=str(datetime.datetime.now()))))
-            except AuthServiceError as e:
-                print(e)
+            except SignInNotFoundEmailError:
+                print(self.lm.user_not_found)
+                return None
+            except SignInPasswordError:
+                print(self.lm.invalid_password)
                 return None
 
             return UserConsoleInfo(
@@ -65,9 +70,6 @@ class AuthHandler:
         except AuthProviderError:
             return False
         return True
-
-    def signup(self):
-        return None
 
     def logout(self, token: Token) -> None:
         self.auth_service.logout(token)
