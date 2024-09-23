@@ -36,12 +36,12 @@ class AnimalService(IAnimalService):
 
     def delete(self, animal_id: ID) -> AnimalSchemaDelete:
         if not (animal_registration_records := self.get_animal_registration_records(animal_id)):
-            self.animal_repo.delete(animal_id)
+            self.animal_repo.delete(animal_id.value)
             return AnimalSchemaDelete(id=animal_id)
 
         shows = []
         for record in animal_registration_records:
-            cur_show = self.show_repo.get_by_id(record.show_id)
+            cur_show = self.show_repo.get_by_id(record.show_id.value)
             if cur_show.status == ShowStatus.started:
                 raise DeleteAnimalStartedShowError(animal_id=animal_id)
             shows.append(cur_show)
