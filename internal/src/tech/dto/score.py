@@ -80,9 +80,9 @@ class ScoreDTO:
             raise InvalidScoreInput('show value invalid input (must be from 1 to 5)')
         self.value = int_value
 
-    def input_create(self, usershow_id: int):
+    def input_create(self, usershow_id: int, animalshow_id: int):
         self.usershow_id = usershow_id
-        self.input_animalshow_id()
+        self.animalshow_id = animalshow_id
         self.input_value()
         self.is_archived = False
         self.dt_created = datetime.datetime.now()
