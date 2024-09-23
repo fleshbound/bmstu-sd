@@ -45,7 +45,7 @@ class AuthHandler:
 
             try:
                 res: AuthDetails = self.auth_service.signin(AuthSchemaSignIn(email=Email(email), password=password,
-                                                          fingerprint=Token(value=str(datetime.datetime.now()))))
+                                                          fingerprint=Fingerprint(value=str(datetime.datetime.now()))))
             except AuthServiceError as e:
                 print(e)
                 return None
