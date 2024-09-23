@@ -7,7 +7,8 @@ from core.show.service.usershow import IUserShowService
 from core.utils.exceptions import NotFoundRepoError, StartShowStatusError, StartShowZeroRecordsError, \
     StopShowStatusError, StopNotAllUsersScoredError, ShowServiceError, UserShowServiceError, RegisterShowStatusError, \
     RegisterAnimalRegisteredError, RegisterUserRoleError, RegisterUserRegisteredError, UnregisterShowStatusError, \
-    UnregisterUserNotRegisteredError, UnregisterAnimalNotRegisteredError, RegisterAnimalCheckError
+    UnregisterUserNotRegisteredError, UnregisterAnimalNotRegisteredError, RegisterAnimalCheckError, \
+    AnimalShowServiceError
 from core.utils.types import ID
 from tech.dto.animal import AnimalDTO
 from tech.dto.score import ScoreDTO
@@ -47,16 +48,30 @@ class ShowHandler:
         if show_id is None:
             return
         try:
-            record = self.usershow_service.get_by_user_show_id(ID(user_id), ID(show_id))
+            usershow_record = self.usershow_service.get_by_user_show_id(ID(user_id), ID(show_id))
         except UserShowServiceError:
             print(self.lm.duplicate_error)
             return
         except NotFoundRepoError:
             print(self.lm.not_judge_error)
             return
-        
+
+        animal_id = self.input_handler.wait_positive_int(self.lm.question_animal_id, self.lm.out_question_animal_id)
+        if animal_id is None:
+            return
+
         try:
-            dto = ScoreDTO(input_handler=self.input_handler).input_create(record.id.value)
+            animalshow_record = self.animalshow_service.get_by_animal_show_id(ID(animal_id), ID(show_id))
+        except AnimalShowServiceError:
+            print(self.lm.duplicate_error)
+            return
+        except NotFoundRepoError:
+            print(self.lm.not_judge_error)
+            return
+
+        try:
+            dto = ScoreDTO(input_handler=self.input_handler).input_create(usershow_record.id.value,
+                                                                          animalshow_record.id.value)
         except InputException:
             return
         self.score_service.create(dto.to_schema_create())
@@ -213,7 +228,7 @@ class ShowHandler:
         except ShowServiceError:
             print(self.lm.show_result_status_error)
             return
-        print('\n------РЕЗУЛЬТАТЫ------')
+        print('\n------РЕЗУЛЬТАТЫ------')  # TODO + score avg
         print(f'[{self.lm.out_rank} : {self.lm.out_animal_id}]')
         for rank_info in res.ranking_info:
             cur_animal_id = self.animalshow_service.get_by_id(rank_info.total_info.record_id).animal_id.value
