@@ -12,6 +12,7 @@ class LanguageModel:
     question_status: str
     no_empty_field: str
     invalid_password: str
+    animal_standard_error: str
     out_password: str
     yes: str
     no: str

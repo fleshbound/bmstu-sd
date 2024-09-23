@@ -92,6 +92,7 @@ class RuLanguageModel(LanguageModel):
     score_create_success = 'Оценка успешно создана'
     user_not_found = 'Пользователь не найден'
     invalid_password = 'Неправильный пароль'
+    animal_standard_error = 'Животное не соответствует стандарту выставки'
     animal_not_found = 'Животное не найдено'
     show_not_found = 'Выставка не найдена'
     out_score_value = 'Значение оценки'
