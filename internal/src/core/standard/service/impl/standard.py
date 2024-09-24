@@ -25,10 +25,11 @@ class StandardService(IStandardService):
         return self.standard_repo.get_all(skip, limit)
 
     def get_by_id(self, id: ID) -> StandardSchema:
-
+        logging.info(f'get standard by id={id.value}')
         return self.get_by_id(id.value)
 
     def create(self, standard_create: StandardSchemaCreate) -> StandardSchema:
+        logging.info('create standard')
         new_standard = StandardSchema.from_create(standard_create)
         return self.standard_repo.create(new_standard)
 
