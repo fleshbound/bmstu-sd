@@ -1,5 +1,6 @@
 import datetime
 import enum
+import re
 from dataclasses import dataclass, field
 
 from pydantic import NonNegativeInt, EmailStr, PositiveFloat, BaseModel
@@ -73,10 +74,11 @@ class ShowName:
 
 @dataclass
 class Email:
-    value: EmailStr
+    value: str
 
     def __post_init__(self):
-        pass
+        if not re.match(r'[^@]+@[^@]+\.[^@]+', self.value):
+            raise ValueError('Email value must be valid email address')
 
     def __eq__(self, other) -> bool:
         if not isinstance(other, Email):
