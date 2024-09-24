@@ -1,4 +1,5 @@
 import datetime
+import logging
 from typing import Optional
 
 from core.auth.schema.auth import Token
@@ -28,12 +29,14 @@ class AuthHandler:
         self.lm = input_handler.lang_model
 
     def signin(self) -> Optional[UserConsoleInfo]:
+        logging.info('auth handler: sign in')
         while True:
             email = self.input_handler.ask_question(self.lm.out_login)
 
             try:
                 Email(email)
             except ValueError:
+                logging.warning('auth handler: sign in: email validation error')
                 print(self.lm.input_invalid)
                 return None
 
@@ -42,6 +45,7 @@ class AuthHandler:
             try:
                 res_user = self.user_service.get_by_email(Email(email))
             except NotFoundRepoError:
+                logging.warning(f'auth handler: sign in: no user with email={email}')
                 print(self.lm.user_not_found)
                 return None
 
@@ -50,9 +54,11 @@ class AuthHandler:
                                                           fingerprint=Fingerprint(value=str(datetime.datetime.now()))))
             except SignInNotFoundEmailError:
                 print(self.lm.user_not_found)
+                logging.warning(f'auth handler: sign in: no user with email={email}')
                 return None
             except SignInPasswordError:
                 print(self.lm.invalid_password)
+                logging.warning(f'auth handler: sign in: wrong password, email={email}')
                 return None
 
             return UserConsoleInfo(
@@ -65,11 +71,14 @@ class AuthHandler:
 
 
     def verify_token(self, token: Token) -> bool:
+        logging.info('auth handler: verify token')
         try:
             self.auth_service.verify_token(token)
         except AuthProviderError:
+            logging.info('auth handler: wrong token')
             return False
         return True
 
     def logout(self, token: Token) -> None:
+        logging.info('auth handler: logout')
         self.auth_service.logout(token)

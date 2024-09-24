@@ -1,7 +1,7 @@
 from typing import List
 import logging
 from pydantic import NonNegativeInt, PositiveInt
-from sqlalchemy.testing.plugin.plugin_base import logging
+import logging
 
 from core.user.repository.user import IUserRepository
 from core.user.schema.user import UserSchema, UserSchemaCreate, UserSchemaUpdate

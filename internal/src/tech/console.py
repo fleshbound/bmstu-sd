@@ -1,3 +1,4 @@
+import logging
 from typing import Optional
 
 from core.user.schema.user import UserRole
@@ -40,13 +41,7 @@ class ConsoleHandler:
         return True
 
     def select_judge(self) -> Optional[int]:
-        # 'Выберите пункт меню (Судья):\n'\
-        #                   '0. Завершить работу\n'\
-        #                   '1. Посмотреть список выставок\n'\
-        #                   '2. Посмотреть результаты выставки\n'\
-        #                   '3. Выйти\n'\
-        #                   '4. Посмотреть участников выставки\n'\
-        #                   '5. Оценить участника выставки\n'
+        logging.info('console: start judge select')
         run = True
         while run:
             if not self.check_token():
@@ -75,6 +70,7 @@ class ConsoleHandler:
                 print(ConsoleMessage.input_invalid.value)
 
     def select_admin(self) -> Optional[int]:
+        logging.info('console: start admin select')
         run = True
         while run:
             if not self.check_token():
@@ -112,6 +108,7 @@ class ConsoleHandler:
                 print(ConsoleMessage.input_invalid.value)
 
     def select_breeder(self) -> Optional[int]:
+        logging.info('console: start breeder select')
         run = True
         while run:
             if not self.check_token():
@@ -149,6 +146,7 @@ class ConsoleHandler:
                 print(ConsoleMessage.input_invalid.value)
 
     def set_user(self, new_user: UserConsoleInfo) -> None:
+        logging.info('console: set user')
         if self.user is None:
             self.user = new_user
             return
@@ -159,6 +157,7 @@ class ConsoleHandler:
         self.user.auth_details = new_user.auth_details
 
     def unset_user(self) -> None:
+        logging.info('console: unset user')
         self.user.id = None
         self.user.email = None
         self.user.role = None
@@ -166,6 +165,7 @@ class ConsoleHandler:
         self.user.auth_details = None
 
     def select_guest(self) -> int:
+        logging.info('console: start guest select')
         run = True
         while run:
             option = self.input_handler.ask_question(Menus.guest_menu.value)
@@ -186,6 +186,7 @@ class ConsoleHandler:
                 print(ConsoleMessage.input_invalid.value)
 
     def run(self):
+        logging.info('console: run')
         stop = False
         while not stop:
             code = 1
@@ -200,3 +201,4 @@ class ConsoleHandler:
 
             if code == 0:
                 stop = True
+        logging.info('console: quit')
