@@ -1,3 +1,4 @@
+import logging
 from typing import List, Optional, Tuple
 
 from pydantic import NonNegativeInt, NonNegativeFloat
@@ -9,7 +10,6 @@ from core.show.schema.score import TotalScoreInfo, ScoreSchema, ScoreSchemaCreat
     AnimalShowRankingInfo
 from core.show.service.animalshow import IAnimalShowService
 from core.show.service.score import IScoreService
-from core.show.service.show import IShowService
 from core.show.service.usershow import IUserShowService
 from core.utils.dict.impl.float import FloatKeyDictionary
 from core.utils.exceptions import ScoreServiceError, NotFoundRepoError
@@ -42,6 +42,7 @@ class ScoreService(IScoreService):
         # return list(OrderedDict(sorted(dict.keys())).values())
 
     def get_show_ranking_info(self, show_id: ID) -> Tuple[NonNegativeInt, List[AnimalShowRankingInfo]]:
+        logging.info(f'get show ranking info id={show_id.value}')
         animalshow_records = self.animalshow_service.get_by_show_id(show_id)
         total_scores_by_animal = [self.get_total_by_animalshow_id(record.id) for record in animalshow_records]
         total_scores_ranked = self.get_total_scores_ranked(total_scores_by_animal)
@@ -62,16 +63,20 @@ class ScoreService(IScoreService):
         return self.dict_to_asc_ranked_ids(map)
 
     def get_total_by_animalshow_id(self, animalshow_id: ID) -> TotalScoreInfo:
+        logging.info(f'get total by animalshow_id={animalshow_id.value}')
         try:
             scores = self.score_repo.get_by_animalshow_id(animalshow_id.value)
         except NotFoundRepoError:
+            logging.warning(f'scores not found by animalshow_id={animalshow_id.value}')
             raise ScoreServiceError('no animalshow scores found')
         return self.calc_total(animalshow_id, scores)
 
     def get_total_by_usershow_id(self, usershow_id: ID) -> TotalScoreInfo:
+        logging.info(f'get total by usershow_id={usershow_id.value}')
         try:
             scores = self.score_repo.get_by_usershow_id(usershow_id.value)
         except NotFoundRepoError:
+            logging.warning(f'scores not found by usershow_id={usershow_id.value}')
             raise ScoreServiceError('no usershow scores found')
         return self.calc_total(usershow_id, scores)
 
@@ -79,6 +84,7 @@ class ScoreService(IScoreService):
         try:
             scores = self.score_repo.get_by_usershow_id(usershow_id.value)
         except NotFoundRepoError:
+            logging.warning(f'scores not found by usershow_id={usershow_id.value}')
             raise ScoreServiceError('no usershow scores found')
         return len(scores)
 
@@ -131,12 +137,14 @@ class ScoreService(IScoreService):
         return count
 
     def create(self, score_create: ScoreSchemaCreate) -> ScoreSchema:
+        logging.info(f'create score usershow_id={score_create.usershow_id.value} animalshow_id={score_create.animalshow_id.value}')
         new_score = ScoreSchema.from_create(score_create)
         new_score = self.score_repo.create(new_score)
 
         return new_score
 
     def archive(self, id: ID) -> ScoreSchema:
+        logging.info(f'archive score id={id.value}')
         update_score_param = ScoreSchemaUpdate(id=id, is_archived=True)
         cur_score = self.score_repo.get_by_id(id.value)
         new_score = ScoreSchema.from_update(cur_score, update_score_param)
@@ -144,4 +152,5 @@ class ScoreService(IScoreService):
         return new_score
 
     def get_by_id(self, id: ID) -> ScoreSchema:
+        logging.info(f'get score by id={id.value}')
         return self.score_repo.get_by_id(id.value)
