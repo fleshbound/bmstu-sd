@@ -20,6 +20,17 @@ def generate_info(is_test_db: bool, rows: int):
     db.copy_tables()
 
 
+def clean_generate_info(rows: int):
+    InfoGenerator(rows).generate_info()
+
+
+def clean_copy_info():
+    db = DatabaseMaker(is_test_db=False)
+    db.drop_tables()
+    db.create_tables()
+    db.copy_tables()
+
+
 def generate_test_info():
     for rows in range(0, 190000, 10000):
         InfoGenerator(rows).generate_test_info()
@@ -38,7 +49,7 @@ def generate_all():
 
 
 if __name__ == "__main__":
-    load_dotenv("/home/sheglar/bmstu/petowo/db/internal/.env")
+    load_dotenv("/home/sheglar/bmstu/petowo/ppo/internal/.env")
     args = sys.argv
 
     if len(args) == 1:
@@ -53,6 +64,12 @@ if __name__ == "__main__":
         elif args[1] == 'main':
             migrate_db(is_test_db=False)
             print("done setting main db")
+        elif args[1] == 'copy':
+            print('copy')
+            clean_copy_info()
+        elif args[1] == '10':
+            print('gen 10')
+            clean_generate_info(rows=10)
         elif args[1] == 'all':
             generate_all()
             print("done")

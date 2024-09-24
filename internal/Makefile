@@ -13,6 +13,11 @@ set_test_db_empty:
 main:
 	cd ./database/py &&	python3 setdb.py main
 
+tmp_10:
+	cd ./database/py && python3 setdb.py 10
+	sudo cp ./database/data/*.csv /tmp
+	cd ./database/py && python3 setdb.py copy
+
 all:
 	cd ./database/py &&	python3 setdb.py all
 

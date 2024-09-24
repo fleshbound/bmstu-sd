@@ -8,7 +8,7 @@ from core.utils.exceptions import NotFoundRepoError, StartShowStatusError, Start
     StopShowStatusError, StopNotAllUsersScoredError, ShowServiceError, UserShowServiceError, RegisterShowStatusError, \
     RegisterAnimalRegisteredError, RegisterUserRoleError, RegisterUserRegisteredError, UnregisterShowStatusError, \
     UnregisterUserNotRegisteredError, UnregisterAnimalNotRegisteredError, RegisterAnimalCheckError, \
-    AnimalShowServiceError
+    AnimalShowServiceError, ScoreServiceError
 from core.utils.types import ID
 from tech.dto.animal import AnimalDTO
 from tech.dto.score import ScoreDTO
@@ -118,6 +118,9 @@ class ShowHandler:
             print(self.lm.show_stop_error_status)
             return
         except StopNotAllUsersScoredError:
+            print(self.lm.show_stop_error_not_all_users_scored)
+            return
+        except ScoreServiceError:
             print(self.lm.show_stop_error_not_all_users_scored)
             return
         print(self.lm.show_stop_success)

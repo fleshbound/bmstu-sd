@@ -6,7 +6,204 @@ import faker_commerce
 from Cryptodome.Hash import SHA256
 from faker.providers import DynamicProvider
 
-from utils import COUNTRIES
+COUNTRIES=['Afghanistan',
+        'Albania',
+        'Algeria',
+        'Andorra',
+        'Angola',
+        'Antigua & Deps',
+        'Argentina',
+        'Armenia',
+        'Australia',
+        'Austria',
+        'Azerbaijan',
+        'Bahamas',
+        'Bahrain',
+        'Bangladesh',
+        'Barbados',
+        'Belarus',
+        'Belgium',
+        'Belize',
+        'Benin',
+        'Bermuda',
+        'Bhutan',
+        'Bolivia',
+        'Bosnia Herzegovina',
+        'Botswana',
+        'Brazil',
+        'Brunei',
+        'Bulgaria',
+        'Burkina',
+        'Burundi',
+        'Cambodia',
+        'Cameroon',
+        'Canada',
+        'Cape Verde',
+        'Central African Rep',
+        'Chad',
+        'Chile',
+        'China',
+        'Colombia',
+        'Comoros',
+        'Congo',
+        'Congo (Democratic Rep)',
+        'Costa Rica',
+        'Croatia',
+        'Cuba',
+        'Cyprus',
+        'Czech Republic',
+        'Denmark',
+        'Djibouti',
+        'Dominica',
+        'Dominican Republic',
+        'East Timor',
+        'Ecuador',
+        'Egypt',
+        'El Salvador',
+        'Equatorial Guinea',
+        'Eritrea',
+        'Estonia',
+        'Eswatini',
+        'Ethiopia',
+        'Fiji',
+        'Finland',
+        'France',
+        'Gabon',
+        'Gambia',
+        'Georgia',
+        'Germany',
+        'Ghana',
+        'Greece',
+        'Grenada',
+        'Guatemala',
+        'Guinea',
+        'Guinea-Bissau',
+        'Guyana',
+        'Haiti',
+        'Honduras',
+        'Hungary',
+        'Iceland',
+        'India',
+        'Indonesia',
+        'Iran',
+        'Iraq',
+        'Ireland (Republic)',
+        'Israel',
+        'Italy',
+        'Ivory Coast',
+        'Jamaica',
+        'Japan',
+        'Jordan',
+        'Kazakhstan',
+        'Kenya',
+        'Kiribati',
+        'Korea North',
+        'Korea South',
+        'Kosovo',
+        'Kuwait',
+        'Kyrgyzstan',
+        'Laos',
+        'Latvia',
+        'Lebanon',
+        'Lesotho',
+        'Liberia',
+        'Libya',
+        'Liechtenstein',
+        'Lithuania',
+        'Luxembourg',
+        'Macedonia',
+        'Madagascar',
+        'Malawi',
+        'Malaysia',
+        'Maldives',
+        'Mali',
+        'Malta',
+        'Marshall Islands',
+        'Mauritania',
+        'Mauritius',
+        'Mexico',
+        'Micronesia',
+        'Moldova',
+        'Monaco',
+        'Mongolia',
+        'Montenegro',
+        'Morocco',
+        'Mozambique',
+        'Myanmar',
+        'Namibia',
+        'Nauru',
+        'Nepal',
+        'Netherlands',
+        'New Zealand',
+        'Nicaragua',
+        'Niger',
+        'Nigeria',
+        'Norway',
+        'Oman',
+        'Pakistan',
+        'Palau',
+        'Palestine',
+        'Panama',
+        'Papua New Guinea',
+        'Paraguay',
+        'Peru',
+        'Philippines',
+        'Poland',
+        'Portugal',
+        'Qatar',
+        'Romania',
+        'Russian Federation',
+        'Rwanda',
+        'St Kitts & Nevis',
+        'St Lucia',
+        'Saint Vincent & the Grenadines',
+        'Samoa',
+        'San Marino',
+        'Sao Tome & Principe',
+        'Saudi Arabia',
+        'Senegal',
+        'Serbia',
+        'Seychelles',
+        'Sierra Leone',
+        'Singapore',
+        'Slovakia',
+        'Slovenia',
+        'Solomon Islands',
+        'Somalia',
+        'South Africa',
+        'South Sudan',
+        'Spain',
+        'Sri Lanka',
+        'Sudan',
+        'Suriname',
+        'Sweden',
+        'Switzerland',
+        'Syria',
+        'Taiwan',
+        'Tajikistan',
+        'Tanzania',
+        'Thailand',
+        'Togo',
+        'Tonga',
+        'Trinidad & Tobago',
+        'Tunisia',
+        'Turkey',
+        'Turkmenistan',
+        'Tuvalu',
+        'Uganda',
+        'Ukraine',
+        'United Arab Emirates',
+        'United Kingdom',
+        'United States',
+        'Uruguay',
+        'Uzbekistan',
+        'Vanuatu',
+        'Vatican City',
+        'Venezuela',
+        'Vietnam',
+        'Yemen',
+        'Zambia',
+        'Zimbabwe']
 
 show_status_provider = DynamicProvider(
     provider_name='show_status',
@@ -83,7 +280,7 @@ class InfoGenerator:
 
     def generate_animal_info(self):
         # copy animal(user_id, breed_id, name, birth_dt, sex, weight, height, length, has_defects, is_multicolor)
-        with open(self.ANIMAL_PATH, 'w') as f:
+        with open(self.ANIMAL_PATH, 'w+') as f:
             f.write('user_id;breed_id;name;birth_dt;sex;weight;height;length;has_defects;is_multicolor\n')
             for i in range(self.ROWS):
                 user_id = random.randint(1, self.ROWS - 1)
@@ -116,7 +313,7 @@ class InfoGenerator:
                 f.write(animal_str)
 
     def generate_user_info_real(self):
-        with open(self.USER_PATH, 'w') as f:
+        with open(self.USER_PATH, 'w+') as f:
             f.write('email;hashed_password;role;name\n')
             for i in range(self.ROWS):
                 email = self.fake.ascii_email()
@@ -128,7 +325,7 @@ class InfoGenerator:
 
     def generate_user_info(self):
         # copy "User"(email, hashed_password, role, name)
-        with open(self.USER_PATH, 'w') as f:
+        with open(self.USER_PATH, 'w+') as f:
             f.write('email;hashed_password;role;name\n')
             for i in range(self.ROWS):
                 email = self.fake.ascii_email()
@@ -164,7 +361,7 @@ class InfoGenerator:
 
     def generate_usershow_info(self):
         # copy UserShow (show_id, user_id, is_archived)
-        with open(self.USERSHOW_PATH, 'w') as f:
+        with open(self.USERSHOW_PATH, 'w+') as f:
             f.write('show_id;user_id;is_archived\n')
             for i in range(1, self.ROWS + 1):
                 show_id = i
@@ -174,7 +371,7 @@ class InfoGenerator:
                 f.write(usershow_str)
 
     def generate_animalshow_info(self):
-        with open(self.ANIMALSHOW_PATH, 'w') as f:
+        with open(self.ANIMALSHOW_PATH, 'w+') as f:
             for i in range(self.ROWS + 1, 2 * self.ROWS + 1):
                 # copy AnimalShow (show_id, animal_id, is_archived)
                 show_id = i
@@ -186,7 +383,7 @@ class InfoGenerator:
     def generate_standard_info(self):
         # copy Standard (breed_id, country, weight, height, length, has_defects, is_multicolor,
         # weight_delta_percent, height_delta_percent, length_delta_percent)
-        with open(self.STANDARD_PATH, 'w') as f:
+        with open(self.STANDARD_PATH, 'w+') as f:
             f.write('breed_id;country;weight;height;length;has_defects;is_multicolor;'
                     + 'weight_delta_percent;height_delta_percent;length_delta_percent\n')
             for i in range(1, self.ROWS + 1):
@@ -221,7 +418,7 @@ class InfoGenerator:
 
     def generate_show_info(self):
         # copy Show (species_id, breed_id, standard_id, status, country, show_class, name, is_multi_breed)
-        with open(self.SHOW_PATH, 'w') as f:
+        with open(self.SHOW_PATH, 'w+') as f:
             f.write('species_id;breed_id;standard_id;status;country;show_class;name;is_multi_breed\n')
             for i in range(1, self.ROWS + 1):
                 is_multi_breed = self.fake.boolean()
@@ -251,7 +448,7 @@ class InfoGenerator:
 
     def generate_group_info(self):
         # copy "Group" (name)
-        with open(self.GROUP_PATH, 'w') as f:
+        with open(self.GROUP_PATH, 'w+') as f:
             f.write('name\n')
             for g_name in groups:
                 f.write(f'{g_name}\n')
@@ -259,7 +456,7 @@ class InfoGenerator:
 
     def generate_species_info(self):
         # copy Species (name, group_id)
-        with open(self.SPECIES_PATH, 'w') as f:
+        with open(self.SPECIES_PATH, 'w+') as f:
             f.write('name;group_id\n')
             for i in range(self.ROWS):
                 group_id = random.randint(1, self.group_max_id - 1)
@@ -269,7 +466,7 @@ class InfoGenerator:
 
     def generate_breed_info(self):
         # copy Breed (name, species_id)
-        with open(self.BREED_PATH, 'w') as f:
+        with open(self.BREED_PATH, 'w+') as f:
             f.write('name;species_id\n')
             for i in range(self.ROWS):
                 species_id = random.randint(1, self.species_max_id)
