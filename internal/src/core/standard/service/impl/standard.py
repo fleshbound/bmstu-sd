@@ -1,3 +1,4 @@
+import logging
 from typing import List
 
 from core.animal.schema.animal import AnimalSchema
@@ -16,12 +17,15 @@ class StandardService(IStandardService):
         self.standard_repo = standard_repo
 
     def get_by_breed_id(self, breed_id: ID) -> List[StandardSchema]:
+        logging.info(f'get standards by breed_id={breed_id.value}')
         return self.standard_repo.get_by_breed_id(breed_id.value)
 
     def get_all(self, skip: NonNegativeInt = 0, limit: PositiveInt = 100) -> List[StandardSchema]:
+        logging.info(f'get all standards, skip={skip} limit={limit}')
         return self.standard_repo.get_all(skip, limit)
 
     def get_by_id(self, id: ID) -> StandardSchema:
+
         return self.get_by_id(id.value)
 
     def create(self, standard_create: StandardSchemaCreate) -> StandardSchema:
