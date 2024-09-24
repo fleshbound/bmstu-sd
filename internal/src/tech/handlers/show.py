@@ -1,3 +1,5 @@
+import logging
+
 from core.animal.service.animal import IAnimalService
 from core.show.schema.show import ShowSchemaReport
 from core.show.service.animalshow import IAnimalShowService
@@ -44,15 +46,18 @@ class ShowHandler:
         self.animal_service = animal_service
 
     def score_animal(self, user_id: int):
+        logging.info('show handler: score animal')
         show_id = self.input_handler.wait_positive_int(self.lm.question_show_id, self.lm.out_question_show_id)
         if show_id is None:
             return
         try:
             usershow_record = self.usershow_service.get_by_user_show_id(ID(user_id), ID(show_id))
         except UserShowServiceError:
+            logging.warning('show handler: usershow duplicate error')
             print(self.lm.duplicate_error)
             return
         except NotFoundRepoError:
+            logging.warning(f'show handler: user role error (not judge)')
             print(self.lm.not_judge_error)
             return
 
@@ -63,9 +68,11 @@ class ShowHandler:
         try:
             animalshow_record = self.animalshow_service.get_by_animal_show_id(ID(animal_id), ID(show_id))
         except AnimalShowServiceError:
+            logging.warning('show handler: animalshow duplicate error')
             print(self.lm.duplicate_error)
             return
         except NotFoundRepoError:
+            logging.warning(f'show handler: user role error (not judge)')
             print(self.lm.not_judge_error)
             return
 
@@ -73,51 +80,62 @@ class ShowHandler:
             dto = ScoreDTO(input_handler=self.input_handler).input_create(usershow_record.id.value,
                                                                           animalshow_record.id.value)
         except InputException:
+            logging.warning('show handler: invalid score input')
             return
         self.score_service.create(dto.to_schema_create())
         print(self.lm.score_create_success)
 
     def create_show(self):
+        logging.info('show handler: create show')
         try:
             dto: ShowDTO = ShowDTO(input_handler=self.input_handler).input_create()
         except InputException:
+            logging.warning('show handler: invalid create show input')
             return
         
         try:
             created = self.show_service.create(dto.to_schema_create())
         except ValidationRepoError:
+            logging.warning(f'show handler: create show: repo validation error')
             print(self.lm.foreign_keys_error)
             return
         
         ShowDTO.from_schema(created, self.input_handler).print()
 
     def start_show(self):
+        logging.info('show handler: start show')
         show_id = self.input_handler.wait_positive_int(self.lm.question_show_id, self.lm.out_question_show_id)
         if show_id is None:
             return
         try:
             self.show_service.start(ID(show_id))
         except StartShowStatusError:
+            logging.warning('show handler: wrong start show status')
             print(self.lm.show_start_error_status)
             return
         except StartShowZeroRecordsError as e:
             if e.type == 'user':
+                logging.warning('show handler: zero usershow records, cannot start')
                 print(self.lm.show_start_error_no_records_user)
             elif e.type == 'animal':
+                logging.warning('show handler: zero animalshow records, cannot start')
                 print(self.lm.show_start_error_no_records_animal)
             return
         print(self.lm.show_start_success)
 
     def stop_show(self):
+        logging.info('show handler: stop show')
         show_id = self.input_handler.wait_positive_int(self.lm.question_show_id, self.lm.out_question_show_id)
         if show_id is None:
             return
         try:
             self.show_service.stop(ID(show_id))
         except StopShowStatusError:
+            logging.warning('show handler: wrong stop show status')
             print(self.lm.show_stop_error_status)
             return
         except StopNotAllUsersScoredError:
+            logging.warning('show handler: not all users scored, cannot stop')
             print(self.lm.show_stop_error_not_all_users_scored)
             return
         except ScoreServiceError:
@@ -126,6 +144,7 @@ class ShowHandler:
         print(self.lm.show_stop_success)
 
     def register_animal(self, user_id: int):
+        logging.info('show handler: register animal')
         show_id = self.input_handler.wait_positive_int(self.lm.question_show_id, self.lm.out_question_show_id)
         if show_id is None:
             return
@@ -154,6 +173,7 @@ class ShowHandler:
         print(self.lm.register_animal_success)
 
     def unregister_animal(self, user_id: int):
+        logging.info('show handler: unregister animal')
         show_id = self.input_handler.wait_positive_int(self.lm.question_show_id, self.lm.out_question_show_id)
         if show_id is None:
             return
@@ -178,6 +198,7 @@ class ShowHandler:
         print(self.lm.unregister_animal_success)
 
     def register_user(self):
+        logging.info('show handler: register user')
         show_id = self.input_handler.wait_positive_int(self.lm.question_show_id, self.lm.out_question_show_id)
         if show_id is None:
             return
@@ -198,6 +219,7 @@ class ShowHandler:
         print(self.lm.register_user_success)
 
     def unregister_user(self):
+        logging.info('show handler: unregister user')
         show_id = self.input_handler.wait_positive_int(self.lm.question_show_id, self.lm.out_question_show_id)
         if show_id is None:
             return
@@ -215,6 +237,7 @@ class ShowHandler:
         print(self.lm.unregister_user_success)
 
     def get_shows_all(self):
+        logging.info('show handler: get all shows')
         res = self.show_service.get_all()
         if len(res) == 0:
             print(self.lm.get_empty_result)
@@ -223,6 +246,7 @@ class ShowHandler:
             ShowDTO.from_schema(show, self.input_handler).print()
 
     def get_show_result(self):
+        logging.info('show handler: get show result')
         show_id = self.input_handler.wait_positive_int(self.lm.question_show_id, self.lm.out_question_show_id)
         if show_id is None:
             return
@@ -239,6 +263,7 @@ class ShowHandler:
         print('----------------------')
 
     def get_animals_by_show(self):
+        logging.info('show handler: get animals by show')
         show_id = self.input_handler.wait_positive_int(self.lm.question_show_id, self.lm.out_question_show_id)
         if show_id is None:
             return

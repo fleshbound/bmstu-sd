@@ -2,7 +2,7 @@ from typing import List
 import logging
 
 from pydantic import NonNegativeInt, PositiveInt
-from sqlalchemy.testing.plugin.plugin_base import logging
+import logging
 
 from core.animal.schema.animal import AnimalSchema
 from core.animal.service.animal import IAnimalService

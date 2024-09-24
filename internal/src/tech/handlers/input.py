@@ -1,4 +1,5 @@
 import datetime
+import logging
 from typing import Optional
 
 from pydantic import PositiveInt
@@ -18,6 +19,7 @@ class InputHandler:
         return input('')
 
     def wait_input(self, question: str, out_question: str) -> Optional[str]:
+        logging.info('input handler: wait string input')
         input = True
         while input:
             res = self.ask_question(question)
@@ -31,6 +33,7 @@ class InputHandler:
         return None
 
     def wait_positive_int(self, question: str, out_question: str) -> Optional[PositiveInt]:
+        logging.info('input handler: wait positive int')
         input = True
         while input:
             res = self.ask_question(question)
@@ -46,6 +49,7 @@ class InputHandler:
         return None
 
     def date_input(self, out_question: str) -> Optional[datetime.datetime]:
+        logging.info('input handler: input date')
         input = True
         while input:
             day = self.ask_question(self.lang_model.question_day)

@@ -1,7 +1,7 @@
 from typing import List
 
 from pydantic import NonNegativeInt, PositiveInt
-from sqlalchemy.testing.plugin.plugin_base import logging
+import logging
 
 from core.group.repository.group import IGroupRepository
 from core.group.schema.group import GroupSchema, GroupSchemaCreate, GroupSchemaUpdate, GroupSchemaDelete
