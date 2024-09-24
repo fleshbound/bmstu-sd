@@ -1,15 +1,16 @@
 import datetime
+from typing import Optional
 
 from pydantic import BaseModel
 
-from tech.handler.input import InputHandler
+from tech.handlers.input import InputHandler
 from tech.utils.exceptions import CancelInput, InvalidFloatInput, InvalidSexInput, InvalidBooleanInput
 from tech.utils.lang.langmodel import LanguageModel
 from core.animal.schema.animal import AnimalSchemaCreate, AnimalSchema
 from core.utils.types import Sex, ID, AnimalName, Datetime, Weight, Height, Length
 
 
-class AnimalDTO(BaseModel):
+class AnimalDTO:
     id: int
     user_id: int
     breed_id: int
@@ -24,14 +25,45 @@ class AnimalDTO(BaseModel):
     input_handler: InputHandler
     lm: LanguageModel
 
+    def __init__(self,
+                 id: Optional[int] = None,
+                 user_id: Optional[int] = None,
+                 breed_id: Optional[int] = None,
+                 name: Optional[str] = None,
+                 birth_dt: Optional[datetime.datetime] = None,
+                 sex: Optional[str] = None,
+                 weight: Optional[float] = None,
+                 height: Optional[float] = None,
+                 length: Optional[float] = None,
+                 has_defects: Optional[bool] = None,
+                 is_multicolor: Optional[bool] = None,
+                 input_handler: Optional[InputHandler] = None):
+        if input_handler is not None:
+            self.input_handler = input_handler
+            self.lm = self.input_handler.lang_model
+        if id is not None: self.id = id
+        if user_id is not None: self.user_id = user_id
+        if breed_id is not None: self.breed_id = breed_id
+        if birth_dt is not None: self.birth_dt = birth_dt
+        if sex is not None: self.sex = self.sex_from_enum(sex)
+        if weight is not None: self.weight = weight
+        if height is not None: self.height = height
+        if length is not None: self.length = length
+        if has_defects is not None: self.has_defects = has_defects
+        if is_multicolor is not None: self.is_multicolor = is_multicolor
+        if name is not None: self.name = name
+
+    def sex_from_enum(self, sex: Sex):
+        return self.lm.out_sex_female.lower() if sex == Sex.female else self.lm.out_sex_male.lower()
+
     def print(self):
         print("_______________________")
         print(f"{self.lm.out_id}:  {self.id}")
         print(f"{self.lm.out_name}: {self.name}")
         print(f"{self.lm.out_breed_id}: {self.breed_id}")
         print(f"{self.lm.out_user_id}: {self.user_id}")
-        print(f"{self.lm.out_birth_dt}: {str(self.birth_dt.date())}")
-        print(f"{self.lm.out_sex}: {self.lm.out_sex_male if self.sex == Sex.male else self.lm.out_sex_female}")
+        print(f"{self.lm.out_birth_dt}: {str(self.birth_dt)}")
+        print(f"{self.lm.out_sex}: {self.sex}")
         print(f"{self.lm.out_weight}: {self.weight:5.3f} {self.lm.out_weight_unit}")
         print(f"{self.lm.out_height}: {self.height:5.1f} {self.lm.out_height_unit}")
         print(f"{self.lm.out_length}: {self.length:5.1f} {self.lm.out_length_unit}")
@@ -50,6 +82,7 @@ class AnimalDTO(BaseModel):
 
     def input_delete(self):
         self.input_id()
+        return self
 
     def input_create(self, user_id: int):
         self.id = 0
@@ -63,6 +96,7 @@ class AnimalDTO(BaseModel):
         self.input_has_defects()
         self.input_is_multicolor()
         self.with_user_id(user_id)
+        return self
 
     def input_birth_dt(self):
         birth_dt = self.input_handler.date_input(
@@ -107,6 +141,7 @@ class AnimalDTO(BaseModel):
         try:
             self.weight = float(weight)
         except ValueError:
+            print(self.lm.input_invalid + f'({self.lm.out_weight.lower()})')
             raise InvalidFloatInput('weight')
 
     def input_length(self):
@@ -120,6 +155,7 @@ class AnimalDTO(BaseModel):
         try:
             self.length = float(length)
         except ValueError:
+            print(self.lm.input_invalid + f'({self.lm.out_length.lower()})')
             raise InvalidFloatInput('length')
 
     def input_height(self):
@@ -133,6 +169,7 @@ class AnimalDTO(BaseModel):
         try:
             self.height = float(height)
         except ValueError:
+            print(self.lm.input_invalid + f'({self.lm.out_height.lower()})')
             raise InvalidFloatInput('height')
 
     def input_sex(self):
@@ -143,10 +180,16 @@ class AnimalDTO(BaseModel):
         if sex is None:
             print(self.lm.cancel_input)
             raise CancelInput('animal sex input cancel')
-        if (sex.upper() != self.lm.out_sex_male.upper() and sex.upper() != self.lm.out_sex_male_short.upper() and
-            sex.upper() != self.lm.out_sex_female.upper() and sex.upper() != self.lm.out_sex_female_short.upper()):
+        if not self.sex_is_male(sex) and not self.sex_is_female(sex):
+            print(self.lm.input_invalid + f'({self.lm.out_sex.lower()})')
             raise InvalidSexInput()
         self.sex = sex
+
+    def sex_is_female(self, sex: str):
+        return sex.upper() == self.lm.out_sex_female.upper() or sex.upper() == self.lm.out_sex_female_short.upper()
+
+    def sex_is_male(self, sex: str):
+        return sex.upper() == self.lm.out_sex_male.upper() or sex.upper() == self.lm.out_sex_male_short.upper()
 
     def input_has_defects(self):
         has_defects = self.input_handler.wait_input(self.lm.question_has_defects,
@@ -155,7 +198,7 @@ class AnimalDTO(BaseModel):
             print(self.lm.cancel_input)
             raise CancelInput('animal has_defects input cancel')
         if has_defects.upper() != self.lm.yes.upper() and has_defects.upper() != self.lm.no.upper():
-            print(self.lm.cancel_input)
+            print(self.lm.input_invalid + f'({self.lm.out_has_defects.lower()})')
             raise InvalidBooleanInput('has_defects')
         self.has_defects = True if has_defects.upper() == self.lm.yes.upper() else False
 
@@ -166,9 +209,12 @@ class AnimalDTO(BaseModel):
             print(self.lm.cancel_input)
             raise CancelInput('animal is_multicolor input cancel')
         if is_multicolor.upper() != self.lm.yes.upper() and is_multicolor.upper() != self.lm.no.upper():
-            print(self.lm.cancel_input)
+            print(self.lm.input_invalid + f'({self.lm.out_is_multicolor.lower()})')
             raise InvalidBooleanInput('is_multicolor')
         self.is_multicolor = True if is_multicolor.upper() == self.lm.yes.upper() else False
+
+    def sex_to_enum(self, sex: str):
+        return Sex.female if self.sex_is_female(sex) else Sex.male
 
     def to_schema_create(self) -> AnimalSchemaCreate:
         return AnimalSchemaCreate(
@@ -176,7 +222,7 @@ class AnimalDTO(BaseModel):
             breed_id=ID(self.breed_id),
             name=AnimalName(self.name),
             birth_dt=Datetime(self.birth_dt),
-            sex=Sex(self.sex),
+            sex=self.sex_to_enum(self.sex),
             weight=Weight(self.weight),
             height=Height(self.height),
             length=Length(self.length),
@@ -185,7 +231,7 @@ class AnimalDTO(BaseModel):
         )
 
     @classmethod
-    def from_schema(cls, other: AnimalSchema):
+    def from_schema(cls, other: AnimalSchema, input_handler: InputHandler):
         return cls(
             id=other.id.value,
             user_id=other.user_id.value,
@@ -197,5 +243,6 @@ class AnimalDTO(BaseModel):
             height=other.height.value,
             length=other.length.value,
             has_defects=other.has_defects,
-            is_multicolor=other.is_multicolor
+            is_multicolor=other.is_multicolor,
+            input_handler=input_handler
         )

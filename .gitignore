@@ -33,3 +33,4 @@ project/.bloop/
 .vscode/*
 **/__pycache__/**
 **/.venv/**
+*.csv
