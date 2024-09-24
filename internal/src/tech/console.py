@@ -1,4 +1,4 @@
-from typing import Optional, Type
+from typing import Optional
 
 from core.user.schema.user import UserRole
 from tech.handlers.animal import AnimalHandler
