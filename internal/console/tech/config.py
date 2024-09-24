@@ -30,6 +30,9 @@ class Configs(BaseSettings):
     auth_config: AuthConfig = AuthConfig(secret=os.getenv("AUTH_SECRET"), access_token_time=datetime.timedelta(minutes=15),
                              refresh_token_time=datetime.timedelta(minutes=15))
 
+    MONGO_URL: str = "mongodb://127.0.0.1:27017/petowo"
+    DBMS: str = os.getenv('DBMS')
+
     class Config:
         case_sensitive = True
 

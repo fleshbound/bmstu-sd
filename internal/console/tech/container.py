@@ -13,6 +13,19 @@ from core.species.service.impl.species import SpeciesService
 from core.standard.service.impl.standard import StandardService
 from core.user.service.impl.user import UserService
 from dependency_injector import containers, providers
+
+from mongo import PymongoDatabase
+from repository.pymongo.animal import PymongoAnimalRepository
+from repository.pymongo.animalshow import PymongoAnimalShowRepository
+from repository.pymongo.breed import PymongoBreedRepository
+from repository.pymongo.certificate import PymongoCertificateRepository
+from repository.pymongo.group import PymongoGroupRepository
+from repository.pymongo.score import PymongoScoreRepository
+from repository.pymongo.show import PymongoShowRepository
+from repository.pymongo.species import PymongoSpeciesRepository
+from repository.pymongo.standard import PymongoStandardRepository
+from repository.pymongo.user import PymongoUserRepository
+from repository.pymongo.usershow import PymongoUserShowRepository
 from repository.sqlalchemy.animal import SqlAlchemyAnimalRepository
 from repository.sqlalchemy.animalshow import SqlAlchemyAnimalShowRepository
 from repository.sqlalchemy.breed import SqlAlchemyBreedRepository
@@ -42,39 +55,45 @@ def redis_client():
 
 
 class Container(containers.DeclarativeContainer):
-    db = providers.Singleton(SqlAlchemyDatabase, db_url=configs.DATABASE_URL, echo=False)
+    if configs.DBMS == 'postgres':
+        db = providers.Singleton(SqlAlchemyDatabase, db_url=configs.DATABASE_URL, echo=False)
+        user_repo = providers.Factory(SqlAlchemyUserRepository, session_factory=db.provided.session)
+        breed_repo = providers.Factory(SqlAlchemyBreedRepository, session_factory=db.provided.session)
+        species_repo = providers.Factory(SqlAlchemySpeciesRepository, session_factory=db.provided.session)
+        group_repo = providers.Factory(SqlAlchemyGroupRepository, session_factory=db.provided.session)
+        certificate_repo = providers.Factory(SqlAlchemyCertificateRepository, session_factory=db.provided.session)
+        animalshow_repo = providers.Factory(SqlAlchemyAnimalShowRepository, session_factory=db.provided.session)
+        usershow_repo = providers.Factory(SqlAlchemyUserShowRepository, session_factory=db.provided.session)
+        standard_repo = providers.Factory(SqlAlchemyStandardRepository, session_factory=db.provided.session)
+        show_repo = providers.Factory(SqlAlchemyShowRepository, session_factory=db.provided.session)
+        animal_repo = providers.Factory(SqlAlchemyAnimalRepository, session_factory=db.provided.session)
+        score_repo = providers.Factory(SqlAlchemyScoreRepository, session_factory=db.provided.session)
+    elif configs.DBMS == 'mongodb':
+        db = providers.Singleton(PymongoDatabase, db_url=configs.MONGO_URL, echo=False)
+        user_repo = providers.Factory(PymongoUserRepository, session_factory=db.provided.session)
+        breed_repo = providers.Factory(PymongoBreedRepository, session_factory=db.provided.session)
+        species_repo = providers.Factory(PymongoSpeciesRepository, session_factory=db.provided.session)
+        group_repo = providers.Factory(PymongoGroupRepository, session_factory=db.provided.session)
+        certificate_repo = providers.Factory(PymongoCertificateRepository, session_factory=db.provided.session)
+        animalshow_repo = providers.Factory(PymongoAnimalShowRepository, session_factory=db.provided.session)
+        usershow_repo = providers.Factory(PymongoUserShowRepository, session_factory=db.provided.session)
+        standard_repo = providers.Factory(PymongoStandardRepository, session_factory=db.provided.session)
+        show_repo = providers.Factory(PymongoShowRepository, session_factory=db.provided.session)
+        animal_repo = providers.Factory(PymongoAnimalRepository, session_factory=db.provided.session)
+        score_repo = providers.Factory(PymongoScoreRepository, session_factory=db.provided.session)
 
-    user_repo = providers.Factory(SqlAlchemyUserRepository, session_factory=db.provided.session)
     user_service = providers.Factory(UserService, user_repo=user_repo)
-
-    breed_repo = providers.Factory(SqlAlchemyBreedRepository, session_factory=db.provided.session)
     breed_service = providers.Factory(BreedService, breed_repo=breed_repo)
-
-    species_repo = providers.Factory(SqlAlchemySpeciesRepository, session_factory=db.provided.session)
     species_service = providers.Factory(SpeciesService, species_repo=species_repo)
-
-    group_repo = providers.Factory(SqlAlchemyGroupRepository, session_factory=db.provided.session)
     group_service = providers.Factory(GroupService, group_repo=group_repo)
-
-    certificate_repo = providers.Factory(SqlAlchemyCertificateRepository, session_factory=db.provided.session)
     certificate_service = providers.Factory(CertificateService, certificate_repo=certificate_repo)
-
-    animalshow_repo = providers.Factory(SqlAlchemyAnimalShowRepository, session_factory=db.provided.session)
     animalshow_service = providers.Factory(AnimalShowService, animalshow_repo=animalshow_repo)
-
-    usershow_repo = providers.Factory(SqlAlchemyUserShowRepository, session_factory=db.provided.session)
     usershow_service = providers.Factory(UserShowService, usershow_repo=usershow_repo)
-
-    standard_repo = providers.Factory(SqlAlchemyStandardRepository, session_factory=db.provided.session)
     standard_service = providers.Factory(StandardService, standard_repo=standard_repo)
-
-    show_repo = providers.Factory(SqlAlchemyShowRepository, session_factory=db.provided.session)
-    animal_repo = providers.Factory(SqlAlchemyAnimalRepository, session_factory=db.provided.session)
     animal_service = providers.Factory(AnimalService,
                                        animal_repo=animal_repo,
                                        animalshow_service=animalshow_service,
                                        show_repo=show_repo)
-    score_repo = providers.Factory(SqlAlchemyScoreRepository, session_factory=db.provided.session)
     score_service = providers.Factory(
         ScoreService,
         score_repo=score_repo,

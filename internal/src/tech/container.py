@@ -27,7 +27,7 @@ from repository.sqlalchemy.usershow import SqlAlchemyUserShowRepository
 from auth_provider.provider.auth import AuthProvider
 from auth_provider.storage.redis.auth import SessionStorage
 from app.config import configs
-from database import SqlAlchemyDatabase
+from sqlalchemy import SqlAlchemyDatabase
 
 
 def redis_client():

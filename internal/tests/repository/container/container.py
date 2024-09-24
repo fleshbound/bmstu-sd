@@ -1,6 +1,6 @@
 from dependency_injector import containers, providers
 
-from database.database import SqlAlchemyDatabase
+from database import SqlAlchemyDatabase
 from repository.sqlalchemy.animal import SqlAlchemyAnimalRepository
 from repository.sqlalchemy.animalshow import SqlAlchemyAnimalShowRepository
 from repository.sqlalchemy.breed import SqlAlchemyBreedRepository

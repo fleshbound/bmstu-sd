@@ -2,7 +2,7 @@ import pytest
 
 from core.utils.exceptions import NotFoundRepoError, ValidationRepoError
 from core.utils.types import ID
-from internal.tests.builders.schema.animal import AnimalSchemaBuilder
+from tests.builders.schema.animal import AnimalSchemaBuilder
 
 
 @pytest.fixture
