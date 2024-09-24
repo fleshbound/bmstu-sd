@@ -49,7 +49,7 @@ class AnimalService(IAnimalService):
         for i, show in enumerate(shows):
             self.animalshow_service.archive(animal_registration_records[i].id)
 
-        self.animal_repo.delete(animal_id)
+        self.animal_repo.delete(animal_id.value)
         return AnimalSchemaDelete(id=animal_id)
 
     def create(self, create_animal: AnimalSchemaCreate) -> AnimalSchema:
