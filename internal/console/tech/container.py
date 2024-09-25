@@ -26,8 +26,8 @@ from repository.sqlalchemy.user import SqlAlchemyUserRepository
 from repository.sqlalchemy.usershow import SqlAlchemyUserShowRepository
 from auth_provider.provider.auth import AuthProvider
 from auth_provider.storage.redis.auth import SessionStorage
-from console.tech.config import configs
-from database import SqlAlchemyDatabase
+from config import configs
+from repository.database.database import SqlAlchemyDatabase
 from tech.console import ConsoleHandler
 from tech.handlers.animal import AnimalHandler
 from tech.handlers.auth import AuthHandler

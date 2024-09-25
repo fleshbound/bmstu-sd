@@ -2,7 +2,7 @@ from dependency_injector.wiring import Provide, inject
 
 from container import Container
 from tech.console import ConsoleHandler
-from src.utils.logger.logger import set_logger
+from utils.logger.logger import set_logger
 
 
 @inject
